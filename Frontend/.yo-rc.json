@@ -1,0 +1,17 @@
+{
+  "generator-ngx-rocket": {
+    "version": "3.1.1",
+    "props": {
+      "appName": "SI-FEPON",
+      "target": [
+        "web"
+      ],
+      "pwa": true,
+      "ui": "bootstrap",
+      "auth": true,
+      "projectName": "si-fepon",
+      "packageManager": "npm",
+      "mobile": []
+    }
+  }
+}
