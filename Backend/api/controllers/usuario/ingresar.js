@@ -68,7 +68,8 @@ module.exports = {
     }
 
     let token = await sails.helpers.generarjwt(usuarioEncontrado);
-    return exits.exitoIngreso({'token': token});
+    delete usuarioEncontrado.password;
+    return exits.exitoIngreso({'token': token, 'usuario': usuarioEncontrado});
 
   }
 };

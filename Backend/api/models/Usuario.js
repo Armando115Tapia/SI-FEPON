@@ -35,7 +35,11 @@ module.exports = {
     },
     numeroUnico: {
       type: 'string',
-      unique: true
+      unique: true,
+    },
+    numeroTelefono: {
+      type: 'string',
+      required: true
     },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗

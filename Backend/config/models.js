@@ -19,7 +19,7 @@ module.exports.models = {
   /***************************************************************************
   *                                                                          *
   * Whether the `.create()` and `.update()` model methods should ignore      *
-  * (and refuse to persist) unrecognized data-- i.e. properties other than   *
+  * (and refuse to persist) unrecognized data--  i.e. properties other than   *
   * those explicitly defined by attributes in the model definition.          *
   *                                                                          *
   * To ease future maintenance of your code base, it is usually a good idea  *

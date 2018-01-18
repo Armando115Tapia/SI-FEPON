@@ -30,24 +30,24 @@ module.exports = {
         description: 'Cédula de identidad'
       }
     },
-    rol: {
-      type: 'number',
-      required: true,
-      example: '1',
-      description: 'Rol de usuario',
-      extendedDescription: 'Rol por defecto es estudiante',
-      whereToGet: {
-        description: 'Carnet otorgado por la FEPON'
-      }
-    },
+    // rol: {
+    //   type: 'number',
+    //   example: 1,
+    //   description: 'Rol de usuario',
+    //   extendedDescription: 'Rol por defecto es estudiante',
+    //   whereToGet: {
+    //     description: 'Carnet otorgado por la FEPON'
+    //   }
+    // },
     carrera: {
-      type: 'number',
-      example: '1',
+      type: 'string',
+      example: "Sistemas",
       description: 'Carrera de usuario',
       extendedDescription: 'Carrera es opcional',
       whereToGet: {
         description: 'Carnet otorgado por la FEPON'
-      }
+      },
+      allowNull: true
     },
     numeroUnico: {
       type: 'string',
@@ -56,6 +56,15 @@ module.exports = {
       extendedDescription: 'Número único otorgado por la universidad',
       whereToGet: {
         description: 'Carnet otorgado por la FEPON o EPN'
+      }
+    },
+    numeroTelefono: {
+      type: 'string',
+      example: '2953971',
+      description: 'Número teléfono',
+      extendedDescription: 'Número teléfono otorgado por la universidad',
+      whereToGet: {
+        description: 'Planilla telefonica'
       }
     },
     email: {
@@ -93,12 +102,15 @@ module.exports = {
 
   fn: async function(inputs, exits) {
 
+    let rolEstudiante = await Rol.findOne({'nombre':'Estudiante'});
+
     let modeloUsuario = {
       'nombre': inputs.nombre,
       'genero': inputs.genero,
-      'rol': inputs.rol,
+      'rol': rolEstudiante.id, // Rol por default estudiante
       'carrera': inputs.carrera,
       'numeroUnico': inputs.numeroUnico,
+      'numeroTelefono': inputs.numeroTelefono,
       'email': inputs.email,
       'password': await sails.helpers.cifrarpassword(inputs.password)
     }
