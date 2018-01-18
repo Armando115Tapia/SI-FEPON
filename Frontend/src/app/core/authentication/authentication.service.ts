@@ -3,18 +3,16 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
 export interface Credentials {
-  // Customize received credentials here
-  username: string;
+  usuario: any;
   token: string;
 }
 
 export interface LoginContext {
-  username: string;
-  password: string;
-  remember?: boolean;
+  token: string;
+  usuario: any;
 }
 
-const credentialsKey = 'credentials';
+const credentialsKey = 'credenciales';
 
 /**
  * Provides a base for authentication workflow.
@@ -33,17 +31,17 @@ export class AuthenticationService {
   }
 
   /**
-   * Authenticates the user.
+   * Set credenciales de usuario
    * @param {LoginContext} context The login parameters.
    * @return {Observable<Credentials>} The user credentials.
    */
-  login(context: LoginContext): Observable<Credentials> {
-    // Replace by proper authentication call
+  setCredenciales(context: LoginContext): Observable<Credentials> {
+
     const data = {
-      username: context.username,
-      token: '123456'
+      usuario: context.usuario,
+      token: context.token
     };
-    this.setCredentials(data, context.remember);
+    this.setCredentials(data, false);
     return of(data);
   }
 

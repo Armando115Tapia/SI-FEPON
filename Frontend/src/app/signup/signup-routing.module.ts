@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { extract } from '../core/i18n.service';
-import { LoginComponent } from './login.component';
+import { SignupComponent } from './signup.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent, data: { title: extract('Autenticación') } }
+  { path: 'signin', component: SignupComponent, data: { title: extract('Registro') } }
 ];
 
 @NgModule({
@@ -13,4 +13,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class LoginRoutingModule { }
+export class SignupRoutingModule { }

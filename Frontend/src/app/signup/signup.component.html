@@ -1,0 +1,105 @@
+<div class="login-container bg-light">
+  <div class="login-box">
+    <h1>SI-FEPON</h1>
+    <div>
+      <h6 class="d-inline-block">v{{version}}</h6>
+      <p-dropdown name="lenguaje" class="d-inline-block ml-3" [options]="opcionesLenguajeDropdown"
+        (onChange)="setLanguage($event)">
+      </p-dropdown>
+    </div>
+    <div class="container">
+      <div class="card col-md-6 mt-3 mx-auto">
+        <div class="card-body">
+          <h4 class="card-title text-center">
+            <i class="fa fa-3x fa-user-circle-o text-muted"></i>
+          </h4>
+          <p-checkbox [(ngModel)]="isEstudianteEPN" binary="true" label="Es estudiante EPN"
+            (onChange)="cambioCheckboxIsEstudiante($event)"></p-checkbox>
+          <form (ngSubmit)="signin()" [formGroup]="signupForm" novalidate>
+            <div class="alert alert-danger" [hidden]="!error || isLoading" translate>
+              Cargando
+            </div>
+            <div class="form-group">
+              <label class="d-block">
+                <input type="text" class="form-control" formControlName="nombre"
+                        [placeholder]="'Nombre' | translate"/>
+                <span hidden translate>Nombre</span>
+                <small [hidden]="signupForm.controls.nombre.valid || signupForm.controls.nombre.untouched"
+                        class="text-danger" translate>
+                  Nombre completo es requerido
+                </small>
+              </label>
+              <p-dropdown class="ancho-completo" [autoWidth]="false" [options]="opcionesGeneroDropdown"
+                    formControlName="genero" [placeholder]="'Género' | translate"></p-dropdown>
+              <span hidden translate>Género</span>
+              <small [hidden]="signupForm.controls.genero.valid || signupForm.controls.genero.untouched"
+                      class="text-danger" translate>
+                  Género es requerido
+              </small>
+              <label class="d-block"></label>
+              <label class="d-block">
+                <input type="text" class="form-control" formControlName="cedula"
+                        [placeholder]="'Cédula' | translate"/>
+                <span hidden translate>Cédula</span>
+                <small [hidden]="signupForm.controls.cedula.valid || signupForm.controls.cedula.untouched"
+                        class="text-danger" translate>
+                  Cédula es requerida
+                </small>
+              </label>
+              <label class="d-block">
+                <input type="text" class="form-control" formControlName="numeroTelefono"
+                       [placeholder]="'Número de teléfono o celular' | translate" required/>
+                <span hidden translate>Número de teléfono o celular</span>
+                <small [hidden]="signupForm.controls.numeroTelefono.valid || signupForm.controls.numeroTelefono.untouched"
+                       class="text-danger" translate>
+                  Número de teléfono o celular es requerido
+                </small>
+              </label>
+              <label class="d-block">
+                <input type="text" class="form-control" formControlName="email"
+                       [placeholder]="'Correo electrónico' | translate"/>
+                <span hidden translate>Correo electrónico</span>
+                <small [hidden]="signupForm.controls.email.valid || signupForm.controls.email.untouched"
+                       class="text-danger" translate>
+                  Correo electrónico es requerido
+                </small>
+              </label>
+              <label class="d-block">
+                <input type="password" class="form-control" formControlName="password"
+                       [placeholder]="'Contraseña' | translate" required/>
+                <span hidden translate>Contraseña</span>
+                <small [hidden]="signupForm.controls.password.valid || signupForm.controls.password.untouched"
+                       class="text-danger" translate>
+                  Contraseña es requrida
+                </small>
+              </label>
+              <span *ngIf="isEstudianteEPN">
+                <label class="d-block">
+                  <input type="text" class="form-control" formControlName="numeroUnico"
+                         [placeholder]="'Número único' | translate" required
+                         pattern="[0-9]{9}"/>
+                  <span hidden translate>Número único</span>
+                  <small [hidden]="signupForm.controls.numeroUnico.valid || signupForm.controls.numeroUnico.untouched"
+                         class="text-danger" translate>
+                    Número único es requrido
+                  </small>
+                </label>
+                <p-dropdown class="ancho-completo" [autoWidth]="false" [options]="opcionesCarreraDropdown"
+                    formControlName="carrera" [placeholder]="'Carrera' | translate"></p-dropdown>
+                <span hidden translate>Carrera</span>
+                <small [hidden]="signupForm.controls.carrera.valid || signupForm.controls.carrera.untouched"
+                        class="text-danger" translate>
+                    Carrera es requerida
+                </small>
+              </span>
+            </div>
+            <button class="btn btn-primary w-100" type="submit" [disabled]="signupForm.invalid || isLoading">
+              <i class="fa fa-cog fa-spin" [hidden]="!isLoading"></i>
+              <span translate>Autenticar</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

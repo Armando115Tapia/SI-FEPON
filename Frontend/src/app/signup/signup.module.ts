@@ -4,10 +4,12 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownModule } from 'primeng/primeng';
+import { CheckboxModule } from 'primeng/primeng';
 
-import { LoginRoutingModule } from './login-routing.module';
-import { LoginComponent } from './login.component';
-import { LoginService } from './servicios/login.service';
+import { SignupRoutingModule } from './signup-routing.module';
+import { SignupComponent } from './signup.component';
+
+import { SignupService } from './servicios/signup.service';
 
 @NgModule({
   imports: [
@@ -15,13 +17,14 @@ import { LoginService } from './servicios/login.service';
     ReactiveFormsModule,
     TranslateModule,
     NgbModule,
-    LoginRoutingModule,
+    SignupRoutingModule,
     FormsModule,
-    DropdownModule
+    DropdownModule,
+    CheckboxModule
   ],
   declarations: [
-    LoginComponent
+    SignupComponent
   ],
-  providers: [LoginService]
+  providers: [SignupService]
 })
-export class LoginModule { }
+export class SignupModule { }
