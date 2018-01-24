@@ -6,10 +6,10 @@
 export const environment = {
   production: false,
   version: '(dev)',
-  serverUrl: '/api',
-  defaultLanguage: 'en-US',
+  serverUrl: 'http://localhost:1337/',
+  defaultLanguage: 'es-ES',
   supportedLanguages: [
     'en-US',
-    'fr-FR'
+    'es-ES'
   ]
 };

@@ -1,18 +1,11 @@
 <div class="login-container bg-light">
   <div class="login-box">
-    <h1 translate>APP_NAME</h1>
+    <h1>SI-FEPON</h1>
     <div>
       <h6 class="d-inline-block">v{{version}}</h6>
-      <div class="d-inline-block ml-3" ngbDropdown>
-        <button id="language-dropdown" class="btn btn-sm btn-secondary" ngbDropdownToggle>
-          {{currentLanguage}}
-        </button>
-        <div ngbDropdownMenu aria-labelledby="language-dropdown">
-          <button class="dropdown-item" *ngFor="let language of languages" (click)="setLanguage(language)">
-            {{language}}
-          </button>
-        </div>
-      </div>
+      <p-dropdown name="lenguaje" class="d-inline-block ml-3" [options]="opcionesLenguajeDropdown"
+        (onChange)="setLanguage($event)">
+      </p-dropdown>
     </div>
     <div class="container">
       <div class="card col-md-6 mt-3 mx-auto">
@@ -22,35 +15,39 @@
           </h4>
           <form (ngSubmit)="login()" [formGroup]="loginForm" novalidate>
             <div class="alert alert-danger" [hidden]="!error || isLoading" translate>
-              Username or password incorrect.
+              Usuario o contraseña incorecta.
             </div>
             <div class="form-group">
+              <p-dropdown class="ancho-completo" [autoWidth]="false" [options]="opcionesRolDropdown"
+                formControlName="rol" [placeholder]="'Rol' | translate"></p-dropdown>
+              <span hidden translate>Rol</span>
+              <small [hidden]="loginForm.controls.rol.valid || loginForm.controls.rol.untouched"
+                      class="text-danger" translate>
+                Rol es requerido
+              </small>
+              <label class="d-block"></label>
               <label class="d-block">
-                <input type="text" class="form-control" formControlName="username"
-                       [placeholder]="'Username' | translate"/>
-                <span hidden translate>Username</span>
-                <small [hidden]="loginForm.controls.username.valid || loginForm.controls.username.untouched"
+                <input type="text" class="form-control" formControlName="email"
+                       [placeholder]="'Correo electrónico' | translate"/>
+                <span hidden translate>Correo electrónico</span>
+                <small [hidden]="loginForm.controls.email.valid || loginForm.controls.email.untouched"
                        class="text-danger" translate>
-                  Username is required
+                  Correo electrónico es requerido
                 </small>
               </label>
               <label class="d-block">
                 <input type="password" class="form-control" formControlName="password"
-                       [placeholder]="'Password' | translate" required/>
-                <span hidden translate>Password</span>
+                       [placeholder]="'Contraseña' | translate" required/>
+                <span hidden translate>Contraseña</span>
                 <small [hidden]="loginForm.controls.password.valid || loginForm.controls.password.untouched"
                        class="text-danger" translate>
-                  Password is required
+                  Contraseña es requrida
                 </small>
-              </label>
-              <label class="form-check-label">
-                <input type="checkbox" class="form-check-input" formControlName="remember"/>
-                <span translate>Remember me</span>
               </label>
             </div>
             <button class="btn btn-primary w-100" type="submit" [disabled]="loginForm.invalid || isLoading">
               <i class="fa fa-cog fa-spin" [hidden]="!isLoading"></i>
-              <span translate>Login</span>
+              <span translate>Autenticar</span>
             </button>
           </form>
         </div>

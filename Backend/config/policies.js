@@ -17,6 +17,10 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': true,
+  '*': true,
+
+  // '*': ['isAutorizado'],
+  // 'usuario/crear': true,
+  // 'usuario/ingresar': true
 
 };
