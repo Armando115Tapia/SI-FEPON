@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
+import { AuthenticationService } from '../core/authentication/authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -8,14 +9,15 @@ import { finalize } from 'rxjs/operators';
 })
 export class HomeComponent implements OnInit {
 
-  quote: string;
+  nombreUsuario: string;
   isLoading: boolean;
 
-  constructor() { }
+
+  constructor(private autenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.isLoading = true;
-
+    this.nombreUsuario = this.autenticationService.credentials.usuario;
   }
 
 }

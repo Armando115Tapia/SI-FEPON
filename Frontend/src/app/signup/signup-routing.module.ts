@@ -5,7 +5,7 @@ import { extract } from '../core/i18n.service';
 import { SignupComponent } from './signup.component';
 
 const routes: Routes = [
-  { path: 'signin', component: SignupComponent, data: { title: extract('Registro') } }
+  { path: 'signup', component: SignupComponent, data: { title: extract('Registro') } }
 ];
 
 @NgModule({
