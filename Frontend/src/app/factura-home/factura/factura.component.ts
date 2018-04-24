@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileUpload } from 'primeng/primeng';
+import { FacturaService } from './servicios/factura.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-factura',
   templateUrl: './factura.component.html',
-  styleUrls: ['./factura.component.scss']
+  styleUrls: ['./factura.component.scss'],
+  providers: [FacturaService]
 })
 
 export class FacturaComponent implements OnInit {
@@ -28,8 +31,10 @@ export class FacturaComponent implements OnInit {
 
   es: Object; // idioma del calendario
 
-  constructor(private formBuilder: FormBuilder) {
-
+  constructor(
+    private formBuilder: FormBuilder,
+    private facturaService: FacturaService
+  ) {
     this.regexNumero = /^\d+$/;
     this.regexFlotante = /^[0-9]+(\.[0-9][0-9]?)?$/;
 
@@ -166,6 +171,48 @@ export class FacturaComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  guardarFactura(): void {
+
+    const modeloFactura = {
+      'descripcion': this.descripcion,
+      'fecha': this.fecha,
+      'total': this.totalFactura,
+      'tipo': this.tipoFactura,
+      'detalleFacturas': this.detalleFactura,
+      'etiquetas': this.etiquetas
+    };
+
+    // Guarda la factura en la base de datos
+    this.facturaService.guardarFactura(modeloFactura)
+      .pipe(map(res => res.json()))
+      .subscribe(
+        (data: any) => {
+          const facturaCreada = data.respuesta;
+
+          // Guarda la imagen asociada a la factura
+          this.facturaService.guardarImagen(this.imagenFactura, facturaCreada.id)
+            .then(
+              (dataImagen: any) => {
+                console.log(dataImagen);
+                const reader = new FileReader();
+                reader.onload = e => {
+                  console.log((<FileReader> e.target).result());
+                };
+                reader.readAsDataURL(this.imagenFactura);
+              }
+            )
+            .catch(
+              error => {
+                console.log(error);
+              }
+            );
+        },
+        error => {
+          console.log(error);
+        }
+      );
   }
 
 }

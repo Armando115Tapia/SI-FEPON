@@ -48,7 +48,11 @@ module.exports.routes = {
 
   'GET /api/v1/rol':                {action:'rol/lista-roles'},
 
-  'GET /api/v1/carreras':           {action:'carrera/lista-carreras'}
+  'GET /api/v1/carreras':           {action:'carrera/lista-carreras'},
+
+  'POST /api/v1/factura/crear':     {action:'factura/crear'},
+
+  'POST /api/v1/imagen/factura':    'ImagenFacturaController.subirImagen',
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
   //  ╚╩╝╚═╝╚═╝╩ ╩╚═╝╚═╝╩ ╩╚═╝

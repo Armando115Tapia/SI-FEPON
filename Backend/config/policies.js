@@ -21,6 +21,7 @@ module.exports.policies = {
 
   // '*': ['isAutorizado'],
   // 'usuario/crear': true,
-  // 'usuario/ingresar': true
+  // 'usuario/ingresar': true,
+  // 'rol/lista-roles': true
 
 };
