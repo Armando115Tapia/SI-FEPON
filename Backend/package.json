@@ -13,7 +13,7 @@
     "machinepack-passwords": "^2.3.0",
     "sails": "^1.0.0-45",
     "sails-hook-grunt": "^2.2.1",
-    "sails-hook-orm": "^2.0.0-16",
+    "sails-hook-orm": "^2.0.0-23",
     "sails-hook-sockets": "^1.4.0",
     "sails-mongo": "^1.0.0-11",
     "socket.io-redis": "5.2.0"

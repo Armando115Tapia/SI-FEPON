@@ -15,6 +15,7 @@ import { HomeModule } from './home/home.module';
 import { AboutModule } from './about/about.module';
 import { LoginModule } from './login/login.module';
 import { SignupModule } from './signup/signup.module';
+import { FacturaHomeModule } from './factura-home/factura-home.module';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { SignupModule } from './signup/signup.module';
     AboutModule,
     LoginModule,
     SignupModule,
+    FacturaHomeModule,
     AppRoutingModule
   ],
   declarations: [AppComponent],

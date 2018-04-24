@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    this.nombreUsuario = this.autenticationService.credentials.usuario;
+    this.nombreUsuario = this.autenticationService.credentials.usuario.nombre;
   }
 
 }
