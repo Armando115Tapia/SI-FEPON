@@ -51,13 +51,16 @@ module.exports = {
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
     rol: {
-      model: 'Rol',
-      required: true,
-      example: 'Administrador'
+      type: 'string',
+      required: true
     },
     carrera: {
-      model: 'Carrera',
-      example: 'Ingenieria en sistemas'
+      type: 'string',
+      required: true
+    },
+    facultad: {
+      type: 'string',
+      required: true
     }
   },
 
