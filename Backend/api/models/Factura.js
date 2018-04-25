@@ -29,27 +29,35 @@ module.exports = {
       type: 'string',
       required: true
     },
+    detalle: {
+      type: 'json'
+    },
+    // cantidad: {
+    //   type: 'number',
+    //   required: true
+    // },
+    // descripcion: {
+    //   type: 'string',
+    //   required: true
+    // },
+    // precioUnitario: {
+    //   type: 'number',
+    //   required: true
+    // },
+    etiquetas: {
+      type: 'json'
+    },
+    imagen: {
+      type: 'json'
+    }
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
     //  ╚═╝╩ ╩╚═╝╚═╝═╩╝╚═╝
-    imagen: {
-      collection: 'ImagenFactura',
-      via: 'factura'
-    },
 
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-    detalleFacturas: {
-      collection: 'DetalleFactura',
-      via: 'factura'
-    },
-    etiquetas: {
-      collection: 'Etiqueta',
-      via: 'facturas',
-      dominant: true
-    }
   },
 
 };
