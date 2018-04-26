@@ -24,8 +24,8 @@ export class LoginComponent implements OnInit {
   error: string;
   loginForm: FormGroup;
   isLoading = false;
-  opcionesLenguajeDropdown: Array<{ 'label': string, 'value': string }>;
-  opcionesRolDropdown: Array<{ 'label': string, 'value': number }>;
+  opcionesLenguajeDropdown: IEventoDropDown[];
+  opcionesRolDropdown: IEventoDropDown[];
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
@@ -33,13 +33,17 @@ export class LoginComponent implements OnInit {
               private authenticationService: AuthenticationService,
               private loginService: LoginService) {
     this.opcionesLenguajeDropdown = [];
-    this.opcionesRolDropdown = [];
+    this.opcionesRolDropdown = [
+      {'label': 'Estudiante', 'value': 'Estudiante'},
+      {'label': 'Administrador', 'value': 'Administrador'}
+    ];
     this.createForm();
+
   }
 
   ngOnInit() {
     this.opcionesLenguajeDropdown = this.generarOpcionesLenguajeDropdown();
-    this.generarOpcionesRolDropdown();
+    this.loginForm.get('rol').setValue('Estudiante');
   }
 
   /**
@@ -109,12 +113,12 @@ export class LoginComponent implements OnInit {
    * Genera opciones de idioma de dropdown
    *
    * @private
-   * @returns {Array<{ label: string, value: string }>} Opciones de idioma
+   * @returns {IEventoDropDown[]} Opciones de idioma
    * @memberof LoginComponent
    */
 
-  private generarOpcionesLenguajeDropdown(): Array<{ label: string, value: string }>  {
-    let opcionesLenguaje: Array<{ label: string, value: string }>;
+  private generarOpcionesLenguajeDropdown(): IEventoDropDown[]  {
+    let opcionesLenguaje: IEventoDropDown[];
     opcionesLenguaje = [];
 
     const lenguajes = this.i18nService.supportedLanguages;
@@ -139,30 +143,9 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
   }
+}
 
-  /**
-   * Genera las opciones para el dropdown de rol
-   *
-   * @private
-   * @memberof LoginComponent
-   */
-
-  private generarOpcionesRolDropdown(): void {
-    const opcionesRol: Array<{ label: string, value: number }> = [];
-    this.loginService.descargarRolesDeUsuario()
-      .pipe(map(res => res.json()))
-      .subscribe(
-        data => {
-          for (let indice = 0; indice < data.registros.length; indice++) {
-            const rol = data.registros[indice];
-            opcionesRol.push({'label': rol.nombre, 'value': rol.id });
-          }
-          log.info(opcionesRol);
-          this.opcionesRolDropdown = opcionesRol;
-        },
-        error => {
-          log.error(error);
-        }
-      );
-  }
+interface IEventoDropDown {
+  label: string;
+  value: string;
 }
