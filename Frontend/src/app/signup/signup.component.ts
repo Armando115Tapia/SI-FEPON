@@ -74,12 +74,16 @@ export class SignupComponent implements OnInit {
   signin() {
     this.isLoading = true;
 
-    // set null si carrera no esta presente
-    if (this.signupForm.value.carrera === '') {
-      this.signupForm.value.carrera = null;
+    const nuevoUsuario = this.signupForm.value;
+
+    if (this.isEstudianteEPN) {
+      nuevoUsuario['facultad'] = this.inferirFacultad(nuevoUsuario.carrera);
+    } else {
+      nuevoUsuario['facultad'] = '';
+      nuevoUsuario['numeroUnico'] = '';
     }
 
-    this.signupService.crearUsuario(this.signupForm.value)
+    this.signupService.crearUsuario(nuevoUsuario)
       .pipe(
         finalize(() => {
           this.signupForm.markAsPristine();
@@ -169,5 +173,26 @@ export class SignupComponent implements OnInit {
     opcionesGenero.push({label: 'Otro', value: 'Otro'});
 
     this.opcionesGeneroDropdown = opcionesGenero;
+  }
+
+  /**
+   * Infiere la facultad segun la carrera
+   *
+   * @private
+   * @param {string} carrera Nombre de la carrera
+   * @returns {string} Nombre de la facultad
+   * @memberof SignupComponent
+   */
+  private inferirFacultad(carrera: string): string {
+    let facultad = '';
+    switch (carrera) {
+      case 'Ing. Sistemas':
+        facultad = 'Ingenieria en sistemas y computacion';
+        break;
+      default:
+        break;
+    }
+
+    return facultad;
   }
 }
