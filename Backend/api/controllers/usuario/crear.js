@@ -6,7 +6,6 @@
  */
 
 module.exports = {
-
   friendlyName: 'Crear usuario',
   description: 'Crear un nuevo usuario',
   extendedDescription: 'Esta accion crea un nuevo usuario',
@@ -41,13 +40,16 @@ module.exports = {
     // },
     carrera: {
       type: 'string',
-      example: "Sistemas",
+      example: 'Sistemas',
       description: 'Carrera de usuario',
       extendedDescription: 'Carrera es opcional',
       whereToGet: {
         description: 'Carnet otorgado por la FEPON'
       },
       allowNull: true
+    },
+    facultad: {
+      type: 'string'
     },
     numeroUnico: {
       type: 'string',
@@ -101,26 +103,26 @@ module.exports = {
   },
 
   fn: async function(inputs, exits) {
-
-    let rolEstudiante = await Rol.findOne({'nombre':'Estudiante'});
-
     let modeloUsuario = {
-      'nombre': inputs.nombre,
-      'genero': inputs.genero,
-      'rol': rolEstudiante.id, // Rol por default estudiante
-      'carrera': inputs.carrera,
-      'numeroUnico': inputs.numeroUnico,
-      'numeroTelefono': inputs.numeroTelefono,
-      'email': inputs.email,
-      'password': await sails.helpers.cifrarpassword(inputs.password)
-    }
+      nombre: inputs.nombre,
+      genero: inputs.genero,
+      email: inputs.email,
+      password: await sails.helpers.cifrarpassword(inputs.password),
+      numeroUnico: inputs.numeroUnico,
+      numeroTelefono: inputs.numeroTelefono,
+      rol: 'Estudiante',
+      carrera: inputs.carrera,
+      facultad: inputs.facultad
+    };
 
     // TODO: Obtener mensaje para cada caso por separado
     let usuarioCreado = await Usuario.create(modeloUsuario)
-      .intercept('E_UNIQUE', ()=> {
+      .intercept('E_UNIQUE', () => {
         sails.log.warn('Correo electronico o Número único en uso');
-        return exits.errorEmailEnUso('Correo electronico o Número único en uso');
-        })
+        return exits.errorEmailEnUso(
+          'Correo electronico o Número único en uso'
+        );
+      })
       .fetch();
 
     if (!usuarioCreado) {
@@ -132,13 +134,11 @@ module.exports = {
     let token = await sails.helpers.generarjwt(usuarioCreado);
     delete usuarioCreado.password; //eliminar passsword del modelo
     let respuesta = {
-      'usuario': usuarioCreado,
-      'token': token
-    }
+      usuario: usuarioCreado,
+      token: token
+    };
 
     //uso de this.res para que acepte mas de dos parametros
     return this.res.exitoCreacion('Usuario', respuesta);
   }
-
 };
-
