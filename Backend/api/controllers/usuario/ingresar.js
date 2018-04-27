@@ -44,9 +44,9 @@ module.exports = {
       description: 'Se ha autenticado con exito',
       responseType: 'exitoIngreso'
     },
-    errorIngreso: {
-      description: 'Error en autenticacion',
-      responseType: 'errorGenerico'
+    noAutorizado: {
+      description: 'No autorizado',
+      responseType: 'noAutorizado'
     }
   },
 
@@ -58,13 +58,13 @@ module.exports = {
     });
 
     if (!usuarioEncontrado) {
-      return exits.errorIngreso('Error rol, email, password no coincide');
+      return exits.noAutorizado('Rol, email, password no coincide');
     }
 
     let isPasswordCorrecto = await sails.helpers.verificarpassword(inputs.password, usuarioEncontrado.password);
 
     if (!isPasswordCorrecto) {
-      return exits.errorIngreso('Error rol, email, password no coincide');
+      return exits.noAutorizado('Rol, email, password no coincide');
     }
 
     let token = await sails.helpers.generarjwt(usuarioEncontrado);
