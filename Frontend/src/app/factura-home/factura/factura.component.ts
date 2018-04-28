@@ -10,9 +10,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./factura.component.scss'],
   providers: [FacturaService]
 })
-
 export class FacturaComponent implements OnInit {
-
   public formularioDetalleFactura: FormGroup;
 
   opcionesTipoFactura: IselectButton[];
@@ -23,7 +21,7 @@ export class FacturaComponent implements OnInit {
   totalFactura: number;
   isActualizandoItemDetalleFactura: boolean;
   descripcion: string;
-  imagenFactura: File;
+  imagenFactura: IModeloImagen;
   imagenFacturaUrl: any;
 
   regexNumero: RegExp;
@@ -31,31 +29,26 @@ export class FacturaComponent implements OnInit {
 
   es: Object; // idioma del calendario
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private facturaService: FacturaService
-  ) {
+  constructor(private formBuilder: FormBuilder, private facturaService: FacturaService) {
     this.regexNumero = /^\d+$/;
     this.regexFlotante = /^[0-9]+(\.[0-9][0-9]?)?$/;
 
     this.isActualizandoItemDetalleFactura = false;
-    this.opcionesTipoFactura = [
-      {label: 'Ingresos', value: 'ingresos'},
-      {label: 'Egresos', value: 'egresos'}
-    ];
+    this.opcionesTipoFactura = [{ label: 'Ingresos', value: 'ingresos' }, { label: 'Egresos', value: 'egresos' }];
     this.fecha = null;
     this.tipoFactura = null;
     this.etiquetas = [];
     this.detalleFactura = [];
 
     this.formularioDetalleFactura = this.formBuilder.group({
-      'cantidad': [null, [Validators.required, Validators.pattern(this.regexNumero)]],
-      'descripcion': [null, Validators.required],
-      'precioUnitario': [null, [Validators.required, Validators.pattern(this.regexFlotante)]]
+      cantidad: [null, [Validators.required, Validators.pattern(this.regexNumero)]],
+      descripcion: [null, Validators.required],
+      precioUnitario: [null, [Validators.required, Validators.pattern(this.regexFlotante)]]
     });
 
     this.descripcion = '';
     this.imagenFactura = null;
+    this.imagenFacturaUrl = 'http://localhost:1337/images/facturas/64b78872-9ec5-4a87-b40c-480ab3e51980.png';
     this.totalFactura = this.calcularTotalFactura();
 
     this.es = {
@@ -63,16 +56,27 @@ export class FacturaComponent implements OnInit {
       dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
       dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
       dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
-      monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo',
-                   'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+      monthNames: [
+        'enero',
+        'febrero',
+        'marzo',
+        'abril',
+        'mayo',
+        'junio',
+        'julio',
+        'agosto',
+        'septiembre',
+        'octubre',
+        'noviembre',
+        'diciembre'
+      ],
       monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
       today: 'Hoy',
       clear: 'Borrar'
     };
-   }
-
-  ngOnInit() {
   }
+
+  ngOnInit() {}
 
   /**
    * Calcula el total de la factura utilizando los datos
@@ -82,12 +86,11 @@ export class FacturaComponent implements OnInit {
    * @memberof FacturaComponent
    */
   calcularTotalFactura(): number {
-
     let totalFactura = 0;
 
     for (let indice = 0; indice < this.detalleFactura.length; indice++) {
       const itemFactura = this.detalleFactura[indice];
-      totalFactura = totalFactura + (itemFactura.cantidad * itemFactura.precioUnitario);
+      totalFactura = totalFactura + itemFactura.cantidad * itemFactura.precioUnitario;
     }
 
     return totalFactura;
@@ -138,20 +141,27 @@ export class FacturaComponent implements OnInit {
   }
 
   /**
-   * Guarda la imagen en una variable dentro de la clase
+   * Guarda la imagen en el servidor
    *
    * @param {IuploadHandlerEvento} evento contiene los archivos
    * @param {FileUpload} form contiene los metodos de limpieza del contenedor de imagen
    * @memberof FacturaComponent
    */
-  guardarImagenEnFrontEnd(evento: IuploadHandlerEvento, form: FileUpload) {
-    this.imagenFactura = evento.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(this.imagenFactura); // read file as data url
+  guardarImagenFactura(evento: IuploadHandlerEvento, form: FileUpload) {
+    const imagen = evento.files[0];
 
-    reader.onload = (event) => { // called once readAsDataURL is completed
-      this.imagenFacturaUrl = (<FileReader>event.target).result;
-    };
+    // Guarda la imagen asociada a la factura
+    this.facturaService
+      .guardarImagen(imagen)
+      .then((dataImagen: any) => {
+        this.imagenFactura = dataImagen.imagen;
+        setTimeout(() => {
+          this.imagenFacturaUrl = 'http://localhost:1337/images/facturas/' + this.imagenFactura.nombreArchivo;
+        }, 2000);
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
     form.clear();
   }
@@ -163,58 +173,45 @@ export class FacturaComponent implements OnInit {
    * @memberof FacturaComponent
    */
   isFacturaInvalida(): boolean {
-    if (this.imagenFactura === null || this.etiquetas.length <= 0
-      || this.detalleFactura.length <= 0
-      || this.descripcion === null || this.fecha === null
-      || this.tipoFactura === null) {
-          return true;
+    if (
+      this.imagenFactura === null ||
+      this.etiquetas.length <= 0 ||
+      this.detalleFactura.length <= 0 ||
+      this.descripcion === null ||
+      this.descripcion === '' ||
+      this.fecha === null ||
+      this.tipoFactura === null
+    ) {
+      return true;
     } else {
       return false;
     }
   }
 
   guardarFactura(): void {
-
     const modeloFactura = {
-      'descripcion': this.descripcion,
-      'fecha': this.fecha,
-      'total': this.totalFactura,
-      'tipo': this.tipoFactura,
-      'detalleFacturas': this.detalleFactura,
-      'etiquetas': this.etiquetas
+      descripcion: this.descripcion,
+      fecha: this.fecha,
+      total: this.totalFactura,
+      tipo: this.tipoFactura,
+      detalle: this.detalleFactura,
+      etiquetas: this.etiquetas,
+      imagen: this.imagenFactura
     };
 
     // Guarda la factura en la base de datos
-    this.facturaService.guardarFactura(modeloFactura)
+    this.facturaService
+      .guardarFactura(modeloFactura)
       .pipe(map(res => res.json()))
       .subscribe(
         (data: any) => {
           const facturaCreada = data.respuesta;
-
-          // Guarda la imagen asociada a la factura
-          this.facturaService.guardarImagen(this.imagenFactura, facturaCreada.id)
-            .then(
-              (dataImagen: any) => {
-                console.log(dataImagen);
-                const reader = new FileReader();
-                reader.onload = e => {
-                  console.log((<FileReader> e.target).result());
-                };
-                reader.readAsDataURL(this.imagenFactura);
-              }
-            )
-            .catch(
-              error => {
-                console.log(error);
-              }
-            );
         },
         error => {
           console.log(error);
         }
       );
   }
-
 }
 
 interface IselectButton {
@@ -235,4 +232,10 @@ interface IclickToEditEvento {
 
 interface IuploadHandlerEvento {
   files: Array<File>;
+}
+
+interface IModeloImagen {
+  nombreArchivo: string;
+  nombreArchivoOriginal: string;
+  ubicacion: string;
 }

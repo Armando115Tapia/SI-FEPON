@@ -20,17 +20,17 @@ export class FacturaService {
   }
 
   guardarFactura(factura: any): Observable<Response> {
-    return this.http.post('api/v1/factura/crear', factura, this.options);
+    return this.http.post('Factura', factura, this.options);
   }
 
-  guardarImagen(imagenFactura: File, idFactura: number) {
+  guardarImagen(imagenFactura: File) {
     const url = environment.serverUrl + 'api/v1/imagen/factura';
     if (typeof imagenFactura !== 'undefined') {
         return new Promise((resolve, reject) => {
             const formData: any = new FormData();
             const xhr = new XMLHttpRequest();
             formData.append('imagen', imagenFactura, imagenFactura.name);
-            xhr.open('POST', url + '?idFactura=' + idFactura, true); // true: asynchronous request
+            xhr.open('POST', url, true); // true: asynchronous request
             xhr.setRequestHeader('Authorization', 'Bearer ' + this.autenticacionServicio.credentials.token);
             xhr.send(formData);
             xhr.onreadystatechange = function () {

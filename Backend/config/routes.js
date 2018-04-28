@@ -45,13 +45,6 @@ module.exports.routes = {
   //  ╩ ╩╩  ╩  ╚═╝╝╚╝═╩╝╩  ╚═╝╩╝╚╝ ╩ ╚═╝
   'POST /api/v1/usuario/crear':     {action:'usuario/crear'},
   'POST /api/v1/usuario/ingresar':  {action:'usuario/ingresar'},
-
-  'GET /api/v1/rol':                {action:'rol/lista-roles'},
-
-  'GET /api/v1/carreras':           {action:'carrera/lista-carreras'},
-
-  'POST /api/v1/factura/crear':     {action:'factura/crear'},
-
   'POST /api/v1/imagen/factura':    'ImagenFacturaController.subirImagen',
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
