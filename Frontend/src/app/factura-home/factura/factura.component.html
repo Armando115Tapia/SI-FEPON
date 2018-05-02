@@ -116,7 +116,7 @@
       <h5>Imagen</h5>
       <p-fileUpload #form mode="basic" auto="true" chooseLabel="Subir imagen" accept="image/*" customUpload="true" (uploadHandler)="guardarImagenFactura($event, form)"></p-fileUpload>
       <div class="d-flex justify-content-center img-container contenedor-imagen">
-        <img [src]="imagenFacturaUrl" class="img-fluid" alt="Factura">
+        <img [src]="imagenFacturaUrl" class="img-tamanio" alt="Factura">
       </div>
     </div>
   </div>

@@ -48,7 +48,7 @@ export class FacturaComponent implements OnInit {
 
     this.descripcion = '';
     this.imagenFactura = null;
-    this.imagenFacturaUrl = 'http://localhost:1337/images/facturas/64b78872-9ec5-4a87-b40c-480ab3e51980.png';
+    this.imagenFacturaUrl = 'http://localhost:1337/images/modelo-factura.png';
     this.totalFactura = this.calcularTotalFactura();
 
     this.es = {
