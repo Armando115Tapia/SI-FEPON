@@ -25,7 +25,9 @@
           <div class="card-body">
             <h4 class="card-title">Factura 1</h4>
             <p class="card-text">{{ factura.descripcion }}</p>
-            <p-chips [(ngModel)]="factura.etiquetas" [disabled]=true></p-chips>
+            <div *ngFor="let etiqueta of factura.etiquetas" class="ui-chips-token ui-state-highlight ui-corner-all">
+              {{etiqueta}}
+            </div>
           </div>
         </div>
       </div>
