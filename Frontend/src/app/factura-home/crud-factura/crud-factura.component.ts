@@ -157,7 +157,7 @@ export class CrudFacturaComponent implements OnInit {
         this.imagenFactura = dataImagen.imagen;
         setTimeout(() => {
           this.imagenFacturaUrl = 'http://localhost:1337/images/facturas/' + this.imagenFactura.nombreArchivo;
-        }, 2000);
+        }, 5000);
       })
       .catch(error => {
         console.log(error);
