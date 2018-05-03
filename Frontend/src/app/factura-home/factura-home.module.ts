@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FacturaHomeComponent } from './factura-home.component';
 import { FacturaHomeRoutingModule } from './factura-home-routing.module';
-import { FacturaComponent } from './factura/factura.component';
+import { CrudFacturaComponent } from './crud-factura/crud-factura.component';
 import { SharedModule } from '../shared/shared.module';
 import { InputTextareaModule, CalendarModule, ChipsModule,
           SelectButtonModule, ButtonModule, FileUploadModule} from 'primeng/primeng';
-
 
 @NgModule({
   imports: [
@@ -23,6 +22,6 @@ import { InputTextareaModule, CalendarModule, ChipsModule,
     SharedModule,
     FileUploadModule
   ],
-  declarations: [FacturaHomeComponent, FacturaComponent]
+  declarations: [FacturaHomeComponent, CrudFacturaComponent]
 })
 export class FacturaHomeModule { }

@@ -5,7 +5,7 @@ import { AuthenticationService } from '../../../core/authentication/authenticati
 import { environment } from '../../../../environments/environment';
 
 @Injectable()
-export class FacturaService {
+export class CrudFacturaService {
 
   private authHeader: Headers;
   private options: RequestOptions;

@@ -20,32 +20,12 @@
       <h1><strong>Últimas facturas</strong></h1>
       <hr>
       <div class="card-deck">
-        <div class="card">
+        <div *ngFor="let factura of facturas" class="card">
           <img class="card-img-top" src="http://lorempixel.com/50/50/" alt="">
           <div class="card-body">
             <h4 class="card-title">Factura 1</h4>
-            <p class="card-text">Descripción factura 1</p>
-          </div>
-        </div>
-        <div class="card">
-          <img class="card-img-top" src="http://lorempixel.com/50/50/" alt="">
-          <div class="card-body">
-            <h4 class="card-title">Factura 2</h4>
-            <p class="card-text">Descripción factura 2</p>
-          </div>
-        </div>
-        <div class="card">
-          <img class="card-img-top" src="http://lorempixel.com/50/50/" alt="">
-          <div class="card-body">
-            <h4 class="card-title">Factura 3</h4>
-            <p class="card-text">Descripción factura 3</p>
-          </div>
-        </div>
-        <div class="card">
-          <img class="card-img-top" src="http://lorempixel.com/50/50/" alt="">
-          <div class="card-body">
-            <h4 class="card-title">Factura 4</h4>
-            <p class="card-text">Descripción factura 4</p>
+            <p class="card-text">{{ factura.descripcion }}</p>
+            <p-chips [(ngModel)]="factura.etiquetas" [disabled]=true></p-chips>
           </div>
         </div>
       </div>

@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileUpload } from 'primeng/primeng';
-import { FacturaService } from './servicios/factura.service';
+import { CrudFacturaService } from './servicios/crud-factura.service';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-factura',
-  templateUrl: './factura.component.html',
-  styleUrls: ['./factura.component.scss'],
-  providers: [FacturaService]
+  selector: 'app-crud-factura',
+  templateUrl: './crud-factura.component.html',
+  styleUrls: ['./crud-factura.component.scss'],
+  providers: [CrudFacturaService]
 })
-export class FacturaComponent implements OnInit {
+export class CrudFacturaComponent implements OnInit {
   public formularioDetalleFactura: FormGroup;
 
   opcionesTipoFactura: IselectButton[];
@@ -29,7 +29,7 @@ export class FacturaComponent implements OnInit {
 
   es: Object; // idioma del calendario
 
-  constructor(private formBuilder: FormBuilder, private facturaService: FacturaService) {
+  constructor(private formBuilder: FormBuilder, private facturaService: CrudFacturaService) {
     this.regexNumero = /^\d+$/;
     this.regexFlotante = /^[0-9]+(\.[0-9][0-9]?)?$/;
 
@@ -219,6 +219,7 @@ interface IselectButton {
   value: string;
 }
 
+// TODO: sustituir ItemFactura por IDetalleFactura
 interface IitemFactura {
   cantidad: number;
   descripcion: string;
@@ -234,6 +235,7 @@ interface IuploadHandlerEvento {
   files: Array<File>;
 }
 
+// TODO: sustituir por IImagenFactura
 interface IModeloImagen {
   nombreArchivo: string;
   nombreArchivoOriginal: string;
