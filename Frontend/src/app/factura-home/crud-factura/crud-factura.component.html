@@ -1,3 +1,5 @@
+<p-growl [(value)]="mensajes" [baseZIndex]=500 [life]=3000></p-growl>
+
 <div class="container">
   <div class="row my-2">
     <div class="col">
@@ -123,7 +125,9 @@
   <hr>
   <div class="row">
     <div class="col d-flex justify-content-center">
-      <button class="btn btn-success" [disabled]="isFacturaInvalida()" (click)="guardarFactura()">Guardar</button>
+      {{  isEditando }}
+      <button *ngIf="isEditando === false" class="btn btn-success" [disabled]="isFacturaInvalida()" (click)="guardarFactura()">Guardar</button>
+      <button *ngIf="isEditando === true" class="btn btn-success" [disabled]="isFacturaInvalida()" (click)="actualizaFactura()">Actualizar</button>
     </div>
   </div>
 </div>

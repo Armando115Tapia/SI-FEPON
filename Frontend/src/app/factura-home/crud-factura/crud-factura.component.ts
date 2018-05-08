@@ -3,16 +3,18 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileUpload } from 'primeng/primeng';
 import { CrudFacturaService } from './servicios/crud-factura.service';
 import { map } from 'rxjs/operators';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 @Component({
   selector: 'app-crud-factura',
   templateUrl: './crud-factura.component.html',
   styleUrls: ['./crud-factura.component.scss'],
-  providers: [CrudFacturaService]
+  providers: [CrudFacturaService, MessageService]
 })
 export class CrudFacturaComponent implements OnInit {
   public formularioDetalleFactura: FormGroup;
 
+  id: string;
   opcionesTipoFactura: IselectButton[];
   detalleFactura: IitemFactura[];
   fecha: Date;
@@ -26,10 +28,16 @@ export class CrudFacturaComponent implements OnInit {
 
   regexNumero: RegExp;
   regexFlotante: RegExp;
-
   es: Object; // idioma del calendario
 
-  constructor(private formBuilder: FormBuilder, private facturaService: CrudFacturaService) {
+  isEditando: boolean;
+
+  mensajes: IMensaje[];
+  constructor(
+    private formBuilder: FormBuilder,
+    private facturaService: CrudFacturaService,
+    private notificacion: MessageService
+  ) {
     this.regexNumero = /^\d+$/;
     this.regexFlotante = /^[0-9]+(\.[0-9][0-9]?)?$/;
 
@@ -74,6 +82,10 @@ export class CrudFacturaComponent implements OnInit {
       today: 'Hoy',
       clear: 'Borrar'
     };
+
+    this.mensajes = [];
+    this.isEditando = false;
+    this.id = '';
   }
 
   ngOnInit() {}
@@ -205,12 +217,44 @@ export class CrudFacturaComponent implements OnInit {
       .pipe(map(res => res.json()))
       .subscribe(
         (data: any) => {
-          const facturaCreada = data.respuesta;
+          const facturaCreada = data;
+          this.mensajes.push(
+            {severity: 'success', summary: 'Factura ingresada', detail: 'La factura ha sido ingresada'}
+          );
+          this.id = facturaCreada.id;
+          this.isEditando = true;
         },
         error => {
           console.log(error);
         }
       );
+  }
+
+  actualizaFactura() {
+    const modeloFactura = {
+      id: this.id,
+      descripcion: this.descripcion,
+      fecha: this.fecha,
+      total: this.totalFactura,
+      tipo: this.tipoFactura,
+      detalle: this.detalleFactura,
+      etiquetas: this.etiquetas,
+      imagen: this.imagenFactura
+    };
+
+    this.facturaService.actualizarFactura(modeloFactura)
+      .pipe(map(res => res.json()))
+      .subscribe(
+        data => {
+          console.log(data);
+          this.mensajes.push(
+            {severity: 'success', summary: 'Factura actualizada', detail: 'La factura ha sido actualizada'}
+          );
+        },
+        error => {
+          console.log(error);
+        }
+      )
   }
 }
 
@@ -240,4 +284,10 @@ interface IModeloImagen {
   nombreArchivo: string;
   nombreArchivoOriginal: string;
   ubicacion: string;
+}
+
+interface IMensaje {
+  severity: string;
+  summary: string;
+  detail: string;
 }
