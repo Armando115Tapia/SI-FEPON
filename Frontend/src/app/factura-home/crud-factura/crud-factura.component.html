@@ -125,6 +125,7 @@
     <div class="col d-flex justify-content-center">
       <button *ngIf="isEditando === false" class="btn btn-success" [disabled]="isFacturaInvalida()" (click)="guardarFactura()">Guardar</button>
       <button *ngIf="isEditando === true" class="btn btn-success" [disabled]="isFacturaInvalida()" (click)="actualizaFactura()">Actualizar</button>
+      <button *ngIf="isEditando === true" class="btn btn-danger" (click)="eliminarFactura()">Eliminar</button>
     </div>
   </div>
 </div>

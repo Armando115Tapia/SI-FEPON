@@ -49,4 +49,8 @@ export class CrudFacturaService {
   detalleFactura(idFactura: string): Observable<Response> {
     return this.http.get('Factura/' + idFactura, this.options);
   }
+
+  eliminarFactura(idFactura: string): Observable<Response> {
+    return this.http.delete('Factura/' + idFactura, this.options);
+  }
 }

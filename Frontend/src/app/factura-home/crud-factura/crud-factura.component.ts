@@ -291,6 +291,30 @@ export class CrudFacturaComponent implements OnInit {
         }
       );
   }
+
+  /**
+   * Elimina una factura
+   *
+   * @memberof CrudFacturaComponent
+   */
+  eliminarFactura() {
+    this.facturaService
+      .eliminarFactura(this.idFactura)
+      .pipe(map(res => res.json()))
+      .subscribe(
+        data => {
+          console.log(data);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Factura eliminada',
+            detail: 'La factura ha sido eliminada'
+          });
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  }
 }
 
 interface IselectButton {
