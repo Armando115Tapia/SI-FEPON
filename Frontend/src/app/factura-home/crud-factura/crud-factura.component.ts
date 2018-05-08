@@ -3,18 +3,20 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileUpload } from 'primeng/primeng';
 import { CrudFacturaService } from './servicios/crud-factura.service';
 import { map } from 'rxjs/operators';
-import { MessageService } from 'primeng/components/common/messageservice';
+import { ActivatedRoute } from '@angular/router';
+import { IFactura } from '../../shared/modelos';
+import { MessageService } from '../../core/message.service';
 
 @Component({
   selector: 'app-crud-factura',
   templateUrl: './crud-factura.component.html',
   styleUrls: ['./crud-factura.component.scss'],
-  providers: [CrudFacturaService, MessageService]
+  providers: [CrudFacturaService]
 })
 export class CrudFacturaComponent implements OnInit {
   public formularioDetalleFactura: FormGroup;
 
-  id: string;
+  idFactura: string;
   opcionesTipoFactura: IselectButton[];
   detalleFactura: IitemFactura[];
   fecha: Date;
@@ -32,11 +34,11 @@ export class CrudFacturaComponent implements OnInit {
 
   isEditando: boolean;
 
-  mensajes: IMensaje[];
   constructor(
     private formBuilder: FormBuilder,
     private facturaService: CrudFacturaService,
-    private notificacion: MessageService
+    private messageService: MessageService,
+    private activatedRouter: ActivatedRoute
   ) {
     this.regexNumero = /^\d+$/;
     this.regexFlotante = /^[0-9]+(\.[0-9][0-9]?)?$/;
@@ -83,12 +85,41 @@ export class CrudFacturaComponent implements OnInit {
       clear: 'Borrar'
     };
 
-    this.mensajes = [];
     this.isEditando = false;
-    this.id = '';
+    this.idFactura = '';
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.activatedRouter.params.subscribe(parametros => {
+      this.idFactura = parametros['id'];
+    });
+
+    this.facturaService
+      .detalleFactura(this.idFactura)
+      .pipe(map(res => res.json()))
+      .subscribe(
+        (data: IFactura) => {
+          console.log(data);
+          this.idFactura = data.id;
+          this.descripcion = data.descripcion;
+          this.detalleFactura = data.detalle;
+          this.etiquetas = data.etiquetas;
+          this.fecha = new Date(data.fecha);
+          this.tipoFactura = data.tipo;
+          this.totalFactura = data.total;
+          this.imagenFacturaUrl = 'http://localhost:1337/images/facturas/' + data.imagen.nombreArchivo;
+          this.isEditando = true;
+        },
+        error => {
+          console.log(error);
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Factura no encontrada',
+            detail: 'No se ha encontrado la factura'
+          });
+        }
+      );
+  }
 
   /**
    * Calcula el total de la factura utilizando los datos
@@ -218,10 +249,12 @@ export class CrudFacturaComponent implements OnInit {
       .subscribe(
         (data: any) => {
           const facturaCreada = data;
-          this.mensajes.push(
-            {severity: 'success', summary: 'Factura ingresada', detail: 'La factura ha sido ingresada'}
-          );
-          this.id = facturaCreada.id;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Factura ingresada',
+            detail: 'La factura ha sido ingresada'
+          });
+          this.idFactura = facturaCreada.id;
           this.isEditando = true;
         },
         error => {
@@ -232,7 +265,7 @@ export class CrudFacturaComponent implements OnInit {
 
   actualizaFactura() {
     const modeloFactura = {
-      id: this.id,
+      id: this.idFactura,
       descripcion: this.descripcion,
       fecha: this.fecha,
       total: this.totalFactura,
@@ -242,19 +275,21 @@ export class CrudFacturaComponent implements OnInit {
       imagen: this.imagenFactura
     };
 
-    this.facturaService.actualizarFactura(modeloFactura)
+    this.facturaService
+      .actualizarFactura(modeloFactura)
       .pipe(map(res => res.json()))
       .subscribe(
         data => {
-          console.log(data);
-          this.mensajes.push(
-            {severity: 'success', summary: 'Factura actualizada', detail: 'La factura ha sido actualizada'}
-          );
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Factura actualizada',
+            detail: 'La factura ha sido actualizada'
+          });
         },
         error => {
           console.log(error);
         }
-      )
+      );
   }
 }
 

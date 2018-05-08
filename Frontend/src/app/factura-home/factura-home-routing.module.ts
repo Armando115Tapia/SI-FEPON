@@ -8,6 +8,7 @@ import { Route } from '../core/route.service';
 
 const routes: Routes = Route.withShell([
   { path: 'factura', component: FacturaHomeComponent, data: { title: extract('Factura') } },
+  { path: 'factura/:id', component: CrudFacturaComponent, data: { title: extract('Factura') } },
   { path: 'factura/ingresar', component: CrudFacturaComponent, data: { title: extract('Factura - Ingresar') } }
 ]);
 

@@ -45,4 +45,8 @@ export class CrudFacturaService {
   actualizarFactura(factura: any): Observable<Response> {
     return this.http.patch('Factura/' + factura.id, factura, this.options);
   }
+
+  detalleFactura(idFactura: string): Observable<Response> {
+    return this.http.get('Factura/' + idFactura, this.options);
+  }
 }
