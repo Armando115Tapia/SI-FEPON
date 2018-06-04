@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { FacturaService } from './factura.service';
+import { CrudFacturaService } from './crud-factura.service';
 
 describe('FacturaService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FacturaService]
+      providers: [CrudFacturaService]
     });
   });
 
-  it('should be created', inject([FacturaService], (service: FacturaService) => {
+  it('should be created', inject([CrudFacturaService], (service: CrudFacturaService) => {
     expect(service).toBeTruthy();
   }));
 });

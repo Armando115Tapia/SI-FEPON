@@ -1,8 +1,8 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="" translate>SI-FEPON</a>
-    <button class="navbar-toggler" type="button" aria-controls="navbar-menu"
-            aria-label="Toggle navigation" (click)="toggleMenu()" [attr.aria-expanded]="!menuHidden">
+    <button class="navbar-toggler" type="button" aria-controls="navbar-menu" aria-label="Toggle navigation" (click)="toggleMenu()"
+      [attr.aria-expanded]="!menuHidden">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div id="navbar-menu" class="collapse navbar-collapse float-xs-none" [ngbCollapse]="menuHidden">
@@ -13,13 +13,14 @@
         </a>
         <div class="nav-item text-uppercase" ngbDropdown>
           <a id="factura-dropdown" class="nav-link" ngbDropdownToggle>
-              <i class="fa fa-money"></i>
-              <span translate>factura</span>
+            <i class="fa fa-money"></i>
+            <span translate>factura</span>
           </a>
           <div ngbDropdownMenu aria-labelledby="factura-dropdown">
-              <button class="dropdown-item" routerLinkActive="active" routerLink="/factura/ingresar">Ingresar</button>
-              <button class="dropdown-item" routerLinkActive="active">Editar</button>
-              <button class="dropdown-item" routerLinkActive="active">Buscar</button>
+            <button class="dropdown-item" routerLinkActive="active" routerLink="/factura" [routerLinkActiveOptions]="{ exact: true }">Inicio</button>
+            <button class="dropdown-item" routerLinkActive="active" routerLink="/factura/ingresar" [routerLinkActiveOptions]="{ exact: true }">Ingresar</button>
+            <button class="dropdown-item" routerLinkActive="active">Editar</button>
+            <button class="dropdown-item" routerLinkActive="active" routerLink="/factura/buscar" [routerLinkActiveOptions]="{ exact: true }">Buscar</button>
           </div>
         </div>
         <a class="nav-item nav-link text-uppercase" routerLink="/about" routerLinkActive="active">
@@ -42,7 +43,9 @@
           </a>
           <div ngbDropdownMenu aria-labelledby="user-dropdown">
             <h6 class="dropdown-header">
-              <span translate>Autenticado como: </span> <b>{{username}}</b></h6>
+              <span translate>Autenticado como: </span>
+              <b>{{username}}</b>
+            </h6>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item" (click)="logout()" translate>Salir</button>
           </div>

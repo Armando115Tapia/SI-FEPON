@@ -13,6 +13,9 @@ import { AuthenticationGuard } from './authentication/authentication.guard';
 import { I18nService } from './i18n.service';
 import { HttpService } from './http/http.service';
 import { HttpCacheService } from './http/http-cache.service';
+import { GrowlModule } from 'primeng/primeng';
+import { MessageService } from './message.service';
+
 
 export function createHttpService(backend: ConnectionBackend,
                                   defaultOptions: RequestOptions,
@@ -26,7 +29,8 @@ export function createHttpService(backend: ConnectionBackend,
     HttpModule,
     TranslateModule,
     NgbModule,
-    RouterModule
+    RouterModule,
+    GrowlModule
   ],
   declarations: [
     HeaderComponent,
@@ -37,6 +41,7 @@ export function createHttpService(backend: ConnectionBackend,
     AuthenticationGuard,
     I18nService,
     HttpCacheService,
+    MessageService,
     {
       provide: Http,
       deps: [XHRBackend, RequestOptions, HttpCacheService],

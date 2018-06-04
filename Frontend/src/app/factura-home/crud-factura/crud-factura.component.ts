@@ -1,18 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileUpload } from 'primeng/primeng';
-import { FacturaService } from './servicios/factura.service';
+import { CrudFacturaService } from './servicios/crud-factura.service';
 import { map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { IFactura } from '../../shared/modelos';
+import { MessageService } from '../../core/message.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-factura',
-  templateUrl: './factura.component.html',
-  styleUrls: ['./factura.component.scss'],
-  providers: [FacturaService]
+  selector: 'app-crud-factura',
+  templateUrl: './crud-factura.component.html',
+  styleUrls: ['./crud-factura.component.scss'],
+  providers: [CrudFacturaService]
 })
-export class FacturaComponent implements OnInit {
+export class CrudFacturaComponent implements OnInit {
   public formularioDetalleFactura: FormGroup;
 
+  idFactura: string;
   opcionesTipoFactura: IselectButton[];
   detalleFactura: IitemFactura[];
   fecha: Date;
@@ -26,10 +31,16 @@ export class FacturaComponent implements OnInit {
 
   regexNumero: RegExp;
   regexFlotante: RegExp;
-
   es: Object; // idioma del calendario
 
-  constructor(private formBuilder: FormBuilder, private facturaService: FacturaService) {
+  isEditando: boolean;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private facturaService: CrudFacturaService,
+    private messageService: MessageService,
+    private activatedRouter: ActivatedRoute
+  ) {
     this.regexNumero = /^\d+$/;
     this.regexFlotante = /^[0-9]+(\.[0-9][0-9]?)?$/;
 
@@ -48,7 +59,7 @@ export class FacturaComponent implements OnInit {
 
     this.descripcion = '';
     this.imagenFactura = null;
-    this.imagenFacturaUrl = 'http://localhost:1337/images/facturas/64b78872-9ec5-4a87-b40c-480ab3e51980.png';
+    this.imagenFacturaUrl = 'http://localhost:1337/images/modelo-factura.png';
     this.totalFactura = this.calcularTotalFactura();
 
     this.es = {
@@ -74,9 +85,43 @@ export class FacturaComponent implements OnInit {
       today: 'Hoy',
       clear: 'Borrar'
     };
+
+    this.isEditando = false;
+    this.idFactura = '';
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.activatedRouter.params.subscribe(parametros => {
+      this.idFactura = parametros['id'];
+    });
+
+    this.facturaService
+      .detalleFactura(this.idFactura)
+      .pipe(map(res => res.json()))
+      .subscribe(
+        (data: IFactura) => {
+          console.log(data);
+          this.idFactura = data.id;
+          this.descripcion = data.descripcion;
+          this.detalleFactura = data.detalle;
+          this.etiquetas = data.etiquetas;
+          this.fecha = new Date(data.fecha);
+          this.tipoFactura = data.tipo;
+          this.totalFactura = data.total;
+          this.imagenFactura = data.imagen;
+          this.imagenFacturaUrl = 'http://localhost:1337/images/facturas/' + data.imagen.nombreArchivo;
+          this.isEditando = true;
+        },
+        error => {
+          console.log(error);
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Factura no encontrada',
+            detail: 'No se ha encontrado la factura'
+          });
+        }
+      );
+  }
 
   /**
    * Calcula el total de la factura utilizando los datos
@@ -156,8 +201,8 @@ export class FacturaComponent implements OnInit {
       .then((dataImagen: any) => {
         this.imagenFactura = dataImagen.imagen;
         setTimeout(() => {
-          this.imagenFacturaUrl = 'http://localhost:1337/images/facturas/' + this.imagenFactura.nombreArchivo;
-        }, 2000);
+          this.imagenFacturaUrl = environment.serverUrl + 'images/facturas/' + this.imagenFactura.nombreArchivo;
+        }, 5000);
       })
       .catch(error => {
         console.log(error);
@@ -205,7 +250,67 @@ export class FacturaComponent implements OnInit {
       .pipe(map(res => res.json()))
       .subscribe(
         (data: any) => {
-          const facturaCreada = data.respuesta;
+          const facturaCreada = data;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Factura ingresada',
+            detail: 'La factura ha sido ingresada'
+          });
+          this.idFactura = facturaCreada.id;
+          this.isEditando = true;
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  }
+
+  actualizaFactura() {
+    const modeloFactura = {
+      id: this.idFactura,
+      descripcion: this.descripcion,
+      fecha: this.fecha,
+      total: this.totalFactura,
+      tipo: this.tipoFactura,
+      detalle: this.detalleFactura,
+      etiquetas: this.etiquetas,
+      imagen: this.imagenFactura
+    };
+
+    this.facturaService
+      .actualizarFactura(modeloFactura)
+      .pipe(map(res => res.json()))
+      .subscribe(
+        data => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Factura actualizada',
+            detail: 'La factura ha sido actualizada'
+          });
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  }
+
+  /**
+   * Elimina una factura
+   *
+   * @memberof CrudFacturaComponent
+   */
+  eliminarFactura() {
+    this.facturaService
+      .eliminarFactura(this.idFactura)
+      .pipe(map(res => res.json()))
+      .subscribe(
+        data => {
+          console.log(data);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Factura eliminada',
+            detail: 'La factura ha sido eliminada'
+          });
         },
         error => {
           console.log(error);
@@ -219,6 +324,7 @@ interface IselectButton {
   value: string;
 }
 
+// TODO: sustituir ItemFactura por IDetalleFactura
 interface IitemFactura {
   cantidad: number;
   descripcion: string;
@@ -234,8 +340,15 @@ interface IuploadHandlerEvento {
   files: Array<File>;
 }
 
+// TODO: sustituir por IImagenFactura
 interface IModeloImagen {
   nombreArchivo: string;
   nombreArchivoOriginal: string;
   ubicacion: string;
+}
+
+interface IMensaje {
+  severity: string;
+  summary: string;
+  detail: string;
 }

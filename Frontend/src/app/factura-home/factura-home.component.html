@@ -20,32 +20,17 @@
       <h1><strong>Últimas facturas</strong></h1>
       <hr>
       <div class="card-deck">
-        <div class="card">
-          <img class="card-img-top" src="http://lorempixel.com/50/50/" alt="">
+        <div *ngFor="let factura of facturas" class="card">
+          <img class="card-img-top" src="{{urlImagenFactura + 'images/facturas/' + factura.imagen.nombreArchivo}}" alt="">
           <div class="card-body">
             <h4 class="card-title">Factura 1</h4>
-            <p class="card-text">Descripción factura 1</p>
+            <p class="card-text">{{ factura.descripcion }}</p>
+            <button class="btn btn-sm btn-info" (click)="cargarDetalleFactura(factura.id)">Abrir</button>
           </div>
-        </div>
-        <div class="card">
-          <img class="card-img-top" src="http://lorempixel.com/50/50/" alt="">
-          <div class="card-body">
-            <h4 class="card-title">Factura 2</h4>
-            <p class="card-text">Descripción factura 2</p>
-          </div>
-        </div>
-        <div class="card">
-          <img class="card-img-top" src="http://lorempixel.com/50/50/" alt="">
-          <div class="card-body">
-            <h4 class="card-title">Factura 3</h4>
-            <p class="card-text">Descripción factura 3</p>
-          </div>
-        </div>
-        <div class="card">
-          <img class="card-img-top" src="http://lorempixel.com/50/50/" alt="">
-          <div class="card-body">
-            <h4 class="card-title">Factura 4</h4>
-            <p class="card-text">Descripción factura 4</p>
+          <div class="card-footer">
+            <div *ngFor="let etiqueta of factura.etiquetas" class="ui-chips-token ui-state-highlight ui-corner-all">
+              {{etiqueta}}
+            </div>
           </div>
         </div>
       </div>

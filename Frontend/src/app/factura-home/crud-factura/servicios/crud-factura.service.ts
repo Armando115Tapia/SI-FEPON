@@ -5,7 +5,7 @@ import { AuthenticationService } from '../../../core/authentication/authenticati
 import { environment } from '../../../../environments/environment';
 
 @Injectable()
-export class FacturaService {
+export class CrudFacturaService {
 
   private authHeader: Headers;
   private options: RequestOptions;
@@ -40,5 +40,17 @@ export class FacturaService {
             };
         });
     }
+  }
+
+  actualizarFactura(factura: any): Observable<Response> {
+    return this.http.patch('Factura/' + factura.id, factura, this.options);
+  }
+
+  detalleFactura(idFactura: string): Observable<Response> {
+    return this.http.get('Factura/' + idFactura, this.options);
+  }
+
+  eliminarFactura(idFactura: string): Observable<Response> {
+    return this.http.delete('Factura/' + idFactura, this.options);
   }
 }
