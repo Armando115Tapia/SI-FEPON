@@ -21,7 +21,7 @@
       <hr>
       <div class="card-deck">
         <div *ngFor="let factura of facturas" class="card">
-          <img class="card-img-top" src="http://lorempixel.com/50/50/" alt="">
+          <img class="card-img-top" src="{{urlImagenFactura + 'images/facturas/' + factura.imagen.nombreArchivo}}" alt="">
           <div class="card-body">
             <h4 class="card-title">Factura 1</h4>
             <p class="card-text">{{ factura.descripcion }}</p>

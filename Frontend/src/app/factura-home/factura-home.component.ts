@@ -3,6 +3,7 @@ import { FacturaHomeService } from './servicios/factura-home.service';
 import { map } from 'rxjs/operators/map';
 import { IFactura } from './../shared/modelos/index';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-factura',
@@ -13,10 +14,14 @@ import { Router } from '@angular/router';
 export class FacturaHomeComponent implements OnInit {
 
   facturas: IFactura[];
+  urlImagenFactura: string;
+
   constructor(
     private facturaHomeService: FacturaHomeService,
     private router: Router
-  ) { }
+  ) {
+    this.urlImagenFactura = environment.serverUrl;
+  }
 
   ngOnInit() {
     this.facturaHomeService.descargarUltimasFacturas()

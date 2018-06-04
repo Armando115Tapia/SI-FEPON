@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { IFactura } from '../../shared/modelos';
 import { MessageService } from '../../core/message.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-crud-factura',
@@ -107,6 +108,7 @@ export class CrudFacturaComponent implements OnInit {
           this.fecha = new Date(data.fecha);
           this.tipoFactura = data.tipo;
           this.totalFactura = data.total;
+          this.imagenFactura = data.imagen;
           this.imagenFacturaUrl = 'http://localhost:1337/images/facturas/' + data.imagen.nombreArchivo;
           this.isEditando = true;
         },
@@ -199,7 +201,7 @@ export class CrudFacturaComponent implements OnInit {
       .then((dataImagen: any) => {
         this.imagenFactura = dataImagen.imagen;
         setTimeout(() => {
-          this.imagenFacturaUrl = 'http://localhost:1337/images/facturas/' + this.imagenFactura.nombreArchivo;
+          this.imagenFacturaUrl = environment.serverUrl + 'images/facturas/' + this.imagenFactura.nombreArchivo;
         }, 5000);
       })
       .catch(error => {

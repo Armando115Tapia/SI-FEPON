@@ -7,6 +7,7 @@ import { CrudFacturaComponent } from './crud-factura/crud-factura.component';
 import { SharedModule } from '../shared/shared.module';
 import { InputTextareaModule, CalendarModule, ChipsModule,
           SelectButtonModule, ButtonModule, FileUploadModule, GrowlModule } from 'primeng/primeng';
+import { BuscarFacturaComponent } from './buscar-factura/buscar-factura.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,6 @@ import { InputTextareaModule, CalendarModule, ChipsModule,
     FileUploadModule,
     GrowlModule
   ],
-  declarations: [FacturaHomeComponent, CrudFacturaComponent]
+  declarations: [FacturaHomeComponent, CrudFacturaComponent, BuscarFacturaComponent]
 })
 export class FacturaHomeModule { }
