@@ -6,46 +6,67 @@
  */
 
 module.exports = {
-
   attributes: {
-
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
-    descripcion: {
+
+    // cabecera de la factura
+    nombreEmisor: {
+      type: 'string',
+      required: true
+    },
+    rucEmisor: {
+      type: 'string',
+      required: true
+    },
+    numeroFactura: {
       type: 'string',
       required: true
     },
     fecha: {
       type: 'string',
-      columnType: 'date',
       required: true
+    },
+    nombreReceptor: {
+      type: 'string',
+      required: true
+    },
+    rucReceptor: {
+      type: 'string'
+    },
+
+    // detalle
+    detalle: {
+      type: 'json'
+    },
+
+    comentario: {
+      type: 'string',
+    },
+
+    // estadisticas
+    detalleTotal: {
+      type: 'json'
     },
     total: {
       type: 'number',
       required: true
     },
-    tipo: {
-      type: 'string',
+    isIva:{
+      type:'boolean',
+      required:true
+    },
+    iva: {
+      type: 'number'
+    },
+    isIngreso: {
+      type: 'boolean',
       required: true
     },
-    detalle: {
-      type: 'json'
-    },
-    // cantidad: {
-    //   type: 'number',
-    //   required: true
-    // },
-    // descripcion: {
-    //   type: 'string',
-    //   required: true
-    // },
-    // precioUnitario: {
-    //   type: 'number',
-    //   required: true
-    // },
     etiquetas: {
-      type: 'json'
+      collection: 'Etiquetas',
+      via: 'facturas'
     },
     imagen: {
       type: 'json'
@@ -58,7 +79,5 @@ module.exports = {
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-  },
-
+  }
 };
-

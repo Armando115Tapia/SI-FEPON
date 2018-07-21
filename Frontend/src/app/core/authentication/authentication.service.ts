@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 
 export interface Credentials {
-  usuario: any;
+  // Customize received credentials here
+  username: string;
   token: string;
 }
 
 export interface LoginContext {
-  token: string;
-  usuario: any;
+  username: string;
+  password: string;
+  remember?: boolean;
 }
 
-const credentialsKey = 'credenciales';
+const credentialsKey = 'credentials';
 
 /**
  * Provides a base for authentication workflow.
@@ -31,17 +32,17 @@ export class AuthenticationService {
   }
 
   /**
-   * Set credenciales de usuario
+   * Authenticates the user.
    * @param {LoginContext} context The login parameters.
    * @return {Observable<Credentials>} The user credentials.
    */
-  setCredenciales(context: LoginContext): Observable<Credentials> {
-
+  login(context: LoginContext): Observable<Credentials> {
+    // Replace by proper authentication call
     const data = {
-      usuario: context.usuario,
-      token: context.token
+      username: context.username,
+      token: '123456'
     };
-    this.setCredentials(data, false);
+    this.setCredentials(data, context.remember);
     return of(data);
   }
 

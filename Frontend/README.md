@@ -1,7 +1,7 @@
-# SI-FEPON
+# Frontend
 
 This project was generated with [ngX-Rocket](https://github.com/ngx-rocket/generator-ngx-rocket/)
-version 3.1.1
+version 5.0.1
 
 # Getting started
 
@@ -9,12 +9,12 @@ version 3.1.1
  ```sh
  npm install
  ```
- 
+
 2. Launch development server, and open `localhost:4200` in your browser:
  ```sh
  npm start
  ```
- 
+
 # Project structure
 
 ```

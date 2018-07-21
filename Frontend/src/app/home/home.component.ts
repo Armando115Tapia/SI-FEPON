@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-import { AuthenticationService } from '../core/authentication/authentication.service';
+
+import { QuoteService } from './quote.service';
 
 @Component({
   selector: 'app-home',
@@ -9,15 +10,16 @@ import { AuthenticationService } from '../core/authentication/authentication.ser
 })
 export class HomeComponent implements OnInit {
 
-  nombreUsuario: string;
+  quote: string;
   isLoading: boolean;
 
-
-  constructor(private autenticationService: AuthenticationService) { }
+  constructor(private quoteService: QuoteService) { }
 
   ngOnInit() {
     this.isLoading = true;
-    this.nombreUsuario = this.autenticationService.credentials.usuario.nombre;
+    this.quoteService.getRandomQuote({ category: 'dev' })
+      .pipe(finalize(() => { this.isLoading = false; }))
+      .subscribe((quote: string) => { this.quote = quote; });
   }
 
 }

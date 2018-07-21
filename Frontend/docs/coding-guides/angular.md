@@ -1,7 +1,7 @@
 # Introduction to Angular and modern design patterns
 
-[Angular](https://angular.io) (aka Angular 2, 4, 5...) is a new framework completely rewritten from the ground up,
-replacing the now well-know [AngularJS](https://angularjs.org) framework (aka Angular 1.x).
+[Angular](https://angular.io) (aka Angular 2, 4, 5, 6...) is a new framework completely rewritten from the ground up,
+replacing the now well-known [AngularJS](https://angularjs.org) framework (aka Angular 1.x).
 
 More that just a framework, Angular should now be considered as a whole *platform* which comes with a complete set of
 tools, like its own [CLI](https://github.com/angular/angular-cli), [debug utilities](https://augury.angular.io) or
@@ -17,9 +17,9 @@ patterns and documentation. Yes, the Angular learning curve may seems a little s
 
 #### Newcomer
 
-If you're new to Angular you may feel overwhelmed by the quantity of new concepts to apprehend, so before digging in
-this project you may want to start with [this progressive tutorial](https://angular.io/tutorial) that will guide you
-step by step into building a complete Angular application.
+If you're new to Angular you may feel overwhelmed by the quantity of new concepts to apprehend, so before digging
+into this project you may want to start with [this progressive tutorial](https://angular.io/tutorial) that will guide
+you step by step into building a complete Angular application.
 
 #### AngularJS veteran
 
@@ -33,7 +33,7 @@ Until you know the full Angular API by heart, you may want to keep this
 
 ## Style guide
 
-This project follows the standard [Angular style guide](https://angular.io/styleguide).
+This project follows the standard [Angular style guide](https://angular.io/guide/styleguide).
 
 More that just coding rules, this style guide also gives advices and best practices for a good application architecture
 and is an **essential reading** for starters. Reading deeper, you can even find many explanations for some design

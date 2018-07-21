@@ -1,55 +1,19 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <div class="jumbotron text-center">
-        <h1>
-          <img class="logo" src="assets/ngx-rocket-logo.png" alt="angular logo"/>
-          <span translate>Hola {{nombreUsuario}} !</span>
-        </h1>
-        <app-loader [isLoading]="isLoading"></app-loader>
-        <q [hidden]="isLoading"></q>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="container">
-  <div class="row">
-
-      <div class="card-deck">
-        <div class="card col-12 col-lg-4 text-white bg-success">
-          <div class="card-header bg-success">
-              <strong>Patrimonio</strong>
-          </div>
-          <img class="card-img-top" src="http://lorempixel.com/100/50" alt="">
-          <div class="card-body">
-            <h4 class="card-title"> {{100 | currency:'USD'}}</h4>
-            <p class="card-text">El patrimonio actual de la FEPON es calculado en base al último año</p>
-          </div>
-        </div>
-        <div class="card col-12 col-lg-4 text-white bg-info">
-          <div class="card-header bg-info">
-              <strong>Personas atendidas</strong>
-          </div>
-          <img class="card-img-top" src="http://lorempixel.com/100/50" alt="">
-          <div class="card-body">
-            <h4 class="card-title">100</h4>
-            <p class="card-text">Personas atendidas</p>
-          </div>
-        </div>
-
-        <div class="card col-12 col-lg-4 text-white bg-secondary">
-          <div class="card-header bg-secondary">
-              <strong>Usuarios gimnacio</strong>
-          </div>
-          <img class="card-img-top" src="http://lorempixel.com/100/50" alt="">
-          <div class="card-body">
-            <h4 class="card-title"> 100</h4>
-            <p class="card-text">Personas que se encuentran en el gimnasio</p>
-          </div>
-        </div>
-
-      </div>
+  <div class="jumbotron text-center">
+    <h1>
+      <img class="logo" src="assets/ngx-rocket-logo.png" alt="angular logo"/>
+      <span translate>Hello world !</span>
+    </h1>
+    <app-loader [isLoading]="isLoading"></app-loader>
+    <q [hidden]="isLoading">{{quote}}</q>
+    <p>
+      <button
+        class="btn btn-primary"
+        angulartics2On="click"
+        angularticsAction="Click button below quote"
+        [angularticsCategory]="quote">
+        Click me to send an Analytics event
+      </button>
+    </p>
   </div>
 </div>

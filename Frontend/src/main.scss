@@ -8,39 +8,10 @@
 
 // 3rd party libraries
 @import "~bootstrap/scss/bootstrap";
-@import "~font-awesome/scss/font-awesome.scss";
+@import "~@fortawesome/fontawesome-free-webfonts/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free-webfonts/scss/fa-brands.scss";
+@import "~@fortawesome/fontawesome-free-webfonts/scss/fa-regular.scss";
+@import "~@fortawesome/fontawesome-free-webfonts/scss/fa-solid.scss";
 
 // Theme customization
 @import "theme/theme";
-
-// Ancho completo del dropdown
-.ui-dropdown {
-  width: 100%;
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  vertical-align: middle;
-}
-
-// Color de placeholder dropdown
-.ui-placeholder {
-  color: #898989;
-}
-
-//
-.ui-inputtext {
-  margin: 0;
-  outline: medium none;
-  padding: 0.375rem 0.75rem;
-}
-
-// Alinear etiqueta con checkbox
-.ui-chkbox-label {
-  vertical-align: baseline;
-}
-
-// Alinear icono dropdown
-.ui-dropdown .ui-dropdown-trigger .fa {
-  margin-top: 0.6em;
-}
-

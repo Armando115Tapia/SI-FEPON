@@ -16,9 +16,11 @@
     "lib": [
       "es2017",
       "dom"
-    ]
-  },
-  "angularCompilerOptions": {
-    "preserveWhitespaces": false
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@env/*": ["environments/*"]
+    }
   }
 }

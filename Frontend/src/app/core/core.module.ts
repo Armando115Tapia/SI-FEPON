@@ -1,7 +1,7 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
-import { HttpModule, Http, XHRBackend, ConnectionBackend, RequestOptions } from '@angular/http';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -13,24 +13,17 @@ import { AuthenticationGuard } from './authentication/authentication.guard';
 import { I18nService } from './i18n.service';
 import { HttpService } from './http/http.service';
 import { HttpCacheService } from './http/http-cache.service';
-import { GrowlModule } from 'primeng/primeng';
-import { MessageService } from './message.service';
-
-
-export function createHttpService(backend: ConnectionBackend,
-                                  defaultOptions: RequestOptions,
-                                  httpCacheService: HttpCacheService) {
-  return new HttpService(backend, defaultOptions, httpCacheService);
-}
+import { ApiPrefixInterceptor } from './http/api-prefix.interceptor';
+import { ErrorHandlerInterceptor } from './http/error-handler.interceptor';
+import { CacheInterceptor } from './http/cache.interceptor';
 
 @NgModule({
   imports: [
     CommonModule,
-    HttpModule,
+    HttpClientModule,
     TranslateModule,
     NgbModule,
-    RouterModule,
-    GrowlModule
+    RouterModule
   ],
   declarations: [
     HeaderComponent,
@@ -41,11 +34,12 @@ export function createHttpService(backend: ConnectionBackend,
     AuthenticationGuard,
     I18nService,
     HttpCacheService,
-    MessageService,
+    ApiPrefixInterceptor,
+    ErrorHandlerInterceptor,
+    CacheInterceptor,
     {
-      provide: Http,
-      deps: [XHRBackend, RequestOptions, HttpCacheService],
-      useFactory: createHttpService
+      provide: HttpClient,
+      useClass: HttpService
     },
     {
       provide: RouteReuseStrategy,

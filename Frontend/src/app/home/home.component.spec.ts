@@ -1,9 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Http, BaseRequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Angulartics2Module } from 'angulartics2';
 
-import { SharedModule } from '../shared/shared.module';
+import { CoreModule } from '@app/core';
+import { SharedModule } from '@app/shared';
 import { HomeComponent } from './home.component';
+import { QuoteService } from './quote.service';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -12,20 +15,14 @@ describe('HomeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
         imports: [
-          SharedModule
+          RouterTestingModule,
+          Angulartics2Module.forRoot([]),
+          CoreModule,
+          SharedModule,
+          HttpClientTestingModule
         ],
         declarations: [HomeComponent],
-        providers: [
-          MockBackend,
-          BaseRequestOptions,
-          {
-            provide: Http,
-            useFactory: (backend: MockBackend, defaultOptions: BaseRequestOptions) => {
-              return new Http(backend, defaultOptions);
-            },
-            deps: [MockBackend, BaseRequestOptions]
-          }
-        ]
+        providers: [QuoteService]
       })
       .compileComponents();
   }));
