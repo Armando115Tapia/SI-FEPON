@@ -1,0 +1,159 @@
+<div class="container">
+  <form>
+    <div class="row mt-2">
+      <div class="col-md-2"></div>
+      <div class="col-md-8 border border-blue">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fa fa-building fa-fw"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Nombre del emisor">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fa fa-id-card fa-fw"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="RUC emisor">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fa fa-money-bill fa-fw"></i>
+                </div>
+              </div>
+              <input type="number" class="form-control" placeholder="N° Factura">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fa fa-calendar fa-fw" (click)="d.toggle()"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
+                #d="ngbDatepicker" (click)="d.toggle()">
+            </div>
+          </div>
+        </div>
+        <!--Cierre de primer row-->
+        <div class="row border border-dark">
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fa fa-building fa-fw"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" placeholder="Nombre del receptor">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fa fa-id-card fa-fw"></i>
+                </div>
+              </div>
+              <input type="number" class="form-control" placeholder="RUC receptor">
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value=""> Incluye IVA
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <textarea class="form-control" id="exampleTextarea" rows="3" placeholder="Describa el motivo de la factura"></textarea>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                  value="option1"> Ingreso
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                  value="option2"> Egreso
+              </label>
+            </div>
+          </div>
+        </div>
+        <!--Cierre de row de datos de receptor-->
+        <div class="row border border-dark">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <label class="upload-button">
+                  <input type="file" ngFileSelect [options]="options" (uploadOutput)="onUploadOutput($event)"
+                    [uploadInput]="uploadInput" multiple>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <button class="btn btn-success btn-sm text-white" type="button" (click)="startUpload()">
+                  <i class="fa fa-upload fa-fw " aria-hidden="true"></i>
+                  Cargar archivos
+                </button>
+                <button class="btn btn-warning btn-sm text-white" type="button" (click)="cancelarTodoSubirArchivo()">
+                  <i class="fa fa-ban fa-fw" aria-hidden="true"></i>
+                  Cancelar todos
+                </button>
+                <button class="btn btn-danger btn-sm text-white" type="button" (click)="removeAllFiles()">
+                  <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
+                  Vaciar
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nombre archivo</th>
+                    <th>Tamaño</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let archivo of files; let indice=index">
+                    <td>{{ archivo.name }}</td>
+                    <td>{{ archivo.size}}</td>
+                    <td>
+                      <span *ngIf="!isCargadoImagen[indice] && !isCargandoImagen[indice]" class="badge badge-info">Por subir</span>
+                      <i *ngIf="isCargandoImagen[indice]" class="fa fa-spinner fa-spin fa-fw"></i>
+                      <i *ngIf="isCargadoImagen[indice]" class="fa fa-check" aria-hidden="true"></i>
+                    </td>
+                    <td>
+                      <!-- cargar -->
+                      <button class="btn btn-success btn-sm" type="button" (click)="subirArchivo(indice)">
+                        <i class="fa fa-upload fa-fw text-white" aria-hidden="true"></i>
+                      </button>
+                      <!--Cancelar-->
+                      <button class="btn btn-sm btn-warning" type="button" (click)="cancelUpload(archivo.id)">
+                        <i class="fa fa-ban fa-fw text-white " aria-hidden="true"></i>
+                      </button>
+                      <!--Borrar-->
+                      <button class="btn btn-sm btn-danger" type="button" (click)="removeFile(archivo.id)">
+                        <i class="fa fa-trash fa-fw text-white" aria-hidden="true"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row"></div>
+      </div>
+      <div class="col-md-2">
+        <button type="button">Hola</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -65,7 +65,7 @@ module.exports = {
       required: true
     },
     etiquetas: {
-      collection: 'Etiquetas',
+      collection: 'Etiqueta',
       via: 'facturas'
     },
     imagen: {

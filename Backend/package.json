@@ -11,6 +11,7 @@
     "jsonwebtoken": "^8.1.0",
     "lodash": "3.10.1",
     "machinepack-passwords": "^2.3.0",
+    "multer": "^1.3.1",
     "sails": "^1.0.0-45",
     "sails-hook-grunt": "^2.2.1",
     "sails-hook-orm": "^2.0.0-23",

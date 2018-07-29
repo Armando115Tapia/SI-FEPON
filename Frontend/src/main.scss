@@ -15,3 +15,36 @@
 
 // Theme customization
 @import "theme/theme";
+
+// Acceder a los colores del theme de bootstap igual que los botones
+.c-primary {
+  color: map-get($theme-colors, primary);
+}
+
+.c-secondary {
+  color: map-get($theme-colors, secondary);
+}
+
+.c-success {
+  color: map-get($theme-colors, success);
+}
+
+.c-info {
+  color: map-get($theme-colors, info);
+}
+
+.c-warning {
+  color: map-get($theme-colors, warning);
+}
+
+.c-danger {
+  color: map-get($theme-colors, danger);
+}
+
+.c-light {
+  color: map-get($theme-colors, light);
+}
+
+.c-dark {
+  color: map-get($theme-colors, dark);
+}

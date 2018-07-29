@@ -1,15 +1,28 @@
-/**
- * Subir imagen
+/**W
+ * Subir
  *
- * @description :: Accion para subir imagen de factura
- * @help        :: See https://sailsjs.comdocs/concepts/actions
+ * @description :: Accion para la ingresar con la cuenta de usuario
+ * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
 module.exports = {
-  subirImagen: function(req, res) {
-    let parametros = req.allParams();
 
-    req.file('imagen').upload(
+  friendlyName: 'Subir imagenes',
+  description: 'Subir imagen de factura',
+  inputs: {},
+  exits: {
+    exitoIngreso: {
+      description: 'Imágen subida con exito',
+      responseType: 'exitoIngreso'
+    },
+    noAutorizado: {
+      description: 'No se subio la imágen',
+      responseType: 'noAutorizado'
+    }
+  },
+
+  fn: async function(inputs, exits) {
+    this.req.file('imagen').upload(
       {
         dirname: require('path').resolve(
           sails.config.appPath,
@@ -18,10 +31,11 @@ module.exports = {
       },
       (error, imagenSubida) => {
         if (error) {
-          return res.status(400).json({ error: 'Error subiendo imagen' });
+          return this.res.status(400).json({ error: 'Error subiendo imagen' });
         }
 
         if (imagenSubida) {
+          sails.log.info('Imagen subida',imagenSubida);
           // Obtener nombre de archivo
           let tokenNombreArchivo = imagenSubida[0].fd.split('/');
           let nombreArchivo = tokenNombreArchivo[tokenNombreArchivo.length - 1];
@@ -33,7 +47,7 @@ module.exports = {
           };
 
           sails.log.info('Registro imagen añadido');
-          return res.status(200).json({
+          return this.res.status(200).json({
             mensaje: 'Imagen almacenada correctamente',
             imagen: archivo
           });
@@ -42,3 +56,4 @@ module.exports = {
     );
   }
 };
+
