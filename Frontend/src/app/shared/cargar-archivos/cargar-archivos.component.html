@@ -14,11 +14,11 @@
           <i class="fa fa-upload fa-fw " aria-hidden="true"></i>
           Cargar imágenes
         </button>
-        <button [disabled]="!isUploading" class="btn btn-warning btn-sm text-white" type="button">
+        <button [disabled]="!isUploading" class="btn btn-warning btn-sm text-white" type="button" (click)="cancelarTodasLasImagenes()">
           <i class="fa fa-ban fa-fw" aria-hidden="true"></i>
           Cancelar todos
         </button>
-        <button [disabled]="files.length === 0 || isUploading" class="btn btn-danger btn-sm text-white" type="button">
+        <button [disabled]="files.length === 0 || isUploading" class="btn btn-danger btn-sm text-white" type="button" (click)="vaciarTodos()">
           <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
           Vaciar
         </button>
@@ -38,12 +38,12 @@
           <tr *ngFor="let archivo of files; let indice=index">
             <td>{{ archivo.name }}</td>
             <td>{{ archivo.size}}</td>
-            <!-- <td>
+            <td>
               <span *ngIf="!isCargadoImagen[indice] && !isCargandoImagen[indice]" class="badge badge-info">Por subir</span>
               <i *ngIf="isCargandoImagen[indice]" class="fa fa-spinner fa-spin fa-fw"></i>
               <i *ngIf="isCargadoImagen[indice]" class="fa fa-check" aria-hidden="true"></i>
             </td>
-            <td>
+            <!-- <td>
 
               <button class="btn btn-success btn-sm" type="button" (click)="subirArchivo(indice)">
                 <i class="fa fa-upload fa-fw text-white" aria-hidden="true"></i>
