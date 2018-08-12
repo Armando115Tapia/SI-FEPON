@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CargarArchivosComponent } from '@app/shared/cargar-archivos/cargar-archivos.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('CargarArchivosComponent', () => {
   let component: CargarArchivosComponent;
@@ -8,9 +9,9 @@ describe('CargarArchivosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CargarArchivosComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientTestingModule],
+      declarations: [CargarArchivosComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

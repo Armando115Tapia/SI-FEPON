@@ -21,6 +21,6 @@ const factura = new Factura(
 
 describe('Calculo del total de la factura', () => {
   it('deberia calcular el total de la factura', () => {
-    expect(450).toEqual(factura.total);
+    expect(516).toEqual(factura.total);
   });
 });

@@ -7,6 +7,7 @@ import { HttpCacheService } from './http-cache.service';
 import { ErrorHandlerInterceptor } from './error-handler.interceptor';
 import { CacheInterceptor } from './cache.interceptor';
 import { ApiPrefixInterceptor } from './api-prefix.interceptor';
+import { HeadersInterceptor } from '@app/core/http/headers.interceptor';
 
 describe('HttpService', () => {
   let httpCacheService: HttpCacheService;
@@ -20,6 +21,7 @@ describe('HttpService', () => {
         ErrorHandlerInterceptor,
         CacheInterceptor,
         ApiPrefixInterceptor,
+        HeadersInterceptor,
         HttpCacheService,
         {
           provide: HttpClient,
