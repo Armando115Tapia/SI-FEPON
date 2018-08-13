@@ -12,6 +12,7 @@ export class CargarArchivosComponent implements OnInit {
   @ViewChild('file')
   file: ElementRef;
   public files: File[] = [];
+  archivosPorSubir: File[] = [];
 
   progress: Object;
   isUploading = false;
@@ -19,10 +20,8 @@ export class CargarArchivosComponent implements OnInit {
   isCargarBotonActivo = false;
   isCargandoImagen: boolean[] = [];
   isCargadoImagen: boolean[] = [];
-  progresos: number[] = [];
-  archivosPorSubir: Object = {};
 
-  constructor(public uploadService: CargarArchivosService) {}
+  constructor(public uploadService: CargarArchivosService) { }
 
   ngOnInit() {}
 
@@ -31,27 +30,27 @@ export class CargarArchivosComponent implements OnInit {
   }
 
   seleccionarImagenes() {
-    this.archivosPorSubir = this.file.nativeElement.files;
-    for (const key in this.archivosPorSubir) {
-      if (this.archivosPorSubir.hasOwnProperty(key)) {
-        this.files.push(<File>this.archivosPorSubir[key]);
-        this.progresos.push(0);
+    const archivosPorSubir = this.file.nativeElement.files;
+    for (const key in archivosPorSubir) {
+      if (archivosPorSubir.hasOwnProperty(key)) {
+        this.files.push(<File>archivosPorSubir[key]);
+        this.archivosPorSubir.push(<File>archivosPorSubir[key]);
       }
     }
   }
 
   cargarTodasLasImagenes() {
     // if everything was uploaded already, just close the dialog
-    if (this.isUploadSuccessful) {
-      this.isUploading = false;
+    // if (this.isUploadSuccessful) {
+    // this.isUploading = false;
       /// return this.dialogRef.close();
-    }
+    // }
 
     // set the component state to "uploading"
     this.isUploading = true;
 
     // start the upload and save the progress map
-    this.progress = this.uploadService.upload(this.file.nativeElement.files);
+    this.progress = this.uploadService.upload(this.archivosPorSubir);
 
     // convert the progress map into an array
     const allProgressObservables = [];
@@ -64,10 +63,9 @@ export class CargarArchivosComponent implements OnInit {
       }
     }
 
-    for (const archivo of this.files) {
+    for (const archivo of this.archivosPorSubir) {
       this.progress[archivo.name].progress.subscribe((porcentajeProgreso: any) => {
         const indiceArchivo = this.files.findIndex(file => file.name === archivo.name);
-        this.progresos[indiceArchivo] = porcentajeProgreso;
         this.isCargandoImagen[indiceArchivo] = true;
       });
     }
@@ -84,13 +82,19 @@ export class CargarArchivosComponent implements OnInit {
       // ... and the component is no longer uploading
       this.isUploading = false;
       this.file.nativeElement.value = '';
-      // this.files = [];
-      this.progresos = [];
+      this.archivosPorSubir = [];
       this.uploadService.reiniciarArregloPeticionesImagen();
     });
 
     forkJoin(allImagenObservables).subscribe(imagenes => {
       // Agregar imagenes
+      for (const imagen of imagenes) {
+        const nombreArchivo = imagen['nombreArchivoOriginal'];
+        const indiceArchivo = this.files.findIndex(file => file.name === nombreArchivo);
+        this.isCargandoImagen[indiceArchivo] = false;
+        this.isCargadoImagen[indiceArchivo] = true;
+      }
+
       console.log('imagenes', imagenes);
     });
   }
@@ -103,5 +107,6 @@ export class CargarArchivosComponent implements OnInit {
   vaciarTodos() {
     this.files = [];
     this.file.nativeElement.value = '';
+
   }
 }
