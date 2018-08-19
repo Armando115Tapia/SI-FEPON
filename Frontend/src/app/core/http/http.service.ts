@@ -97,6 +97,10 @@ export class HttpService extends HttpClient {
     return this.removeInterceptor(ErrorHandlerInterceptor);
   }
 
+  skipHeaders(): HttpClient {
+    return this.removeInterceptor(HeadersInterceptor);
+  }
+
   disableApiPrefix(): HttpClient {
     return this.removeInterceptor(ApiPrefixInterceptor);
   }

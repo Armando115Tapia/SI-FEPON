@@ -8,6 +8,7 @@ import { ErrorHandlerInterceptor } from './error-handler.interceptor';
 import { CacheInterceptor } from './cache.interceptor';
 import { ApiPrefixInterceptor } from './api-prefix.interceptor';
 import { HeadersInterceptor } from '@app/core/http/headers.interceptor';
+import { AuthenticationService } from '@app/core/authentication/authentication.service';
 
 describe('HttpService', () => {
   let httpCacheService: HttpCacheService;
@@ -23,6 +24,7 @@ describe('HttpService', () => {
         ApiPrefixInterceptor,
         HeadersInterceptor,
         HttpCacheService,
+        AuthenticationService,
         {
           provide: HttpClient,
           useClass: HttpService
@@ -49,7 +51,7 @@ describe('HttpService', () => {
     httpMock.verify();
   });
 
-  it('should use error handler, API prefix and no cache by default', () => {
+  it('should use error handler, API prefix, no cache and header by default', () => {
     // Arrange
     let interceptors: HttpInterceptor[];
     const realRequest = http.request;
@@ -66,6 +68,7 @@ describe('HttpService', () => {
       expect(http.request).toHaveBeenCalled();
       expect(interceptors.some(i => i instanceof ApiPrefixInterceptor)).toBeTruthy();
       expect(interceptors.some(i => i instanceof ErrorHandlerInterceptor)).toBeTruthy();
+      expect(interceptors.some(i => i instanceof HeadersInterceptor)).toBeTruthy();
       expect(interceptors.some(i => i instanceof CacheInterceptor)).toBeFalsy();
     });
     httpMock.expectOne({}).flush({});
@@ -89,6 +92,7 @@ describe('HttpService', () => {
     request.subscribe(() => {
       expect(interceptors.some(i => i instanceof ApiPrefixInterceptor)).toBeTruthy();
       expect(interceptors.some(i => i instanceof ErrorHandlerInterceptor)).toBeTruthy();
+      expect(interceptors.some(i => i instanceof HeadersInterceptor)).toBeTruthy();
       expect(interceptors.some(i => i instanceof CacheInterceptor)).toBeTruthy();
     });
     httpMock.expectOne({}).flush({});
@@ -112,6 +116,7 @@ describe('HttpService', () => {
     request.subscribe(() => {
       expect(interceptors.some(i => i instanceof ApiPrefixInterceptor)).toBeTruthy();
       expect(interceptors.some(i => i instanceof ErrorHandlerInterceptor)).toBeFalsy();
+      expect(interceptors.some(i => i instanceof HeadersInterceptor)).toBeTruthy();
       expect(interceptors.some(i => i instanceof CacheInterceptor)).toBeFalsy();
     });
     httpMock.expectOne({}).flush({});
@@ -135,8 +140,34 @@ describe('HttpService', () => {
     request.subscribe(() => {
       expect(interceptors.some(i => i instanceof ApiPrefixInterceptor)).toBeFalsy();
       expect(interceptors.some(i => i instanceof ErrorHandlerInterceptor)).toBeTruthy();
+      expect(interceptors.some(i => i instanceof HeadersInterceptor)).toBeTruthy();
       expect(interceptors.some(i => i instanceof CacheInterceptor)).toBeFalsy();
     });
     httpMock.expectOne({}).flush({});
   });
+
+  it('deberia no usar el header authorization', () => {
+    // Arrange
+    let interceptors: HttpInterceptor[];
+    const realRequest = http.request;
+    spyOn(HttpService.prototype, 'request').and.callFake(function(this: any) {
+      interceptors = this.interceptors;
+      return realRequest.apply(this, arguments);
+    });
+
+    // Act
+    const request = http
+      .skipHeaders()
+      .get('/toto');
+
+    // Assert
+    request.subscribe(() => {
+      expect(interceptors.some(i => i instanceof ApiPrefixInterceptor)).toBeTruthy();
+      expect(interceptors.some(i => i instanceof ErrorHandlerInterceptor)).toBeTruthy();
+      expect(interceptors.some(i => i instanceof HeadersInterceptor)).toBeFalsy();
+      expect(interceptors.some(i => i instanceof CacheInterceptor)).toBeFalsy();
+    });
+    httpMock.expectOne({}).flush({});
+  });
+
 });
