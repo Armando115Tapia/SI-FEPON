@@ -1,25 +1,24 @@
-# backend
+# SI-FEPON Backend
 
-a [Sails v1](https://sailsjs.com) application
+Aplicación sailsjs para Sistema de Información de la Federación de Estudiantes de la Escuela Politécnica Nacional (FEPON)
 
+### **Requisitos**
 
-### Links
+- mongoDB
+- nodejs 8.0
+- npm 6.0+
+- sailjs v1+
 
-+ [Get started](https://sailsjs.com/get-started)
-+ [Sails framework documentation](https://sailsjs.com/documentation)
-+ [Version notes / upgrading](https://sailsjs.com/documentation/upgrading)
-+ [Deployment tips](https://sailsjs.com/documentation/concepts/deployment)
-+ [Community support options](https://sailsjs.com/support)
-+ [Professional / enterprise options](https://sailsjs.com/enterprise)
+### **Uso**
 
-
-### Version info
-
-This app was originally generated on Thu Jan 04 2018 20:39:13 GMT-0500 (-05) using Sails v1.0.0-45 _(internally: [`sails-generate@1.15.4`](https://github.com/balderdashy/sails-generate/tree/v1.15.4/lib/core-generators/new))_.
-
-
-
-<!--
-Note:  Generators are usually run using the globally-installed `sails` CLI (command-line interface).  This CLI version is _environment-specific_ rather than app-specific, thus over time, as a project's dependencies are upgraded or the project is worked on by different developers on different computers using different versions of Node.js, the Sails dependency in its package.json file may differ from the globally-installed Sails CLI release it was originally generated with.  (Be sure to always check out the relevant [upgrading guides](https://sailsjs.com/upgrading) before upgrading the version of Sails used by your app.  If you're stuck, [get help here](https://sailsjs.com/support).)
--->
-
+1. Verificar que mongodb se encuentra activo
+2. Editar el archivo `config/datastores.js` apuntado a la dirección donde se consume mongodb
+3. Instalar dependencia
+    ```console
+    npm install
+    ```
+4. Levantar servidor
+    ```console
+    sails lift
+    ```
+5. Listo
