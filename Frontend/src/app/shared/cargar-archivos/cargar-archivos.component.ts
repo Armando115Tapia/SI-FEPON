@@ -11,25 +11,28 @@ import { forkJoin } from 'rxjs';
 export class CargarArchivosComponent implements OnInit {
   @ViewChild('file')
   file: ElementRef;
-  public files: File[] = [];
-  archivosPorSubir: File[] = [];
+  private _files: File[] = [];
+  private _archivosPorSubir: File[] = [];
+  private _progress: Object;
+  private _isUploading: boolean;
+  private _isUploadSuccessful: boolean;
+  private _isCargandoImagen: boolean[] = [];
+  private _isCargadoImagen: boolean[] = [];
 
-  progress: Object;
-  isUploading = false;
-  isUploadSuccessful = false;
-  isCargarBotonActivo = false;
-  isCargandoImagen: boolean[] = [];
-  isCargadoImagen: boolean[] = [];
-
-  constructor(public uploadService: CargarArchivosService) { }
+  constructor(private uploadService: CargarArchivosService) {
+    this.isUploading = false;
+    this.isUploadSuccessful = false;
+  }
 
   ngOnInit() {}
 
-  addFiles() {
-    this.file.nativeElement.click();
-  }
-
-  seleccionarImagenes() {
+  /**
+   * Agregar las imagenes seleccionadas a la lista archivos por subir y lista
+   * archivos general
+   *
+   * @memberof CargarArchivosComponent
+   */
+  agregarImagenesSeleccionadasToArchivosPorSubir() {
     const archivosPorSubir = this.file.nativeElement.files;
     for (const key in archivosPorSubir) {
       if (archivosPorSubir.hasOwnProperty(key)) {
@@ -39,20 +42,17 @@ export class CargarArchivosComponent implements OnInit {
     }
   }
 
+
+
+  /**
+   * Carga todas las imagenes que se encuentran en las lista de
+   * archivos por subir al servidor y genera estados cargando, cargado
+   *
+   * @memberof CargarArchivosComponent
+   */
   cargarTodasLasImagenes() {
-    // if everything was uploaded already, just close the dialog
-    // if (this.isUploadSuccessful) {
-    // this.isUploading = false;
-      /// return this.dialogRef.close();
-    // }
-
-    // set the component state to "uploading"
     this.isUploading = true;
-
-    // start the upload and save the progress map
     this.progress = this.uploadService.upload(this.archivosPorSubir);
-
-    // convert the progress map into an array
     const allProgressObservables = [];
     const allImagenObservables = [];
 
@@ -70,16 +70,9 @@ export class CargarArchivosComponent implements OnInit {
       });
     }
 
-    // When all progress-observables are completed...
+    // Una vez completado la subida de archivos
     forkJoin(allProgressObservables).subscribe(end => {
-      // ... the dialog can be closed again...
-      // this.canBeClosed = true;
-      // this.dialogRef.disableClose = false;
-      console.log('end', end);
-      // ... the upload was successful...
       this.isUploadSuccessful = true;
-
-      // ... and the component is no longer uploading
       this.isUploading = false;
       this.file.nativeElement.value = '';
       this.archivosPorSubir = [];
@@ -94,19 +87,142 @@ export class CargarArchivosComponent implements OnInit {
         this.isCargandoImagen[indiceArchivo] = false;
         this.isCargadoImagen[indiceArchivo] = true;
       }
-
-      console.log('imagenes', imagenes);
     });
   }
 
+  /**
+   * Cancela todas las imagenes en estado subiendo
+   *
+   * @memberof CargarArchivosComponent
+   */
   cancelarTodasLasImagenes() {
     this.uploadService.cancelarPeticiones();
     this.isUploading = false;
   }
 
-  vaciarTodos() {
+  /**
+   * Vacía todos los archivos incluidos en la lista de
+   * archivos y input de archivos
+   *
+   * @memberof CargarArchivosComponent
+   */
+  vaciarArchivosAndInput() {
     this.files = [];
     this.file.nativeElement.value = '';
+  }
 
+  /**
+   * Getter files
+   * Lista de archivos que estan en la lista de todos los archivos
+   * @return {File[] }
+   */
+  public get files(): File[] {
+    return this._files;
+  }
+
+  /**
+   * Getter archivosPorSubir
+   * Lista de archivos por subir
+   * @return {File[] }
+   */
+  public get archivosPorSubir(): File[] {
+    return this._archivosPorSubir;
+  }
+
+  /**
+   * Getter progress
+   * Objeto que contiene el progreso y el objeto con la informacion de la imagen
+   * @return {Object}
+   */
+  public get progress(): Object {
+    return this._progress;
+  }
+
+  /**
+   * Getter isUploading
+   * @return {boolean}
+   */
+  public get isUploading(): boolean {
+    return this._isUploading;
+  }
+
+  /**
+   * Getter isUploadSuccessful
+   * @return {boolean}
+   */
+  public get isUploadSuccessful(): boolean {
+    return this._isUploadSuccessful;
+  }
+
+  /**
+   * Getter isCargandoImagen
+   * @return {boolean[] }
+   */
+  public get isCargandoImagen(): boolean[] {
+    return this._isCargandoImagen;
+  }
+
+  /**
+   * Getter isCargadoImagen
+   * @return {boolean[] }
+   */
+  public get isCargadoImagen(): boolean[] {
+    return this._isCargadoImagen;
+  }
+
+  /**
+   * Setter files
+   * @param {File[] } value
+   */
+  public set files(value: File[]) {
+    this._files = value;
+  }
+
+  /**
+   * Setter archivosPorSubir
+   * @param {File[] } value
+   */
+  public set archivosPorSubir(value: File[]) {
+    this._archivosPorSubir = value;
+  }
+
+  /**
+   * Setter progress
+   * @param {Object} value
+   */
+  public set progress(value: Object) {
+    this._progress = value;
+  }
+
+  /**
+   * Setter isUploading
+   * @param {boolean} value
+   */
+  public set isUploading(value: boolean) {
+    this._isUploading = value;
+  }
+
+  /**
+   * Setter isUploadSuccessful
+   * @param {boolean} value
+   */
+  public set isUploadSuccessful(value: boolean) {
+    this._isUploadSuccessful = value;
+  }
+
+  /**
+   * Setter isCargandoImagen
+   * @param {boolean[] } value
+   */
+  public set isCargandoImagen(value: boolean[]) {
+    this._isCargandoImagen = value;
+  }
+
+  /**
+   * Setter isCargadoImagen
+   * @param {boolean[] } value
+   */
+  public set isCargadoImagen(value: boolean[]) {
+    this._isCargadoImagen = value;
   }
 }

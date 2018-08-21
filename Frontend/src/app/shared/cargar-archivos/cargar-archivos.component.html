@@ -4,21 +4,25 @@
       <div class="col-md-12">
         <label class="btn btn-sm btn-danger">
           Seleccionar imágenes
-          <input type="file" #file class="d-none" (change)="seleccionarImagenes()" multiple/>
+          <input type="file" #file class="d-none" (change)="agregarImagenesSeleccionadasToArchivosPorSubir()"
+            multiple/>
         </label>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
-        <button [disabled]="archivosPorSubir.length === 0" class="btn btn-success btn-sm text-white" type="button" (click)="cargarTodasLasImagenes()">
+        <button [disabled]="archivosPorSubir.length === 0" class="btn btn-success btn-sm text-white"
+          type="button" (click)="cargarTodasLasImagenes()">
           <i class="fa fa-upload fa-fw " aria-hidden="true"></i>
           Cargar imágenes
         </button>
-        <button [disabled]="!isUploading" class="btn btn-warning btn-sm text-white" type="button" (click)="cancelarTodasLasImagenes()">
+        <button [disabled]="!isUploading" class="btn btn-warning btn-sm text-white" type="button"
+          (click)="cancelarTodasLasImagenes()">
           <i class="fa fa-ban fa-fw" aria-hidden="true"></i>
           Cancelar todos
         </button>
-        <button [disabled]="files.length === 0 || isUploading" class="btn btn-danger btn-sm text-white" type="button" (click)="vaciarTodos()">
+        <button [disabled]="files.length === 0 || isUploading" class="btn btn-danger btn-sm text-white"
+          type="button" (click)="vaciarArchivosAndInput()">
           <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
           Vaciar
         </button>
