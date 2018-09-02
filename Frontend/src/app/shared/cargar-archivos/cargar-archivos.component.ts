@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CargarArchivosService } from '@app/shared/cargar-archivos/cargar-archivos.service';
 import { forkJoin } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cargar-archivos',
@@ -41,8 +42,6 @@ export class CargarArchivosComponent implements OnInit {
       }
     }
   }
-
-
 
   /**
    * Carga todas las imagenes que se encuentran en las lista de
@@ -100,6 +99,12 @@ export class CargarArchivosComponent implements OnInit {
     this.isUploading = false;
   }
 
+  cancelarSubidaImagen(indiceArchivo: number) {
+    this.uploadService.cancelaPeticion(this.files[indiceArchivo].name);
+    this.isCargadoImagen[indiceArchivo] = false;
+    this.isCargandoImagen[indiceArchivo] = false;
+  }
+
   /**
    * Vacía todos los archivos incluidos en la lista de
    * archivos y input de archivos
@@ -109,6 +114,28 @@ export class CargarArchivosComponent implements OnInit {
   vaciarArchivosAndInput() {
     this.files = [];
     this.file.nativeElement.value = '';
+  }
+
+  subirArchivoIndividualmente(indiceArchivo: number) {
+    this.cargarImangen(this.files[indiceArchivo], indiceArchivo);
+  }
+
+  cargarImangen(archivoPorSubir: File, indiceArchivo: number) {
+    const progreso = this.uploadService.upload([archivoPorSubir]);
+    progreso[archivoPorSubir.name].progress
+      .pipe(
+        finalize(() => {
+          this.isCargadoImagen[indiceArchivo] = true;
+          this.isCargandoImagen[indiceArchivo] = false;
+          const indiceArchivoPorSubir = this.archivosPorSubir.findIndex(
+            archivo => archivo.name === archivoPorSubir.name
+          );
+          this.archivosPorSubir.splice(indiceArchivoPorSubir, 1);
+        })
+      )
+      .subscribe(porcentajeProgreso => {
+        this.isCargandoImagen[indiceArchivo] = true;
+      });
   }
 
   /**

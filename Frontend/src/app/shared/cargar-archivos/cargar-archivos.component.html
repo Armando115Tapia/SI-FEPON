@@ -47,20 +47,18 @@
               <i *ngIf="isCargandoImagen[indice]" class="fa fa-spinner fa-spin fa-fw"></i>
               <i *ngIf="isCargadoImagen[indice]" class="fa fa-check" aria-hidden="true"></i>
             </td>
-            <!-- <td>
-
-              <button class="btn btn-success btn-sm" type="button" (click)="subirArchivo(indice)">
+            <td>
+              <button class="btn btn-success btn-sm" type="button" (click)="subirArchivoIndividualmente(indice)">
                 <i class="fa fa-upload fa-fw text-white" aria-hidden="true"></i>
               </button>
-
-              <button class="btn btn-sm btn-warning" type="button" (click)="cancelUpload(archivo.id)">
+              <button class="btn btn-sm btn-warning" type="button" (click)="cancelarSubidaImagen(indice)">
                 <i class="fa fa-ban fa-fw text-white " aria-hidden="true"></i>
               </button>
-
+              <!--
               <button class="btn btn-sm btn-danger" type="button" (click)="removeFile(archivo.id)">
                 <i class="fa fa-trash fa-fw text-white" aria-hidden="true"></i>
-              </button>
-            </td> -->
+              </button> -->
+            </td>
           </tr>
         </tbody>
       </table>

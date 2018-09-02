@@ -6,8 +6,10 @@ import { IImagenFactura } from '@app/core/models';
 @Injectable()
 export class CargarArchivosService {
   private _peticionesImagen: Subscription[];
+  private peticionesImagenes: Map<string, Subscription>;
   constructor(private http: HttpClient) {
     this.peticionesImagen = [];
+    this.peticionesImagenes = new Map();
   }
 
   public upload(
@@ -42,7 +44,8 @@ export class CargarArchivosService {
         error => console.log(error)
       );
 
-      this.peticionesImagen.push(auxPeticion);
+      this.peticionesImagenes.set(file.name, auxPeticion);
+
       status[file.name] = {
         progress: progress.asObservable(),
         imagen: imagen.asObservable()
@@ -52,14 +55,20 @@ export class CargarArchivosService {
   }
 
   public cancelarPeticiones(): void {
-    for (let indice = 0; indice < this.peticionesImagen.length; indice++) {
-      this.peticionesImagen[indice].unsubscribe();
+    for (const nombreArchivo of Array.from(this.peticionesImagenes.keys())) {
+      const peticion = this.peticionesImagenes.get(nombreArchivo);
+      peticion.unsubscribe();
     }
-    this.reiniciarArregloPeticionesImagen();
+    this.peticionesImagenes.clear();
   }
 
   public reiniciarArregloPeticionesImagen(): void {
     this.peticionesImagen = [];
+  }
+
+  public cancelaPeticion(nombreArchivo: string) {
+    const peticion = this.peticionesImagenes.get(nombreArchivo);
+    peticion.unsubscribe();
   }
 
   /**
