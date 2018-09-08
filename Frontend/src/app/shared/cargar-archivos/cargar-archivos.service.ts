@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpEvent } from '@angular/common/http';
 import { Subject, Observable, Subscription } from 'rxjs';
 import { IImagenFactura } from '@app/core/models';
+import { TipoImagen } from '@app/shared/utilidades.util';
 
 @Injectable()
 export class CargarArchivosService {
@@ -69,6 +70,10 @@ export class CargarArchivosService {
   public cancelaPeticion(nombreArchivo: string) {
     const peticion = this.peticionesImagenes.get(nombreArchivo);
     peticion.unsubscribe();
+  }
+
+  public eliminarArchivo(tipo: TipoImagen, nombre: string): Observable<Object> {
+    return this.http.delete('api/v1/imagen?nombre=' + nombre + '&&tipo=' + tipo);
   }
 
   /**

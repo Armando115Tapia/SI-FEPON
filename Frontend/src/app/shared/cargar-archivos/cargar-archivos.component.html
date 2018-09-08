@@ -21,8 +21,8 @@
           <i class="fa fa-ban fa-fw" aria-hidden="true"></i>
           Cancelar todos
         </button>
-        <button [disabled]="files.length === 0 || isUploading" class="btn btn-danger btn-sm text-white"
-          type="button" (click)="vaciarArchivosAndInput()">
+        <button [disabled]="archivosPorSubir.length === 0 || isUploading" class="btn btn-danger btn-sm text-white"
+          type="button" (click)="vaciarTodosLosArchivosPorSubirAndInput()">
           <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
           Vaciar
         </button>
@@ -39,13 +39,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let archivo of files; let indice=index">
+          <tr *ngFor="let archivo of archivosPorSubir; let indice=index">
             <td>{{ archivo.name }}</td>
             <td>{{ archivo.size}}</td>
             <td>
-              <span *ngIf="!isCargadoImagen[indice] && !isCargandoImagen[indice]" class="badge badge-info">Por subir</span>
+              <span *ngIf="!isCargandoImagen[indice]" class="badge badge-info">Por subir</span>
               <i *ngIf="isCargandoImagen[indice]" class="fa fa-spinner fa-spin fa-fw"></i>
-              <i *ngIf="isCargadoImagen[indice]" class="fa fa-check" aria-hidden="true"></i>
             </td>
             <td>
               <button class="btn btn-success btn-sm" type="button" (click)="subirArchivoIndividualmente(indice)">
@@ -54,10 +53,33 @@
               <button class="btn btn-sm btn-warning" type="button" (click)="cancelarSubidaImagen(indice)">
                 <i class="fa fa-ban fa-fw text-white " aria-hidden="true"></i>
               </button>
-              <!--
-              <button class="btn btn-sm btn-danger" type="button" (click)="removeFile(archivo.id)">
+              <button class="btn btn-sm btn-danger" type="button" (click)="eliminarArchivoPorSubir(indice)">
                 <i class="fa fa-trash fa-fw text-white" aria-hidden="true"></i>
-              </button> -->
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nombre archivo</th>
+            <th>Tamaño</th>
+            <th>Estado</th>
+            <th>Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let archivo of archivosAlmacenados; let indice=index">
+            <td>{{ archivo.nombreArchivoOriginal }}</td>
+            <td>0</td>
+            <td>
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-danger" type="button" (click)="eliminarArchivoDeBaseDeDatos(indice)">
+                <i class="fa fa-trash fa-fw text-white" aria-hidden="true"></i>
+              </button>
             </td>
           </tr>
         </tbody>
