@@ -6,6 +6,10 @@ Repositorio del Sistema de Información de la Federación de Estudiantes de la E
 
 El sistema tiene como objetivo hacer de la FEPON una federación más transparente a través de una PWA y notificaciones (escritorio y móvil) para entregar información sobre su estado financiero.
 
+# Estadísticas
+
+![Numero de views](https://stats-repo-git-yvttpqdpta.now.sh/estadisticas?repo=SI-FEPON)
+
 # Estructura del proyecto
 
 ```
@@ -27,9 +31,9 @@ Recursos/                    Imagenes de prueba
 
 Por favor escribir en los issues la solicitudes de nuevas funcionalidades nuevas, errores, dudas y posibles contribuciones funcionalidades.
 
-# Backlog
+# Kanban
 
-Sigue los avances del proyecto [backlog](https://trello.com/b/WBwCrBbI/si-fepon)
+Sigue los avances del proyecto [Trello](https://trello.com/b/WBwCrBbI/si-fepon)
 
 # Contribuidores
 
