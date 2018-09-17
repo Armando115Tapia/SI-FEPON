@@ -8,7 +8,7 @@ El sistema tiene como objetivo hacer de la FEPON una federación más transparen
 
 # Estadísticas
 
-![Numero de views](https://stats-repo-git-yvttpqdpta.now.sh/estadisticas?repo=SI-FEPON)
+![Numero de views](https://personal-stats-repo-git.now.sh/estadisticas?repo=SI-FEPON)
 
 # Estructura del proyecto
 
