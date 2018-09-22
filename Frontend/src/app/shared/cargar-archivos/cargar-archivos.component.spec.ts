@@ -5,6 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable, Subject } from 'rxjs';
 import { IImagenFactura } from '@app/core/models';
 import { CargarArchivosService } from '@app/shared/cargar-archivos/cargar-archivos.service';
+import { SharedModule } from '@app/shared/shared.module';
 
 describe('CargarArchivosComponent', () => {
   let servicio: CargarArchivosService;
@@ -13,8 +14,7 @@ describe('CargarArchivosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [CargarArchivosComponent]
+      imports: [HttpClientTestingModule, SharedModule]
     }).compileComponents();
     servicio = new CargarArchivosService(null);
     component = new CargarArchivosComponent(servicio);
@@ -30,10 +30,9 @@ describe('CargarArchivosComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('deberia agregar imagenes seleccionadas a listas de archivos por subir y general', () => {
+  it('deberia agregar imagenes seleccionadas a listas de archivos por subir', () => {
     component.agregarImagenesSeleccionadasToArchivosPorSubir();
     expect(component.archivosPorSubir.length).toBe(0);
-    expect(component.files.length).toBe(0);
   });
 
   // TODO: pasar esta prueba

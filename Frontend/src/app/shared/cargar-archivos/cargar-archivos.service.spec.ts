@@ -4,6 +4,7 @@ import { CargarArchivosService } from '@app/shared/cargar-archivos/cargar-archiv
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { of, Subject, Observable } from 'rxjs';
 import { IImagenFactura } from '@app/core/models';
+import { SharedModule } from '@app/shared/shared.module';
 
 describe('CargarArchivosService', () => {
   let servicio: CargarArchivosService;
@@ -29,7 +30,6 @@ describe('CargarArchivosService', () => {
 
       expect(progress).toEqual({
         'archivo-prueba.jpg': {
-          progress: new Subject<number>().asObservable(),
           imagen: new Subject<IImagenFactura>().asObservable()
         }
       });

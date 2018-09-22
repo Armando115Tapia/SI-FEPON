@@ -1,89 +1,79 @@
-<div class="row border border-dark">
+<div class="row my-1">
+  <div class="col-md-12">
+    <label class="btn btn-sm btn-danger mb-0">
+      Seleccionar imágenes
+      <input type="file" #file class="d-none" (change)="agregarImagenesSeleccionadasToArchivosPorSubir()"
+        multiple/>
+    </label>
+    <button *ngIf="archivosPorSubir.length > 0" [disabled]="archivosPorSubir.length === 0"
+      class="btn btn-success btn-sm text-white" type="button" (click)="cargarTodasLasImagenes()">
+      <i class="fa fa-upload fa-fw " aria-hidden="true"></i>
+      Cargar imágenes
+    </button>
+    <button *ngIf="isCargandoServidor" [disabled]="!isCargando" class="btn btn-warning btn-sm text-white"
+      type="button" (click)="cancelarTodasLasImagenes()">
+      <i class="fa fa-ban fa-fw" aria-hidden="true"></i>
+      Cancelar todos
+    </button>
+    <button *ngIf="archivosPorSubir.length > 0" [disabled]="archivosPorSubir.length === 0 || isCargando" class="btn btn-danger btn-sm text-white"
+      type="button" (click)="vaciarTodosLosArchivosPorSubir()">
+      <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
+      Vaciar
+    </button>
+  </div>
+</div>
+<div class="row my-1" *ngIf="archivosPorSubir.length > 0">
+  <div class="col-md-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre archivo</th>
+          <th>Tamaño</th>
+          <th>Estado</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let archivo of archivosPorSubir; let indice=index">
+          <td>{{ archivo.name }}</td>
+          <td>{{ archivo.size}}</td>
+          <td>
+            <span *ngIf="!isCargandoImagen[indice]" class="badge badge-info">Por subir</span>
+            <i *ngIf="isCargandoImagen[indice]" class="fa fa-spinner fa-spin fa-fw"></i>
+          </td>
+          <td>
+            <button class="btn btn-success btn-sm" type="button" (click)="subirArchivoIndividualmente(indice)">
+              <i class="fa fa-upload fa-fw text-white" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-sm btn-warning" *ngIf="isCargandoImagen[indice]" type="button" (click)="cancelarSubidaImagen(indice)">
+              <i class="fa fa-ban fa-fw text-white " aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" type="button" (click)="eliminarArchivoPorSubir(indice)">
+              <i class="fa fa-trash fa-fw text-white" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row my-1">
   <div class="col-md-12">
     <div class="row">
-      <div class="col-md-12">
-        <label class="btn btn-sm btn-danger">
-          Seleccionar imágenes
-          <input type="file" #file class="d-none" (change)="agregarImagenesSeleccionadasToArchivosPorSubir()"
-            multiple/>
-        </label>
+      <div class="col text-center">
+        <app-loader [isLoading]="isCargando"></app-loader>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
-        <button [disabled]="archivosPorSubir.length === 0" class="btn btn-success btn-sm text-white"
-          type="button" (click)="cargarTodasLasImagenes()">
-          <i class="fa fa-upload fa-fw " aria-hidden="true"></i>
-          Cargar imágenes
-        </button>
-        <button [disabled]="!isUploading" class="btn btn-warning btn-sm text-white" type="button"
-          (click)="cancelarTodasLasImagenes()">
-          <i class="fa fa-ban fa-fw" aria-hidden="true"></i>
-          Cancelar todos
-        </button>
-        <button [disabled]="archivosPorSubir.length === 0 || isUploading" class="btn btn-danger btn-sm text-white"
-          type="button" (click)="vaciarTodosLosArchivosPorSubirAndInput()">
-          <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
-          Vaciar
-        </button>
+      <div class="col-3" *ngFor="let imagen of archivosAlmacenados; let indice=index">
+        <div class="img-container">
+          <img class="img-thumbnail w-100" *ngIf="imagen.url" [src]="imagen.url" alt="Imagen factura"
+          />
+          <button class="btn btn-sm btn-danger" type="button" (click)="eliminarArchivoDeBaseDeDatos(indice)">
+            <i class="fa fa-trash fa-fw text-white" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Nombre archivo</th>
-            <th>Tamaño</th>
-            <th>Estado</th>
-            <th>Opciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let archivo of archivosPorSubir; let indice=index">
-            <td>{{ archivo.name }}</td>
-            <td>{{ archivo.size}}</td>
-            <td>
-              <span *ngIf="!isCargandoImagen[indice]" class="badge badge-info">Por subir</span>
-              <i *ngIf="isCargandoImagen[indice]" class="fa fa-spinner fa-spin fa-fw"></i>
-            </td>
-            <td>
-              <button class="btn btn-success btn-sm" type="button" (click)="subirArchivoIndividualmente(indice)">
-                <i class="fa fa-upload fa-fw text-white" aria-hidden="true"></i>
-              </button>
-              <button class="btn btn-sm btn-warning" type="button" (click)="cancelarSubidaImagen(indice)">
-                <i class="fa fa-ban fa-fw text-white " aria-hidden="true"></i>
-              </button>
-              <button class="btn btn-sm btn-danger" type="button" (click)="eliminarArchivoPorSubir(indice)">
-                <i class="fa fa-trash fa-fw text-white" aria-hidden="true"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Nombre archivo</th>
-            <th>Tamaño</th>
-            <th>Estado</th>
-            <th>Opciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let archivo of archivosAlmacenados; let indice=index">
-            <td>{{ archivo.nombreArchivoOriginal }}</td>
-            <td>0</td>
-            <td>
-              <i class="fa fa-check" aria-hidden="true"></i>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-danger" type="button" (click)="eliminarArchivoDeBaseDeDatos(indice)">
-                <i class="fa fa-trash fa-fw text-white" aria-hidden="true"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </div>

@@ -8,3 +8,13 @@ export interface IModeloArchivo {
   nombreArchivo: string;
   ubicacion: string;
 }
+
+export interface IModeloArchivoCompleto extends IModeloArchivo {
+  /**
+   * url para peticion de imagen al servidor
+   *
+   * @type {string}
+   * @memberof IModeloArchivo
+   */
+  url?: string;
+}

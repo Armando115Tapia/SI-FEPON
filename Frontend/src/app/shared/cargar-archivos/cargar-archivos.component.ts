@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CargarArchivosService } from '@app/shared/cargar-archivos/cargar-archivos.service';
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { TipoImagen, IModeloArchivo } from '@app/shared/utilidades.util';
+import { TipoImagen, IModeloArchivo, IModeloArchivoCompleto } from '@app/shared/utilidades.util';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-cargar-archivos',
@@ -13,16 +14,15 @@ import { TipoImagen, IModeloArchivo } from '@app/shared/utilidades.util';
 export class CargarArchivosComponent implements OnInit {
   @ViewChild('file')
   file: ElementRef;
-  private _archivosAlmacenados: IModeloArchivo[] = [];
+  private _archivosAlmacenados: IModeloArchivoCompleto[] = [];
   private _archivosPorSubir: File[] = [];
-  private _progress: Object;
-  private _isUploading: boolean;
-  private _isUploadSuccessful: boolean;
+  private _isCargando: boolean;
+  private _isCargandoServidor: boolean;
   private _isCargandoImagen: boolean[] = [];
 
   constructor(private cargarArchivosService: CargarArchivosService) {
-    this.isUploading = false;
-    this.isUploadSuccessful = false;
+    this.isCargando = false;
+    this.isCargandoServidor = false;
   }
 
   ngOnInit() {}
@@ -39,53 +39,49 @@ export class CargarArchivosComponent implements OnInit {
         this.archivosPorSubir.push(<File>archivosPorSubir[key]);
       }
     }
+    this.file.nativeElement.value = '';
   }
 
   /**
    * Carga todas las imagenes que se encuentran en las lista de
-   * archivos por subir al servidor y genera estados cargando, cargado
+   * archivos por subir al servidor
    *
    * @memberof CargarArchivosComponent
    */
   cargarTodasLasImagenes() {
-    this.isUploading = true;
-    this.progress = this.cargarArchivosService.upload(this.archivosPorSubir);
-    const allProgressObservables = [];
-    const allImagenObservables = [];
+    this.isCargando = true;
+    this.isCargandoServidor = true;
 
-    for (const key in this.progress) {
-      if (this.progress.hasOwnProperty(key)) {
-        allProgressObservables.push(this.progress[key].progress);
-        allImagenObservables.push(this.progress[key].imagen);
+    const observables = this.cargarArchivosService.upload(this.archivosPorSubir);
+    const observablesImagen = [];
+
+    for (const key in observables) {
+      if (observables.hasOwnProperty(key)) {
+        observablesImagen.push(observables[key].imagen);
       }
     }
 
     for (const archivo of this.archivosPorSubir) {
-      this.progress[archivo.name].progress.subscribe((porcentajeProgreso: any) => {
+      observables[archivo.name].imagen.subscribe(() => {
         const indiceArchivo = this.archivosPorSubir.findIndex(file => file.name === archivo.name);
         this.isCargandoImagen[indiceArchivo] = true;
       });
     }
 
     // Una vez completado la subida de archivos
-    forkJoin(allProgressObservables).subscribe(end => {
-      this.isUploadSuccessful = true;
-      this.isUploading = false;
-      this.file.nativeElement.value = '';
-      this.archivosPorSubir = [];
+    forkJoin(observablesImagen).subscribe((imagenes: IModeloArchivoCompleto[]) => {
+      this.isCargandoServidor = false;
       this.cargarArchivosService.reiniciarArregloPeticionesImagen();
-    });
+      this.vaciarTodosLosArchivosPorSubir();
 
-    forkJoin(allImagenObservables).subscribe((imagenes: IModeloArchivo[]) => {
       // Agregar imagenes
-      for (const imagen of imagenes) {
-        const nombreArchivo = imagen['nombreArchivoOriginal'];
-        const indiceArchivo = this.archivosPorSubir.findIndex(file => file.name === nombreArchivo);
+      for (const modeloImagen of imagenes) {
+        modeloImagen['url'] = `${environment.serverUrl}images/facturas/${modeloImagen.nombreArchivo}`;
 
-        this.archivosAlmacenados.push(imagen);
-        this.eliminarArchivoPorSubir(indiceArchivo);
-
-        this.isCargandoImagen[indiceArchivo] = false;
+        setTimeout(() => {
+          this.isCargando = false;
+          this.archivosAlmacenados.push(modeloImagen);
+        }, 3000);
       }
     });
   }
@@ -97,46 +93,51 @@ export class CargarArchivosComponent implements OnInit {
    */
   cancelarTodasLasImagenes() {
     this.cargarArchivosService.cancelarPeticiones();
-    this.isUploading = false;
+    this.isCargando = false;
   }
 
-  cancelarSubidaImagen(indiceArchivo: number) {
+    cancelarSubidaImagen(indiceArchivo: number) {
     this.cargarArchivosService.cancelaPeticion(this.archivosPorSubir[indiceArchivo].name);
     this.isCargandoImagen[indiceArchivo] = false;
   }
 
   /**
    * Vacía todos los archivos incluidos en la lista de
-   * archivos y input de archivos
+   * archivos y isCargandoImagen
    *
    * @memberof CargarArchivosComponent
    */
-  vaciarTodosLosArchivosPorSubirAndInput() {
-    this.file.nativeElement.value = '';
+  vaciarTodosLosArchivosPorSubir() {
     this.archivosPorSubir = [];
     this.isCargandoImagen = [];
   }
 
   subirArchivoIndividualmente(indiceArchivo: number) {
-    this.cargarImangen(this.archivosPorSubir[indiceArchivo], indiceArchivo);
+    this.cargarImagen(this.archivosPorSubir[indiceArchivo], indiceArchivo);
   }
 
-  cargarImangen(archivoPorSubir: File, indiceArchivo: number) {
-    const progreso = this.cargarArchivosService.upload([archivoPorSubir]);
-    progreso[archivoPorSubir.name].progress
+  cargarImagen(archivoPorSubir: File, indiceArchivo: number) {
+    this.isCargando = true;
+    this.isCargandoServidor = true;
+    this.isCargandoImagen[indiceArchivo] = true;
+    const observables = this.cargarArchivosService.upload([archivoPorSubir]);
+
+    observables[archivoPorSubir.name].imagen
       .pipe(
         finalize(() => {
+          this.isCargandoServidor = false;
+          this.cargarArchivosService.reiniciarArregloPeticionesImagen();
           this.isCargandoImagen[indiceArchivo] = false;
           this.eliminarArchivoPorSubir(indiceArchivo);
         })
       )
-      .subscribe(porcentajeProgreso => {
-        this.isCargandoImagen[indiceArchivo] = true;
+      .subscribe((modeloImagen: IModeloArchivoCompleto) => {
+        modeloImagen['url'] = `${environment.serverUrl}images/facturas/${modeloImagen.nombreArchivo}`;
+        setTimeout(() => {
+          this.isCargando = false;
+          this.archivosAlmacenados.push(modeloImagen);
+        }, 3000);
       });
-
-    progreso[archivoPorSubir.name].imagen.pipe(finalize(() => {})).subscribe((modeloImagen: IModeloArchivo) => {
-      this.archivosAlmacenados.push(modeloImagen);
-    });
   }
 
   eliminarArchivoPorSubir(indiceArchivo: number) {
@@ -155,9 +156,9 @@ export class CargarArchivosComponent implements OnInit {
 
   /**
    * Getter archivosAlmacenados
-   * @return {IModeloArchivo[] }
+   * @return {IModeloArchivoCompleto[] }
    */
-  public get archivosAlmacenados(): IModeloArchivo[] {
+  public get archivosAlmacenados(): IModeloArchivoCompleto[] {
     return this._archivosAlmacenados;
   }
 
@@ -171,28 +172,21 @@ export class CargarArchivosComponent implements OnInit {
   }
 
   /**
-   * Getter progress
-   * Objeto que contiene el progreso y el objeto con la informacion de la imagen
-   * @return {Object}
+   * Getter isCargando
+   * Muestra si se encuentra cargado incluyendo carga de imagen y del servidor
+   * @return {boolean}
    */
-  public get progress(): Object {
-    return this._progress;
+  public get isCargando(): boolean {
+    return this._isCargando;
   }
 
   /**
-   * Getter isUploading
+   * Getter isCargandoServidor
+   * Muestra si esta cargando en el servidor
    * @return {boolean}
    */
-  public get isUploading(): boolean {
-    return this._isUploading;
-  }
-
-  /**
-   * Getter isUploadSuccessful
-   * @return {boolean}
-   */
-  public get isUploadSuccessful(): boolean {
-    return this._isUploadSuccessful;
+  public get isCargandoServidor(): boolean {
+    return this._isCargandoServidor;
   }
 
   /**
@@ -212,27 +206,19 @@ export class CargarArchivosComponent implements OnInit {
   }
 
   /**
-   * Setter progress
-   * @param {Object} value
+   * Setter isCargando
+   * @param {boolean} value
    */
-  public set progress(value: Object) {
-    this._progress = value;
+  public set isCargando(value: boolean) {
+    this._isCargando = value;
   }
 
   /**
-   * Setter isUploading
+   * Setter isCargandoServidor
    * @param {boolean} value
    */
-  public set isUploading(value: boolean) {
-    this._isUploading = value;
-  }
-
-  /**
-   * Setter isUploadSuccessful
-   * @param {boolean} value
-   */
-  public set isUploadSuccessful(value: boolean) {
-    this._isUploadSuccessful = value;
+  public set isCargandoServidor(value: boolean) {
+    this._isCargandoServidor = value;
   }
 
   /**
@@ -245,9 +231,9 @@ export class CargarArchivosComponent implements OnInit {
 
   /**
    * Setter archivosAlmacenados
-   * @param {IModeloArchivo[] } value
+   * @param {IModeloArchivoCompleto[] } value
    */
-  public set archivosAlmacenados(value: IModeloArchivo[]) {
+  public set archivosAlmacenados(value: IModeloArchivoCompleto[]) {
     this._archivosAlmacenados = value;
   }
 }

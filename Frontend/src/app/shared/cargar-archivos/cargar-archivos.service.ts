@@ -13,33 +13,21 @@ export class CargarArchivosService {
     this.peticionesImagenes = new Map();
   }
 
-  public upload(
-    files: File[]
-  ): { [key: string]: { progress: Observable<number>; imagen: Observable<IImagenFactura> } } {
+  public upload(files: File[]): { [key: string]: { imagen: Observable<IImagenFactura> } } {
     const status = {};
 
     files.forEach(file => {
       const formData: FormData = new FormData();
       formData.append('imagen', file, file.name);
 
-      const req = new HttpRequest('POST', 'api/v1/imagen/factura', formData, {
-        reportProgress: true
-      });
-
-      const progress = new Subject<number>();
+      const req = new HttpRequest('POST', 'api/v1/imagen/factura', formData);
       const imagen = new Subject<Object>();
 
       const auxPeticion = this.http.request(req).subscribe(
         event => {
-          // Reporta el progreso de subida
-          if (event.type === HttpEventType.UploadProgress) {
-            const percentDone = Math.round((100 * event.loaded) / event.total);
-            progress.next(percentDone);
-          } else if (event instanceof HttpResponse) {
-            // Una vez completado al subida
+          if (event instanceof HttpResponse) {
             imagen.next(event.body['imagen']);
             imagen.complete();
-            progress.complete();
           }
         },
         error => console.log(error)
@@ -48,7 +36,6 @@ export class CargarArchivosService {
       this.peticionesImagenes.set(file.name, auxPeticion);
 
       status[file.name] = {
-        progress: progress.asObservable(),
         imagen: imagen.asObservable()
       };
     });
