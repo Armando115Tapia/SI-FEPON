@@ -1,95 +1,188 @@
 <div class="container">
   <form>
-    <div class="row mt-2">
+    <div class="row my-2">
       <div class="col-md-2"></div>
-      <div class="col-md-8 border border-blue">
-        <div class="row">
+      <div class="col-md-8 border">
+        <div class="row my-2">
           <div class="col-md-6">
-            <div class="input-group mb-3">
+            <div class="input-group my-2">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   <i class="fa fa-building fa-fw"></i>
                 </div>
               </div>
-              <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Nombre del emisor"/>
+              <input type="text" class="form-control form-control-sm" aria-label="nombreEmisor"
+                placeholder="Nombre del emisor" />
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group my-2">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   <i class="fa fa-id-card fa-fw"></i>
                 </div>
               </div>
-              <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="RUC emisor"/>
+              <input type="text" class="form-control form-control-sm" aria-label="rucEmisor"
+                placeholder="RUC emisor" />
             </div>
           </div>
           <div class="col-md-6">
-            <div class="input-group mb-3">
+            <div class="input-group my-2">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   <i class="fa fa-money-bill fa-fw"></i>
                 </div>
               </div>
-              <input type="number" class="form-control" placeholder="N° Factura"/>
+              <input type="number" class="form-control form-control-sm" placeholder="N° Factura"
+              />
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group my-2">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   <i class="fa fa-calendar fa-fw" (click)="d.toggle()"></i>
                 </div>
               </div>
-              <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
-                #d="ngbDatepicker" (click)="d.toggle()"/>
+              <input type="text" class="form-control form-control-sm" placeholder="yyyy-mm-dd"
+                name="dp" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" />
             </div>
           </div>
         </div>
-        <!--Cierre de primer row-->
-        <div class="row border border-dark">
+        <div class="row my-2">
           <div class="col-md-6">
-            <div class="input-group mb-3">
+            <div class="input-group my-2">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   <i class="fa fa-building fa-fw"></i>
                 </div>
               </div>
-              <input type="text" class="form-control" placeholder="Nombre del receptor"/>
+              <input type="text" class="form-control form-control-sm" placeholder="Nombre del receptor"
+              />
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group my-2">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   <i class="fa fa-id-card fa-fw"></i>
                 </div>
               </div>
-              <input type="number" class="form-control" placeholder="RUC receptor"/>
-            </div>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value=""/> Incluye IVA
-              </label>
+              <input type="number" class="form-control form-control-sm" placeholder="RUC receptor"
+              />
             </div>
           </div>
-          <div class="col-md-6">
-            <textarea class="form-control" rows="3" placeholder="Describa el motivo de la factura"></textarea>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inline-radio-1"
-                  value="option1"/> Ingreso
-              </label>
+          <div class="col-md-6 my-2">
+            <textarea class="form-control form-control-sm" rows="3" placeholder="Describa el motivo de la factura"></textarea>
+          </div>
+        </div>
+        <app-cargar-archivos></app-cargar-archivos>
+        <div class="row my-2">
+          <div class="col-md-12">
+            <div *ngIf="factura.detalle.length < 1" class="alert alert-info" role="alert" (click)="agregarRubroASubtotalDetalle()">
+              <strong>No existe rubros, click para agregar</strong>
             </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inline-radio-2"
-                  value="option2"/> Egreso
-              </label>
+            <div class="table-responsive-md">
+              <table *ngIf="factura.detalle.length > 0" class="table table-sm table-bordered">
+                <thead class="thead-dark">
+                  <tr>
+                    <th class="minw-50">Cantidad</th>
+                    <th class="minw-100 w-25">Descripción</th>
+                    <th class="minw-50">Precio unitario</th>
+                    <th class="minw-50 w-25">Total</th>
+                    <th>Opciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let rubro of factura.detalle; let indice=index">
+                    <td scope="row">
+                      <input type="number" class="form-control form-control-sm" [(ngModel)]="rubro.cantidad"
+                        [ngModelOptions]="{standalone: true, updateOn: 'blur'}" (ngModelChange)="factura.calculoTotal()">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" [(ngModel)]="rubro.descripcion"
+                        [ngModelOptions]="{standalone: true}">
+                    </td>
+                    <td>
+                      <input type="number" class="form-control form-control-sm" [(ngModel)]="rubro.precioUnitario"
+                        [ngModelOptions]="{standalone: true, updateOn: 'blur'}" (ngModelChange)="factura.calculoTotal()">
+                    </td>
+                    <td>{{ rubro.total | number: '1.2-2' }}</td>
+                    <td>
+                      <button type="button" *ngIf="indice === factura.detalle.length - 1" class="btn btn-sm btn-success"
+                        (click)="agregarRubroASubtotalDetalle()">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="eliminarRubroASubtotalDetalle(indice); factura.calculoTotal()">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" [(ngModel)]="factura.isIngreso" name="isIngreso"
+                          id="isIngreso" (ngModelChange)="factura.calculoTotal()">
+                        <label class="form-check-label col-form-label col-form-label-sm" for="isIngreso"
+                          translate>
+                          Ingreso
+                        </label>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" [(ngModel)]="factura.isIva" name="isIva"
+                          id="isIva" (ngModelChange)="factura.calculoTotal()">
+                        <label class="form-check-label col-form-label col-form-label-sm" for="isIva" translate>
+                          Iva
+                        </label>
+                        <input type="number" class="form-control form-control-sm w-50 mx-1"
+                          [(ngModel)]="factura.iva" [disabled]="!factura.isIva"
+                          [ngModelOptions]="{standalone: true, updateOn: 'blur'}" (ngModelChange)="factura.calculoTotal()">
+                      </div>
+                    </td>
+                    <td>SubTotal</td>
+                    <td>{{ factura.subTotalDetalle | number: '1.2-2' }}</td>
+                    <td>
+                      <button type="button" *ngIf="factura.detalleTotal.length < 1" class="btn btn-sm btn-success"
+                        (click)="agregarRubroASubtotalDetalleTotal()">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"></td>
+                    <td>Iva</td>
+                    <td>{{ factura.valorIva | number: '1.2-2' }}</td>
+                    <td></td>
+                  </tr>
+                  <tr *ngFor="let rubro of factura.detalleTotal; let indice=index">
+                    <td colspan="2"></td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" [(ngModel)]="rubro.nombre"
+                        [ngModelOptions]="{standalone: true}">
+                    </td>
+                    <td>
+                      <input type="number" class="form-control form-control-sm" [(ngModel)]="rubro.cantidad"
+                        [ngModelOptions]="{standalone: true, updateOn: 'blur'}" (ngModelChange)="factura.calculoTotal()">
+                    </td>
+                    <td>
+                      <button type="button" *ngIf="indice === factura.detalleTotal.length - 1" class="btn btn-sm btn-success"
+                        (click)="agregarRubroASubtotalDetalleTotal()">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="eliminarRubroASubtotalDetalleTotal(indice); factura.calculoTotal()">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"></td>
+                    <td><strong>Total</strong></td>
+                    <td>{{ factura.total | number: '1.2-2' }}</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
           </div>
         </div>
-        <!--Cierre de row de datos de receptor-->
-        <app-cargar-archivos></app-cargar-archivos>
-      <!-- añadir upload -->
-        <div class="row"></div>
-      </div>
-      <div class="col-md-2">
-        <button type="button">Hola</button>
       </div>
     </div>
   </form>

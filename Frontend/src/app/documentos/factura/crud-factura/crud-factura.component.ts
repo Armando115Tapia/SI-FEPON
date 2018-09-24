@@ -1,6 +1,6 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { environment } from '@env/environment';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Factura } from '@app/core/models/factura.model';
+import { getIFacturaMock } from '@app/core/models/factura.mock';
 
 @Component({
   selector: 'app-crud-factura',
@@ -8,12 +8,27 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./crud-factura.component.scss']
 })
 export class CrudFacturaComponent implements OnInit {
+  factura: Factura;
 
-  constructor(private http: HttpClient) {
-    this.http
-      .get('factura')
-      .subscribe(data => console.log(data), error => console.log(error));
+  constructor() {
+    this.factura = new Factura(getIFacturaMock());
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
+
+  agregarRubroASubtotalDetalle() {
+    this.factura.detalle.push({ cantidad: 0, descripcion: '', precioUnitario: 0, total: 0 });
+  }
+
+  eliminarRubroASubtotalDetalle(indiceRubro: number) {
+    this.factura.detalle.splice(indiceRubro, 1);
+  }
+
+  agregarRubroASubtotalDetalleTotal() {
+    this.factura.detalleTotal.push({ cantidad: 0, nombre: '' });
+  }
+
+  eliminarRubroASubtotalDetalleTotal(indiceRubro: number) {
+    this.factura.detalleTotal.splice(indiceRubro, 1);
+  }
 }

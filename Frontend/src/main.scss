@@ -48,3 +48,17 @@
 .c-dark {
   color: map-get($theme-colors, dark);
 }
+
+// min width
+
+.minw-100 {
+  min-width: 100px;
+}
+
+.minw-75 {
+  min-width: 75px;
+}
+
+.minw-50 {
+  min-width: 50px;
+}
