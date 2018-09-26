@@ -10,7 +10,32 @@ $fa-font-path: "~@fortawesome/fontawesome-free-webfonts/webfonts";
 //
 // Override Bootstrap variables here to suite your theme.
 // Copy variables you want to customize from node_modules/bootstrap/scss/_variables.scss
+$sizes: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$sizes: map-merge(
+  (
+    10: 10%,
+    15: 15%,
+    25: 25%,
+    50: 50%,
+    75: 75%,
+    100: 100%,
+    auto: auto
+  ),
+  $sizes
+);
 
+$table-cell-padding:          0.5rem !default;
+
+$font-size-base:              0.75rem !default; // Assumes the browser default, typically `16px`
+$font-size-lg:                ($font-size-base * 1.25) !default;
+$font-size-sm:                ($font-size-base * .875) !default;
+
+$input-btn-padding-y:         .2rem !default;
+$input-btn-padding-x:         .5rem !default;
+
+$alert-padding-y: 0.45rem !default;
+$alert-padding-x: 0.5rem !default;
 //
 // Color system
 //
@@ -46,10 +71,13 @@ $theme-colors: (
   warning: $yellow,
   danger: $red,
   light: $gray-100,
-  dark: $gray-800
+  dark: $gray-800,
 );
 
 // Use Bootstrap defaults for other variables, imported here so we can access all app variables in one place when used
 // in components.
 @import "~bootstrap/scss/_functions";
 @import "~bootstrap/scss/_variables";
+
+// temas para ngx-chips
+// https://github.com/gbuomprisco/ngx-chips/blob/master/docs/custom-themes.md

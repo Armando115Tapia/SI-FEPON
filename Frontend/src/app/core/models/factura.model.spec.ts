@@ -1,5 +1,6 @@
 import { Factura } from './factura.model';
 import { getIFacturaMock } from '@app/core/models/factura.mock';
+import { getIEtiquetaMock } from '@app/core/models/etiqueta.mock';
 
 const factura = new Factura(
   getIFacturaMock({
@@ -17,7 +18,7 @@ const factura = new Factura(
     comentario: 'Ya mismo da sueño',
     total: 400,
     isIngreso: false,
-    etiquetas: [{ nombre: 'senescyt', id: '5555', categoria: 'cursos', factura: 1 }],
+    etiquetas: [getIEtiquetaMock({ nombre: 'senescyt', id: '5555', categoria: 'cursos' })],
     imagenes: [{ nombreArchivo: 'file:///home/img/img.png', nombreArchivoOriginal: 'factura', ubicacion: '/home/img' }],
     isIva: true,
     iva: 12,

@@ -1,8 +1,8 @@
 <div class="container">
   <form>
     <div class="row my-2">
-      <div class="col-md-2"></div>
-      <div class="col-md-8 border">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 border">
         <div class="row my-2">
           <div class="col-md-6">
             <div class="input-group my-2">
@@ -11,8 +11,8 @@
                   <i class="fa fa-building fa-fw"></i>
                 </div>
               </div>
-              <input type="text" class="form-control form-control-sm" aria-label="nombreEmisor"
-                placeholder="Nombre del emisor" />
+              <input type="text" class="form-control" aria-label="nombreEmisor" placeholder="Nombre del emisor"
+              />
             </div>
             <div class="input-group my-2">
               <div class="input-group-prepend">
@@ -20,8 +20,8 @@
                   <i class="fa fa-id-card fa-fw"></i>
                 </div>
               </div>
-              <input type="text" class="form-control form-control-sm" aria-label="rucEmisor"
-                placeholder="RUC emisor" />
+              <input type="text" class="form-control" aria-label="rucEmisor" placeholder="RUC emisor"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -31,8 +31,7 @@
                   <i class="fa fa-money-bill fa-fw"></i>
                 </div>
               </div>
-              <input type="number" class="form-control form-control-sm" placeholder="N° Factura"
-              />
+              <input type="number" class="form-control" placeholder="N° Factura" />
             </div>
             <div class="input-group my-2">
               <div class="input-group-prepend">
@@ -40,8 +39,8 @@
                   <i class="fa fa-calendar fa-fw" (click)="d.toggle()"></i>
                 </div>
               </div>
-              <input type="text" class="form-control form-control-sm" placeholder="yyyy-mm-dd"
-                name="dp" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" />
+              <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
+                #d="ngbDatepicker" (click)="d.toggle()" />
             </div>
           </div>
         </div>
@@ -53,8 +52,7 @@
                   <i class="fa fa-building fa-fw"></i>
                 </div>
               </div>
-              <input type="text" class="form-control form-control-sm" placeholder="Nombre del receptor"
-              />
+              <input type="text" class="form-control" placeholder="Nombre del receptor" />
             </div>
             <div class="input-group my-2">
               <div class="input-group-prepend">
@@ -62,52 +60,50 @@
                   <i class="fa fa-id-card fa-fw"></i>
                 </div>
               </div>
-              <input type="number" class="form-control form-control-sm" placeholder="RUC receptor"
-              />
+              <input type="number" class="form-control" placeholder="RUC receptor" />
             </div>
           </div>
           <div class="col-md-6 my-2">
-            <textarea class="form-control form-control-sm" rows="3" placeholder="Describa el motivo de la factura"></textarea>
+            <textarea class="form-control" rows="3" placeholder="Describa el motivo de la factura"></textarea>
           </div>
         </div>
         <app-cargar-archivos></app-cargar-archivos>
         <div class="row my-2">
           <div class="col-md-12">
-            <div *ngIf="factura.detalle.length < 1" class="alert alert-info" role="alert" (click)="agregarRubroASubtotalDetalle()">
+            <div *ngIf="factura.detalle.length < 1" class="alert alert-info mb-0" role="alert" (click)="agregarRubroASubtotalDetalle()">
               <strong>No existe rubros, click para agregar</strong>
             </div>
             <div class="table-responsive-md">
-              <table *ngIf="factura.detalle.length > 0" class="table table-sm table-bordered">
-                <thead class="thead-dark">
+              <table *ngIf="factura.detalle.length > 0" class="table table-bordered mb-0">
+                <thead class="thead-light">
                   <tr>
-                    <th class="minw-50">Cantidad</th>
-                    <th class="minw-100 w-25">Descripción</th>
-                    <th class="minw-50">Precio unitario</th>
-                    <th class="minw-50 w-25">Total</th>
-                    <th>Opciones</th>
+                    <th class="minw-50 w-15">Cantidad</th>
+                    <th class="minw-150 w-25">Descripción</th>
+                    <th class="minw-75 w-15">Precio unitario</th>
+                    <th class="minw-75 w-15">Total</th>
+                    <th class="minw-100 w-10">Opciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let rubro of factura.detalle; let indice=index">
                     <td scope="row">
-                      <input type="number" class="form-control form-control-sm" [(ngModel)]="rubro.cantidad"
-                        [ngModelOptions]="{standalone: true, updateOn: 'blur'}" (ngModelChange)="factura.calculoTotal()">
+                      <input type="number" class="form-control" [(ngModel)]="rubro.cantidad" [ngModelOptions]="{standalone: true, updateOn: 'blur'}"
+                        (ngModelChange)="factura.calculoTotal()">
                     </td>
                     <td>
-                      <input type="text" class="form-control form-control-sm" [(ngModel)]="rubro.descripcion"
-                        [ngModelOptions]="{standalone: true}">
+                      <input type="text" class="form-control" [(ngModel)]="rubro.descripcion" [ngModelOptions]="{standalone: true}">
                     </td>
                     <td>
-                      <input type="number" class="form-control form-control-sm" [(ngModel)]="rubro.precioUnitario"
-                        [ngModelOptions]="{standalone: true, updateOn: 'blur'}" (ngModelChange)="factura.calculoTotal()">
+                      <input type="number" class="form-control" [(ngModel)]="rubro.precioUnitario" [ngModelOptions]="{standalone: true, updateOn: 'blur'}"
+                        (ngModelChange)="factura.calculoTotal()">
                     </td>
                     <td>{{ rubro.total | number: '1.2-2' }}</td>
                     <td>
-                      <button type="button" *ngIf="indice === factura.detalle.length - 1" class="btn btn-sm btn-success"
+                      <button type="button" *ngIf="indice === factura.detalle.length - 1" class="btn btn-success"
                         (click)="agregarRubroASubtotalDetalle()">
                         <i class="fas fa-plus"></i>
                       </button>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="eliminarRubroASubtotalDetalle(indice); factura.calculoTotal()">
+                      <button type="button" class="btn btn-danger" (click)="eliminarRubroASubtotalDetalle(indice); factura.calculoTotal()">
                         <i class="fas fa-minus"></i>
                       </button>
                     </td>
@@ -119,8 +115,7 @@
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" [(ngModel)]="factura.isIngreso" name="isIngreso"
                           id="isIngreso" (ngModelChange)="factura.calculoTotal()">
-                        <label class="form-check-label col-form-label col-form-label-sm" for="isIngreso"
-                          translate>
+                        <label class="form-check-label col-form-label" for="isIngreso" translate>
                           Ingreso
                         </label>
                       </div>
@@ -129,18 +124,18 @@
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" [(ngModel)]="factura.isIva" name="isIva"
                           id="isIva" (ngModelChange)="factura.calculoTotal()">
-                        <label class="form-check-label col-form-label col-form-label-sm" for="isIva" translate>
+                        <label class="form-check-label col-form-label" for="isIva" translate>
                           Iva
                         </label>
-                        <input type="number" class="form-control form-control-sm w-50 mx-1"
-                          [(ngModel)]="factura.iva" [disabled]="!factura.isIva"
-                          [ngModelOptions]="{standalone: true, updateOn: 'blur'}" (ngModelChange)="factura.calculoTotal()">
+                        <input type="number" class="form-control minw-50 w-25 mx-1" [(ngModel)]="factura.iva"
+                          [disabled]="!factura.isIva" [ngModelOptions]="{standalone: true, updateOn: 'blur'}"
+                          (ngModelChange)="factura.calculoTotal()">
                       </div>
                     </td>
                     <td>SubTotal</td>
                     <td>{{ factura.subTotalDetalle | number: '1.2-2' }}</td>
                     <td>
-                      <button type="button" *ngIf="factura.detalleTotal.length < 1" class="btn btn-sm btn-success"
+                      <button type="button" *ngIf="factura.detalleTotal.length < 1" class="btn btn-success"
                         (click)="agregarRubroASubtotalDetalleTotal()">
                         <i class="fas fa-plus"></i>
                       </button>
@@ -155,32 +150,45 @@
                   <tr *ngFor="let rubro of factura.detalleTotal; let indice=index">
                     <td colspan="2"></td>
                     <td>
-                      <input type="text" class="form-control form-control-sm" [(ngModel)]="rubro.nombre"
-                        [ngModelOptions]="{standalone: true}">
+                      <input type="text" class="form-control" [(ngModel)]="rubro.nombre" [ngModelOptions]="{standalone: true}">
                     </td>
                     <td>
-                      <input type="number" class="form-control form-control-sm" [(ngModel)]="rubro.cantidad"
-                        [ngModelOptions]="{standalone: true, updateOn: 'blur'}" (ngModelChange)="factura.calculoTotal()">
+                      <input type="number" class="form-control" [(ngModel)]="rubro.cantidad" [ngModelOptions]="{standalone: true, updateOn: 'blur'}"
+                        (ngModelChange)="factura.calculoTotal()">
                     </td>
                     <td>
-                      <button type="button" *ngIf="indice === factura.detalleTotal.length - 1" class="btn btn-sm btn-success"
+                      <button type="button" *ngIf="indice === factura.detalleTotal.length - 1" class="btn btn-success"
                         (click)="agregarRubroASubtotalDetalleTotal()">
                         <i class="fas fa-plus"></i>
                       </button>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="eliminarRubroASubtotalDetalleTotal(indice); factura.calculoTotal()">
+                      <button type="button" class="btn btn-danger" (click)="eliminarRubroASubtotalDetalleTotal(indice); factura.calculoTotal()">
                         <i class="fas fa-minus"></i>
                       </button>
                     </td>
                   </tr>
                   <tr>
                     <td colspan="2"></td>
-                    <td><strong>Total</strong></td>
+                    <td>
+                      <strong>Total</strong>
+                    </td>
                     <td>{{ factura.total | number: '1.2-2' }}</td>
                     <td></td>
                   </tr>
                 </tfoot>
               </table>
             </div>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-md-12">
+            <tag-input [(ngModel)]="etiquetasSeleccionadas" [maxItems]='3' [ngModelOptions]="{standalone: true}"
+              placeholder="Ingresar más etiquetas" secondaryPlaceholder="Ingresar etiquetas"
+              [onlyFromAutocomplete]="true" [theme]="'bootstrap'" [identifyBy]="'id'"
+              [displayBy]="'nombre'">
+              <tag-input-dropdown [showDropdownIfEmpty]="true" [autocompleteItems]="etiquetas"
+                [identifyBy]="'id'" [displayBy]="'nombre'">
+              </tag-input-dropdown>
+            </tag-input>
           </div>
         </div>
       </div>

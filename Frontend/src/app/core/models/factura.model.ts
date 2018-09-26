@@ -2,28 +2,7 @@ import { IDetalleFactura } from './detalle-factura.model';
 import { IImagenFactura } from './imagen-factura';
 import { Etiqueta } from './etiqueta.model';
 import { IDetalleTotal } from './detalle-total.model';
-
-export interface IFactura {
-  id?: string;
-  nombreEmisor: string;
-  rucEmisor: string;
-  numeroFactura: string;
-  fecha: Date;
-  nombreReceptor: string;
-  rucReceptor: string;
-  detalle: IDetalleFactura[];
-  subTotalDetalle: number;
-  detalleTotal: IDetalleTotal[];
-  subTotalDetalleTotal: number;
-  comentario: string;
-  total: number;
-  isIngreso: boolean;
-  etiquetas: Etiqueta[];
-  imagenes: IImagenFactura[];
-  isIva: boolean;
-  valorIva: number;
-  iva: number;
-}
+import { IFactura } from '@app/core/models/factura.interface';
 
 export class Factura implements IFactura {
   private _id: string;
@@ -61,7 +40,7 @@ export class Factura implements IFactura {
     this.comentario = factura.comentario;
     this.total = factura.total;
     this.isIngreso = factura.isIngreso;
-    this.etiquetas = factura.etiquetas;
+    this.etiquetas = factura.etiquetas ? factura.etiquetas.map(etiqueta => new Etiqueta(etiqueta)) : [];
     this.imagenes = factura.imagenes;
     this.isIva = factura.isIva;
     this.iva = factura.iva;

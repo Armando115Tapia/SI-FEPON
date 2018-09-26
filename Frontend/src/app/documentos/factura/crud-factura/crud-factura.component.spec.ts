@@ -12,6 +12,8 @@ import {
   NgbDateAdapter
 } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDatepickerService } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-service';
+import { TagInputModule } from 'ngx-chips';
+import { CrudFacturaService } from '@app/documentos/factura/crud-factura/servicios/crud-factura.service';
 
 describe('CrudFacturaComponent', () => {
   let component: CrudFacturaComponent;
@@ -19,14 +21,15 @@ describe('CrudFacturaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbModule, SharedModule, HttpClientTestingModule],
+      imports: [NgbModule, SharedModule, HttpClientTestingModule, TagInputModule],
       providers: [
         NgbCalendar,
         NgbInputDatepicker,
         NgbDatepickerService,
         NgbDatepickerI18n,
         NgbDateParserFormatter,
-        NgbDateAdapter
+        NgbDateAdapter,
+        CrudFacturaService
       ],
       declarations: [CrudFacturaComponent]
     }).compileComponents();

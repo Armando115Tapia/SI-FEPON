@@ -1,23 +1,23 @@
 <div class="row my-1">
   <div class="col-md-12">
-    <label class="btn btn-sm btn-danger mb-0">
+    <label class="btn btn-primary mb-0">
       Seleccionar imágenes
       <input type="file" #file class="d-none" (change)="agregarImagenesSeleccionadasToArchivosPorSubir()"
         multiple/>
     </label>
     <button *ngIf="archivosPorSubir.length > 0" [disabled]="archivosPorSubir.length === 0"
-      class="btn btn-success btn-sm text-white" type="button" (click)="cargarTodasLasImagenes()">
-      <i class="fa fa-upload fa-fw " aria-hidden="true"></i>
+      class="btn btn-success text-white" type="button" (click)="cargarTodasLasImagenes()">
+      <i class="fa fa-upload" aria-hidden="true"></i>
       Cargar imágenes
     </button>
-    <button *ngIf="isCargandoServidor" [disabled]="!isCargando" class="btn btn-warning btn-sm text-white"
+    <button *ngIf="isCargandoServidor" [disabled]="!isCargando" class="btn btn-warning text-white"
       type="button" (click)="cancelarTodasLasImagenes()">
-      <i class="fa fa-ban fa-fw" aria-hidden="true"></i>
+      <i class="fa fa-ban" aria-hidden="true"></i>
       Cancelar todos
     </button>
-    <button *ngIf="archivosPorSubir.length > 0" [disabled]="archivosPorSubir.length === 0 || isCargando" class="btn btn-danger btn-sm text-white"
+    <button *ngIf="archivosPorSubir.length > 0" [disabled]="archivosPorSubir.length === 0 || isCargando" class="btn btn-danger text-white"
       type="button" (click)="vaciarTodosLosArchivosPorSubir()">
-      <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
+      <i class="fa fa-trash" aria-hidden="true"></i>
       Vaciar
     </button>
   </div>
@@ -39,17 +39,17 @@
           <td>{{ archivo.size}}</td>
           <td>
             <span *ngIf="!isCargandoImagen[indice]" class="badge badge-info">Por subir</span>
-            <i *ngIf="isCargandoImagen[indice]" class="fa fa-spinner fa-spin fa-fw"></i>
+            <i *ngIf="isCargandoImagen[indice]" class="fa fa-spinner fa-spin"></i>
           </td>
           <td>
-            <button class="btn btn-success btn-sm" type="button" (click)="subirArchivoIndividualmente(indice)">
-              <i class="fa fa-upload fa-fw text-white" aria-hidden="true"></i>
+            <button class="btn btn-success" type="button" (click)="subirArchivoIndividualmente(indice)">
+              <i class="fa fa-upload text-white" aria-hidden="true"></i>
             </button>
-            <button class="btn btn-sm btn-warning" *ngIf="isCargandoImagen[indice]" type="button" (click)="cancelarSubidaImagen(indice)">
-              <i class="fa fa-ban fa-fw text-white " aria-hidden="true"></i>
+            <button class="btn btn-warning" *ngIf="isCargandoImagen[indice]" type="button" (click)="cancelarSubidaImagen(indice)">
+              <i class="fa fa-ban text-white " aria-hidden="true"></i>
             </button>
-            <button class="btn btn-sm btn-danger" type="button" (click)="eliminarArchivoPorSubir(indice)">
-              <i class="fa fa-trash fa-fw text-white" aria-hidden="true"></i>
+            <button class="btn btn-danger" type="button" (click)="eliminarArchivoPorSubir(indice)">
+              <i class="fa fa-trash text-white" aria-hidden="true"></i>
             </button>
           </td>
         </tr>
@@ -69,8 +69,8 @@
         <div class="img-container">
           <img class="img-thumbnail w-100" *ngIf="imagen.url" [src]="imagen.url" alt="Imagen factura"
           />
-          <button class="btn btn-sm btn-danger" type="button" (click)="eliminarArchivoDeBaseDeDatos(indice)">
-            <i class="fa fa-trash fa-fw text-white" aria-hidden="true"></i>
+          <button class="btn btn-danger" type="button" (click)="eliminarArchivoDeBaseDeDatos(indice)">
+            <i class="fa fa-trash text-white" aria-hidden="true"></i>
           </button>
         </div>
       </div>

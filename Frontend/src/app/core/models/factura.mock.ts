@@ -1,4 +1,4 @@
-import { IFactura } from './factura.model';
+import { IFactura } from './factura.interface';
 
 const getDefaults = (): IFactura =>
   <IFactura>{
