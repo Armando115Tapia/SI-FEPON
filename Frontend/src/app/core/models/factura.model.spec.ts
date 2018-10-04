@@ -1,6 +1,6 @@
 import { Factura } from './factura.model';
-import { getIFacturaMock } from '@app/core/models/factura.mock';
-import { getIEtiquetaMock } from '@app/core/models/etiqueta.mock';
+import { getIFacturaMock } from './factura.mock';
+import { getIEtiquetaMock } from './etiqueta.mock';
 
 const factura = new Factura(
   getIFacturaMock({

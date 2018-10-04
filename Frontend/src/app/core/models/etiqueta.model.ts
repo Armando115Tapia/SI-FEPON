@@ -1,17 +1,14 @@
-import { Factura } from './factura.model';
-import { IEtiqueta } from '@app/core/models/etiqueta.interface';
+import { IEtiqueta } from './etiqueta.interface';
 
 export class Etiqueta implements IEtiqueta {
   private _id: string;
   private _nombre: string;
   private _categoria: string;
-  private _facturas: Factura[];
 
   constructor(etiqueta: IEtiqueta) {
     this.id = etiqueta.id;
     this.nombre = etiqueta.nombre;
     this.categoria = etiqueta.categoria;
-    this.facturas = etiqueta.facturas ? etiqueta.facturas.map(factura => new Factura(factura)) : [];
   }
 
   /**
@@ -39,14 +36,6 @@ export class Etiqueta implements IEtiqueta {
   }
 
   /**
-   * Getter facturas
-   * @return {Factura[]}
-   */
-  public get facturas(): Factura[] {
-    return this._facturas;
-  }
-
-  /**
    * Setter id
    * @param {string} value
    */
@@ -68,13 +57,5 @@ export class Etiqueta implements IEtiqueta {
    */
   public set categoria(value: string) {
     this._categoria = value;
-  }
-
-  /**
-   * Setter facturas
-   * @param {Factura[]} value
-   */
-  public set facturas(value: Factura[]) {
-    this._facturas = value;
   }
 }

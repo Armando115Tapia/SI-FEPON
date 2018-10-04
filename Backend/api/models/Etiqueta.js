@@ -32,10 +32,6 @@ module.exports = {
     categoria: {
       type: 'string',
       required: true
-    },
-    facturas: {
-      collection: 'Factura',
-      via: 'etiquetas'
     }
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗

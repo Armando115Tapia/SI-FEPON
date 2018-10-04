@@ -4,8 +4,7 @@ const getDefaults = (): IEtiqueta =>
   <IEtiqueta>{
     id: '',
     nombre: '',
-    categoria: '',
-    facturas: []
+    categoria: ''
   };
 
 const getIEtiquetaMock = (p?: Partial<IEtiqueta>): IEtiqueta => {

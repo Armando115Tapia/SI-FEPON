@@ -2,7 +2,7 @@ import { IDetalleFactura } from './detalle-factura.model';
 import { IImagenFactura } from './imagen-factura';
 import { Etiqueta } from './etiqueta.model';
 import { IDetalleTotal } from './detalle-total.model';
-import { IFactura } from '@app/core/models/factura.interface';
+import { IFactura } from './factura.interface';
 
 export class Factura implements IFactura {
   private _id: string;
