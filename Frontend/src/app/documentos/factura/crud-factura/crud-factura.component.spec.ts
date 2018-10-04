@@ -14,6 +14,17 @@ import {
 import { NgbDatepickerService } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-service';
 import { TagInputModule } from 'ngx-chips';
 import { CrudFacturaService } from '@app/documentos/factura/crud-factura/servicios/crud-factura.service';
+import { HttpClient } from '@angular/common/http';
+import {
+  HttpService,
+  ApiPrefixInterceptor,
+  ErrorHandlerInterceptor,
+  AuthenticationService,
+  HttpCacheService,
+  CacheInterceptor
+} from '@app/core';
+import { HeadersInterceptor } from '@app/core/http/headers.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CrudFacturaComponent', () => {
   let component: CrudFacturaComponent;
@@ -21,7 +32,7 @@ describe('CrudFacturaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbModule, SharedModule, HttpClientTestingModule, TagInputModule],
+      imports: [NgbModule, SharedModule, HttpClientTestingModule, TagInputModule, BrowserAnimationsModule],
       providers: [
         NgbCalendar,
         NgbInputDatepicker,
@@ -29,7 +40,17 @@ describe('CrudFacturaComponent', () => {
         NgbDatepickerI18n,
         NgbDateParserFormatter,
         NgbDateAdapter,
-        CrudFacturaService
+        ApiPrefixInterceptor,
+        ErrorHandlerInterceptor,
+        HeadersInterceptor,
+        AuthenticationService,
+        HttpCacheService,
+        CacheInterceptor,
+        CrudFacturaService,
+        {
+          provide: HttpClient,
+          useClass: HttpService
+        }
       ],
       declarations: [CrudFacturaComponent]
     }).compileComponents();
