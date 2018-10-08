@@ -3,8 +3,13 @@ import { Factura } from '@app/core/models/factura.model';
 import { getIFacturaMock } from '@app/core/models/factura.mock';
 import { getIEtiquetaMock } from '@app/core/models/etiqueta.mock';
 import { IEtiqueta } from '@app/core/models/etiqueta.interface';
-import { CrudFacturaService } from '@app/documentos/factura/crud-factura/servicios/crud-factura.service';
+import { FacturaService, EtiquetaService } from '@app/documentos/factura/crud-factura/servicios/crud-factura.service';
 import { NgForm } from '@angular/forms';
+import { IModeloArchivoCompleto } from '@app/shared/utilidades.util';
+import { Logger } from '@app/core';
+import { IFacturaDatabase, IFactura } from '@app/core/models/factura.interface';
+
+const log = new Logger('Crud factura');
 
 @Component({
   selector: 'app-crud-factura',
@@ -14,8 +19,12 @@ import { NgForm } from '@angular/forms';
 export class CrudFacturaComponent implements OnInit {
   factura: Factura;
   etiquetas: IEtiqueta[];
+  archivosAlmacenados: IModeloArchivoCompleto[];
 
-  constructor(private crudFacturaService: CrudFacturaService) {
+  constructor(
+    private facturaService: FacturaService,
+    private etiquetaService: EtiquetaService
+  ) {
     this.factura = new Factura(getIFacturaMock());
     this.etiquetas = [
       getIEtiquetaMock({ id: '1', nombre: 'poliperros', categoria: 'proyectos' }),
@@ -25,11 +34,12 @@ export class CrudFacturaComponent implements OnInit {
       getIEtiquetaMock({ id: '5', nombre: 'comida', categoria: 'implementos' }),
       getIEtiquetaMock({ id: '6', nombre: 'implementos oficina', categoria: 'implementos' })
     ];
+    this.archivosAlmacenados = [];
   }
 
   ngOnInit() {
     // TODO: Agregar etiquetas al servidor y descargar aquí
-    this.crudFacturaService.descargarEtiquetas().subscribe(data => console.log(data), error => console.error(error));
+    this.etiquetaService.findWhere().subscribe(data => console.log(data));
   }
 
   agregarRubroASubtotalDetalle() {
@@ -48,6 +58,16 @@ export class CrudFacturaComponent implements OnInit {
     this.factura.detalleTotal.splice(indiceRubro, 1);
   }
 
+  /**
+   * Obtiene todos los archivos almacenados que le pertenece a la factura
+   *
+   * @param {*} $event
+   * @memberof CrudFacturaComponent
+   */
+  sincronizacionArchivosAlmacenados(event: IModeloArchivoCompleto[]) {
+    this.archivosAlmacenados = event;
+  }
+
   guardarFactura(form: NgForm) {
     if (form.invalid) {
       // Activa los mensajes de texto en pantalla
@@ -57,7 +77,15 @@ export class CrudFacturaComponent implements OnInit {
         }
       });
     } else {
-      console.log('Enviado', form.value);
+      this.factura.imagenes = this.archivosAlmacenados;
+      const modeloFactura = this.factura.toDatabase;
+      delete modeloFactura['id'];
+      this.facturaService.create(modeloFactura).subscribe((data: IFacturaDatabase) => {
+        log.info('factura creada', modeloFactura);
+        const factura: any = data;
+        factura.fecha = {'year': data.fecha.getFullYear(), 'month': data.fecha.getMonth(), 'day': data.fecha.getDay()};
+        this.factura = new Factura(<IFactura>factura);
+      });
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { CargarArchivosService } from '@app/shared/cargar-archivos/cargar-archivos.service';
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -20,7 +20,11 @@ export class CargarArchivosComponent implements OnInit {
   private _isCargandoServidor: boolean;
   private _isCargandoImagen: boolean[] = [];
 
+  @Output()
+  emitArchivosAlmacenados: EventEmitter<IModeloArchivoCompleto[]>;
+
   constructor(private cargarArchivosService: CargarArchivosService) {
+    this.emitArchivosAlmacenados = new EventEmitter<IModeloArchivoCompleto[]>();
     this.isCargando = false;
     this.isCargandoServidor = false;
   }
@@ -81,6 +85,7 @@ export class CargarArchivosComponent implements OnInit {
         setTimeout(() => {
           this.isCargando = false;
           this.archivosAlmacenados.push(modeloImagen);
+          this.emitArchivosAlmacenados.emit(this.archivosAlmacenados);
         }, 3000);
       }
     });
@@ -136,6 +141,7 @@ export class CargarArchivosComponent implements OnInit {
         setTimeout(() => {
           this.isCargando = false;
           this.archivosAlmacenados.push(modeloImagen);
+          this.emitArchivosAlmacenados.emit(this.archivosAlmacenados);
         }, 3000);
       });
   }
@@ -152,6 +158,7 @@ export class CargarArchivosComponent implements OnInit {
       .eliminarArchivo(TipoImagen.facturas, archivo.nombreArchivo)
       .subscribe(data => console.log(data), error => console.log(error));
     this.archivosAlmacenados.splice(indiceArchivo, 1);
+    this.emitArchivosAlmacenados.emit(this.archivosAlmacenados);
   }
 
   /**

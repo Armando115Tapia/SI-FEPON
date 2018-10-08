@@ -14,7 +14,7 @@
               <input type="text" class="form-control" name="nombreEmisor" #mNombreEmisor="ngModel" [(ngModel)]="factura.nombreEmisor" placeholder="Nombre del emisor"
                 [ngClass]="{ 'is-invalid': mNombreEmisor.touched && mNombreEmisor.invalid }" required>
               <div *ngIf="mNombreEmisor.touched && mNombreEmisor.invalid" class="invalid-feedback">
-                  <div *ngIf="mNombreEmisor.errors['required']">Nombre emisor es requerido</div>  
+                  <div *ngIf="mNombreEmisor.errors['required']">Nombre emisor es requerido</div>
               </div>
             </div>
             <div class="input-group my-2">
@@ -26,7 +26,7 @@
               <input type="text" class="form-control" name="rucEmisor" #mRucEmisor="ngModel" [(ngModel)]="factura.rucEmisor" aria-label="rucEmisor" placeholder="RUC emisor"
                 [ngClass]="{ 'is-invalid': mRucEmisor.touched && mRucEmisor.invalid }" required/>
               <div *ngIf="mRucEmisor.touched && mRucEmisor.invalid" class="invalid-feedback">
-                <div *ngIf="mRucEmisor.errors['required']">Ruc emisor es requerido</div>  
+                <div *ngIf="mRucEmisor.errors['required']">Ruc emisor es requerido</div>
               </div>
             </div>
           </div>
@@ -40,7 +40,7 @@
               <input type="text" class="form-control" name="numeroFactura" #mNumeroFactura="ngModel" [(ngModel)]="factura.numeroFactura" placeholder="N° Factura"
                 [ngClass]="{ 'is-invalid': mNumeroFactura.touched && mNumeroFactura.invalid }" required />
               <div *ngIf="mNumeroFactura.touched && mNumeroFactura.invalid" class="invalid-feedback">
-                <div *ngIf="mNumeroFactura.errors['required']">Numero factura es requerido</div>  
+                <div *ngIf="mNumeroFactura.errors['required']">Numero factura es requerido</div>
               </div>
             </div>
             <div class="input-group my-2">
@@ -52,7 +52,7 @@
               <input class="form-control" name="fecha" #mFecha="ngModel" [(ngModel)]="factura.fecha" placeholder="yyyy-mm-dd" ngbDatepicker
                 #d="ngbDatepicker" (click)="d.toggle()" [ngClass]="{ 'is-invalid': mFecha.touched && mFecha.invalid }" required />
               <div *ngIf="mFecha.touched && mFecha.invalid" class="invalid-feedback">
-                <div *ngIf="mFecha.errors['required']">Fecha es requerido</div>  
+                <div *ngIf="mFecha.errors['required']">Fecha es requerido</div>
               </div>
             </div>
           </div>
@@ -68,7 +68,7 @@
               <input type="text" class="form-control" name="nombreReceptor" #mNombreReceptor="ngModel" [(ngModel)]="factura.nombreReceptor" placeholder="Nombre del receptor"
                 [ngClass]="{ 'is-invalid': mNombreReceptor.touched && mNombreReceptor.invalid }" required />
               <div *ngIf="mNombreReceptor.touched && mNombreReceptor.invalid" class="invalid-feedback">
-                <div *ngIf="mNombreReceptor.errors['required']">Nombre receptor es requerido</div>  
+                <div *ngIf="mNombreReceptor.errors['required']">Nombre receptor es requerido</div>
               </div>
             </div>
             <div class="input-group my-2">
@@ -77,10 +77,10 @@
                   <i class="fa fa-id-card fa-fw"></i>
                 </div>
               </div>
-              <input type="number" class="form-control" name="rucReceptor" #mRucReceptor="ngModel" [(ngModel)]="factura.rucReceptor" placeholder="RUC receptor"
+              <input type="text" class="form-control" name="rucReceptor" #mRucReceptor="ngModel" [(ngModel)]="factura.rucReceptor" placeholder="RUC receptor"
                 [ngClass]="{ 'is-invalid': mRucReceptor.touched && mRucReceptor.invalid }" required />
               <div *ngIf="mRucReceptor.touched && mRucReceptor.invalid" class="invalid-feedback">
-                <div *ngIf="mRucReceptor.errors['required']">Ruc receptor es requerido</div>  
+                <div *ngIf="mRucReceptor.errors['required']">Ruc receptor es requerido</div>
               </div>
             </div>
           </div>
@@ -88,7 +88,7 @@
             <textarea class="form-control" name="comentario" #mComentario="ngModel" [(ngModel)]="factura.comentario" rows="3" placeholder="Describa el motivo de la factura"></textarea>
           </div>
         </div>
-        <app-cargar-archivos></app-cargar-archivos>
+        <app-cargar-archivos (emitArchivosAlmacenados)="sincronizacionArchivosAlmacenados($event)"></app-cargar-archivos>
         <div class="row my-2">
           <div class="col-md-12">
             <div *ngIf="factura.detalle.length < 1" class="alert alert-info mb-0" role="alert" (click)="agregarRubroASubtotalDetalle()">

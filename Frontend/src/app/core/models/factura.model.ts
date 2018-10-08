@@ -2,14 +2,14 @@ import { IDetalleFactura } from './detalle-factura.model';
 import { IImagenFactura } from './imagen-factura';
 import { Etiqueta } from './etiqueta.model';
 import { IDetalleTotal } from './detalle-total.model';
-import { IFactura } from './factura.interface';
+import { IFactura, IFacturaDatabase } from './factura.interface';
 
 export class Factura implements IFactura {
   private _id: string;
   private _nombreEmisor: string;
   private _rucEmisor: string;
   private _numeroFactura: string;
-  private _fecha: Date;
+  private _fecha: {'year': number, 'month': number, 'day': number};
   private _nombreReceptor: string;
   private _rucReceptor: string;
   private _detalle: IDetalleFactura[];
@@ -104,6 +104,30 @@ export class Factura implements IFactura {
     this.total = total;
   }
 
+  public get toDatabase(): IFacturaDatabase {
+    return {
+      id: this.id,
+      nombreEmisor: this.nombreEmisor,
+      rucEmisor: this.rucEmisor,
+      numeroFactura: this.numeroFactura,
+      fecha: new Date(this.fecha.year, this.fecha.month, this.fecha.day),
+      nombreReceptor: this.nombreReceptor,
+      rucReceptor: this.rucReceptor,
+      detalle: this.detalle,
+      subTotalDetalle: this.subTotalDetalle,
+      detalleTotal: this.detalleTotal,
+      subTotalDetalleTotal: this.subTotalDetalleTotal,
+      comentario: this.comentario,
+      total: this.total,
+      isIngreso: this.isIngreso,
+      etiquetas: this.etiquetas.map(etiqueta => etiqueta.id),
+      imagenes: this.imagenes,
+      isIva: this.isIva,
+      valorIva: this.valorIva,
+      iva: this.iva
+    };
+  }
+
   /**
    * Getter subTotalDetalle
    * @return {number}
@@ -154,9 +178,9 @@ export class Factura implements IFactura {
 
   /**
    * Getter fecha
-   * @return {Date}
+   * @return {'year': number, 'month': number, 'day': number}
    */
-  public get fecha(): Date {
+  public get fecha(): {'year': number, 'month': number, 'day': number} {
     return this._fecha;
   }
 
@@ -282,9 +306,9 @@ export class Factura implements IFactura {
 
   /**
    * Setter fecha
-   * @param {Date} value
+   * @param {'year': number, 'month': number, 'day': number} value
    */
-  public set fecha(value: Date) {
+  public set fecha(value: {'year': number, 'month': number, 'day': number}) {
     this._fecha = value;
   }
 

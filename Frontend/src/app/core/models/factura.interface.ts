@@ -3,12 +3,11 @@ import { IImagenFactura } from './imagen-factura';
 import { IEtiqueta } from './etiqueta.interface';
 import { IDetalleTotal } from './detalle-total.model';
 
-export interface IFactura {
+interface IBaseFactura {
   id?: string;
   nombreEmisor: string;
   rucEmisor: string;
   numeroFactura: string;
-  fecha: Date;
   nombreReceptor: string;
   rucReceptor: string;
   detalle: IDetalleFactura[];
@@ -18,9 +17,18 @@ export interface IFactura {
   comentario: string;
   total: number;
   isIngreso: boolean;
-  etiquetas: IEtiqueta[];
   imagenes: IImagenFactura[];
   isIva: boolean;
   valorIva: number;
   iva: number;
+}
+
+export interface IFactura extends IBaseFactura {
+  fecha: { year: number; month: number; day: number };
+  etiquetas: IEtiqueta[];
+}
+
+export interface IFacturaDatabase extends IBaseFactura {
+  fecha: Date;
+  etiquetas: string[];
 }
