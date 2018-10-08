@@ -7,7 +7,7 @@ const factura = new Factura(
     nombreEmisor: 'Juan Perez',
     rucEmisor: '123456789',
     numeroFactura: '1215418452',
-    fecha: new Date(),
+    fecha: {'year': 2018, 'month': 2, 'day': 15},
     nombreReceptor: 'FEPON',
     rucReceptor: '1215247621001',
     detalle: [

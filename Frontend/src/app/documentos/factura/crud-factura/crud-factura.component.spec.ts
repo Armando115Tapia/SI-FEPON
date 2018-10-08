@@ -13,7 +13,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDatepickerService } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-service';
 import { TagInputModule } from 'ngx-chips';
-import { CrudFacturaService } from '@app/documentos/factura/crud-factura/servicios/crud-factura.service';
+import { FacturaService, EtiquetaService } from './servicios/crud-factura.service';
 import { HttpClient } from '@angular/common/http';
 import {
   HttpService,
@@ -46,7 +46,8 @@ describe('CrudFacturaComponent', () => {
         AuthenticationService,
         HttpCacheService,
         CacheInterceptor,
-        CrudFacturaService,
+        FacturaService,
+        EtiquetaService,
         {
           provide: HttpClient,
           useClass: HttpService
