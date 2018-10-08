@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class CrudFacturaService {
   constructor(private http: HttpClient) {}
 
-  descargarEtiqueta(): Observable<Object> {
+  descargarEtiquetas(): Observable<Object> {
     return this.http.cache().get('Etiqueta');
   }
 }

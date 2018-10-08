@@ -21,8 +21,18 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
   // Customize the default error handler here if needed
   private errorHandler(response: HttpEvent<any>): Observable<HttpEvent<any>> {
     if (!environment.production) {
-      // Do something with the error
-      log.error('Request error', response);
+      if (response.hasOwnProperty('error')) {
+        if (response['error'].hasOwnProperty('code')) {
+          log.error('codigo: ', response['error']['code']);
+          log.error('detalles: ', response['error']['details']);
+        } else {
+          // AdapterError
+          log.error('detalle', response['error']);
+        }
+      } else {
+        log.info('TODO: respuesta personalizada, hacer igual que la de sails');
+        log.error('Request error', response);
+      }
     }
     throw response;
   }

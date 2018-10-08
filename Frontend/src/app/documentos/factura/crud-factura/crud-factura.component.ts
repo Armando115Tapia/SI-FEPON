@@ -4,6 +4,7 @@ import { getIFacturaMock } from '@app/core/models/factura.mock';
 import { getIEtiquetaMock } from '@app/core/models/etiqueta.mock';
 import { IEtiqueta } from '@app/core/models/etiqueta.interface';
 import { CrudFacturaService } from '@app/documentos/factura/crud-factura/servicios/crud-factura.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-crud-factura',
@@ -12,12 +13,10 @@ import { CrudFacturaService } from '@app/documentos/factura/crud-factura/servici
 })
 export class CrudFacturaComponent implements OnInit {
   factura: Factura;
-  etiquetasSeleccionadas: IEtiqueta[];
   etiquetas: IEtiqueta[];
 
   constructor(private crudFacturaService: CrudFacturaService) {
     this.factura = new Factura(getIFacturaMock());
-    this.etiquetasSeleccionadas = [];
     this.etiquetas = [
       getIEtiquetaMock({ id: '1', nombre: 'poliperros', categoria: 'proyectos' }),
       getIEtiquetaMock({ id: '2', nombre: 'gimnasio', categoria: 'gimnasio' }),
@@ -30,7 +29,7 @@ export class CrudFacturaComponent implements OnInit {
 
   ngOnInit() {
     // TODO: Agregar etiquetas al servidor y descargar aquí
-    this.crudFacturaService.descargarEtiqueta().subscribe(data => console.log(data), error => console.error(error));
+    this.crudFacturaService.descargarEtiquetas().subscribe(data => console.log(data), error => console.error(error));
   }
 
   agregarRubroASubtotalDetalle() {
@@ -47,5 +46,18 @@ export class CrudFacturaComponent implements OnInit {
 
   eliminarRubroASubtotalDetalleTotal(indiceRubro: number) {
     this.factura.detalleTotal.splice(indiceRubro, 1);
+  }
+
+  guardarFactura(form: NgForm) {
+    if (form.invalid) {
+      // Activa los mensajes de texto en pantalla
+      Object.keys(form.controls).forEach((key: string) => {
+        if (form.controls[key].invalid) {
+          form.controls[key].markAsTouched();
+        }
+      });
+    } else {
+      console.log('Enviado', form.value);
+    }
   }
 }

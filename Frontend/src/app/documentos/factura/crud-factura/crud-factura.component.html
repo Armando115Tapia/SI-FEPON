@@ -1,5 +1,5 @@
 <div class="container">
-  <form>
+  <form novalidate #form="ngForm">
     <div class="row my-2">
       <div class="col-md-3"></div>
       <div class="col-md-6 border">
@@ -11,8 +11,11 @@
                   <i class="fa fa-building fa-fw"></i>
                 </div>
               </div>
-              <input type="text" class="form-control" aria-label="nombreEmisor" placeholder="Nombre del emisor"
-              />
+              <input type="text" class="form-control" name="nombreEmisor" #mNombreEmisor="ngModel" [(ngModel)]="factura.nombreEmisor" placeholder="Nombre del emisor"
+                [ngClass]="{ 'is-invalid': mNombreEmisor.touched && mNombreEmisor.invalid }" required>
+              <div *ngIf="mNombreEmisor.touched && mNombreEmisor.invalid" class="invalid-feedback">
+                  <div *ngIf="mNombreEmisor.errors['required']">Nombre emisor es requerido</div>  
+              </div>
             </div>
             <div class="input-group my-2">
               <div class="input-group-prepend">
@@ -20,8 +23,11 @@
                   <i class="fa fa-id-card fa-fw"></i>
                 </div>
               </div>
-              <input type="text" class="form-control" aria-label="rucEmisor" placeholder="RUC emisor"
-              />
+              <input type="text" class="form-control" name="rucEmisor" #mRucEmisor="ngModel" [(ngModel)]="factura.rucEmisor" aria-label="rucEmisor" placeholder="RUC emisor"
+                [ngClass]="{ 'is-invalid': mRucEmisor.touched && mRucEmisor.invalid }" required/>
+              <div *ngIf="mRucEmisor.touched && mRucEmisor.invalid" class="invalid-feedback">
+                <div *ngIf="mRucEmisor.errors['required']">Ruc emisor es requerido</div>  
+              </div>
             </div>
           </div>
           <div class="col-md-6">
@@ -31,7 +37,11 @@
                   <i class="fa fa-money-bill fa-fw"></i>
                 </div>
               </div>
-              <input type="number" class="form-control" placeholder="N° Factura" />
+              <input type="text" class="form-control" name="numeroFactura" #mNumeroFactura="ngModel" [(ngModel)]="factura.numeroFactura" placeholder="N° Factura"
+                [ngClass]="{ 'is-invalid': mNumeroFactura.touched && mNumeroFactura.invalid }" required />
+              <div *ngIf="mNumeroFactura.touched && mNumeroFactura.invalid" class="invalid-feedback">
+                <div *ngIf="mNumeroFactura.errors['required']">Numero factura es requerido</div>  
+              </div>
             </div>
             <div class="input-group my-2">
               <div class="input-group-prepend">
@@ -39,8 +49,11 @@
                   <i class="fa fa-calendar fa-fw" (click)="d.toggle()"></i>
                 </div>
               </div>
-              <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
-                #d="ngbDatepicker" (click)="d.toggle()" />
+              <input class="form-control" name="fecha" #mFecha="ngModel" [(ngModel)]="factura.fecha" placeholder="yyyy-mm-dd" ngbDatepicker
+                #d="ngbDatepicker" (click)="d.toggle()" [ngClass]="{ 'is-invalid': mFecha.touched && mFecha.invalid }" required />
+              <div *ngIf="mFecha.touched && mFecha.invalid" class="invalid-feedback">
+                <div *ngIf="mFecha.errors['required']">Fecha es requerido</div>  
+              </div>
             </div>
           </div>
         </div>
@@ -52,7 +65,11 @@
                   <i class="fa fa-building fa-fw"></i>
                 </div>
               </div>
-              <input type="text" class="form-control" placeholder="Nombre del receptor" />
+              <input type="text" class="form-control" name="nombreReceptor" #mNombreReceptor="ngModel" [(ngModel)]="factura.nombreReceptor" placeholder="Nombre del receptor"
+                [ngClass]="{ 'is-invalid': mNombreReceptor.touched && mNombreReceptor.invalid }" required />
+              <div *ngIf="mNombreReceptor.touched && mNombreReceptor.invalid" class="invalid-feedback">
+                <div *ngIf="mNombreReceptor.errors['required']">Nombre receptor es requerido</div>  
+              </div>
             </div>
             <div class="input-group my-2">
               <div class="input-group-prepend">
@@ -60,11 +77,15 @@
                   <i class="fa fa-id-card fa-fw"></i>
                 </div>
               </div>
-              <input type="number" class="form-control" placeholder="RUC receptor" />
+              <input type="number" class="form-control" name="rucReceptor" #mRucReceptor="ngModel" [(ngModel)]="factura.rucReceptor" placeholder="RUC receptor"
+                [ngClass]="{ 'is-invalid': mRucReceptor.touched && mRucReceptor.invalid }" required />
+              <div *ngIf="mRucReceptor.touched && mRucReceptor.invalid" class="invalid-feedback">
+                <div *ngIf="mRucReceptor.errors['required']">Ruc receptor es requerido</div>  
+              </div>
             </div>
           </div>
           <div class="col-md-6 my-2">
-            <textarea class="form-control" rows="3" placeholder="Describa el motivo de la factura"></textarea>
+            <textarea class="form-control" name="comentario" #mComentario="ngModel" [(ngModel)]="factura.comentario" rows="3" placeholder="Describa el motivo de la factura"></textarea>
           </div>
         </div>
         <app-cargar-archivos></app-cargar-archivos>
@@ -88,14 +109,14 @@
                   <tr *ngFor="let rubro of factura.detalle; let indice=index">
                     <td scope="row">
                       <input type="number" class="form-control" [(ngModel)]="rubro.cantidad" [ngModelOptions]="{standalone: true, updateOn: 'blur'}"
-                        (ngModelChange)="factura.calculoTotal()">
+                        (ngModelChange)="factura.calculoTotal()" />
                     </td>
                     <td>
-                      <input type="text" class="form-control" [(ngModel)]="rubro.descripcion" [ngModelOptions]="{standalone: true}">
+                      <input type="text" class="form-control" [(ngModel)]="rubro.descripcion" [ngModelOptions]="{standalone: true}" />
                     </td>
                     <td>
                       <input type="number" class="form-control" [(ngModel)]="rubro.precioUnitario" [ngModelOptions]="{standalone: true, updateOn: 'blur'}"
-                        (ngModelChange)="factura.calculoTotal()">
+                        (ngModelChange)="factura.calculoTotal()" />
                     </td>
                     <td>{{ rubro.total | number: '1.2-2' }}</td>
                     <td>
@@ -181,7 +202,7 @@
         </div>
         <div class="row my-2">
           <div class="col-md-12">
-            <tag-input [(ngModel)]="etiquetasSeleccionadas" [maxItems]='3' [ngModelOptions]="{standalone: true}"
+            <tag-input [(ngModel)]="factura.etiquetas" [maxItems]='3' [ngModelOptions]="{standalone: true}"
               placeholder="Ingresar más etiquetas" secondaryPlaceholder="Ingresar etiquetas"
               [onlyFromAutocomplete]="true" [theme]="'bootstrap'" [identifyBy]="'id'"
               [displayBy]="'nombre'">
@@ -189,6 +210,11 @@
                 [identifyBy]="'id'" [displayBy]="'nombre'">
               </tag-input-dropdown>
             </tag-input>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-md-12 d-flex text-center">
+            <button type="button" class="btn btn-outline-success" (click)="guardarFactura(form)">Guardar</button>
           </div>
         </div>
       </div>
