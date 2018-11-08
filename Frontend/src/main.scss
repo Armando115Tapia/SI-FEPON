@@ -63,7 +63,27 @@
   min-width: 50px;
 }
 
+.fixw-30 {
+  width: 30px;
+}
+
 // alineacion vertical
 table td {
   vertical-align: middle !important;
+}
+
+// color navbar
+.navbar {
+  margin-bottom: $spacer;
+}
+
+.nav-link.dropdown-toggle {
+  cursor: pointer;
+}
+
+.nav-shadow {
+  border: 1px solid map-get($theme-colors, secondary);
+  padding: 10px;
+  box-shadow: 4px 3px;
+  color: map-get($theme-colors, secondary);
 }
