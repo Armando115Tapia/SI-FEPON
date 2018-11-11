@@ -21,10 +21,7 @@ export class CrudFacturaComponent implements OnInit {
   etiquetas: IEtiqueta[];
   archivosAlmacenados: IModeloArchivoCompleto[];
 
-  constructor(
-    private facturaService: FacturaService,
-    private etiquetaService: EtiquetaService
-  ) {
+  constructor(private facturaService: FacturaService, private etiquetaService: EtiquetaService) {
     this.factura = new Factura(getIFacturaMock());
     this.etiquetas = [
       getIEtiquetaMock({ id: '1', nombre: 'poliperros', categoria: 'proyectos' }),
@@ -83,7 +80,7 @@ export class CrudFacturaComponent implements OnInit {
       this.facturaService.create(modeloFactura).subscribe((data: IFacturaDatabase) => {
         log.info('factura creada', modeloFactura);
         const factura: any = data;
-        factura.fecha = {'year': data.fecha.getFullYear(), 'month': data.fecha.getMonth(), 'day': data.fecha.getDay()};
+        factura.fecha = { year: data.fecha.getFullYear(), month: data.fecha.getMonth(), day: data.fecha.getDay() };
         this.factura = new Factura(<IFactura>factura);
       });
     }

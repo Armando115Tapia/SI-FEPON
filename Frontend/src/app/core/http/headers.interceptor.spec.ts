@@ -20,20 +20,17 @@ describe('HeaderInterceptor', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [{
-        provide: HTTP_INTERCEPTORS,
-        useClass: createInterceptor,
-        multi: true
-      }]
+      providers: [
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: createInterceptor,
+          multi: true
+        }
+      ]
     });
   });
 
-  beforeEach(inject([
-    HttpClient,
-    HttpTestingController
-  ], (_http: HttpClient,
-      _httpMock: HttpTestingController) => {
-
+  beforeEach(inject([HttpClient, HttpTestingController], (_http: HttpClient, _httpMock: HttpTestingController) => {
     http = _http;
     httpMock = _httpMock;
   }));

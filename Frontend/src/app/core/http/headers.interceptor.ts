@@ -8,7 +8,6 @@ import { AuthenticationService } from '../authentication/authentication.service'
 export class HeadersInterceptor implements HttpInterceptor {
   private token: string;
   constructor(private authorization: AuthenticationService) {
-
     if (this.authorization.credentials) {
       this.token = this.authorization.credentials.token;
     } else {

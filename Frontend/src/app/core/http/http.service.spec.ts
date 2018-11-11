@@ -28,23 +28,19 @@ describe('HttpService', () => {
         {
           provide: HttpClient,
           useClass: HttpService
-        },
+        }
       ]
     });
   });
 
-  beforeEach(inject([
-    HttpClient,
-    HttpTestingController,
-    HttpCacheService
-  ], (_http: HttpClient,
-      _httpMock: HttpTestingController,
-      _httpCacheService: HttpCacheService) => {
-
-    http = _http;
-    httpMock = _httpMock;
-    httpCacheService = _httpCacheService;
-  }));
+  beforeEach(inject(
+    [HttpClient, HttpTestingController, HttpCacheService],
+    (_http: HttpClient, _httpMock: HttpTestingController, _httpCacheService: HttpCacheService) => {
+      http = _http;
+      httpMock = _httpMock;
+      httpCacheService = _httpCacheService;
+    }
+  ));
 
   afterEach(() => {
     httpCacheService.cleanCache();
@@ -84,9 +80,7 @@ describe('HttpService', () => {
     });
 
     // Act
-    const request = http
-      .cache()
-      .get('/toto');
+    const request = http.cache().get('/toto');
 
     // Assert
     request.subscribe(() => {
@@ -108,9 +102,7 @@ describe('HttpService', () => {
     });
 
     // Act
-    const request = http
-      .skipErrorHandler()
-      .get('/toto');
+    const request = http.skipErrorHandler().get('/toto');
 
     // Assert
     request.subscribe(() => {
@@ -132,9 +124,7 @@ describe('HttpService', () => {
     });
 
     // Act
-    const request = http
-      .disableApiPrefix()
-      .get('/toto');
+    const request = http.disableApiPrefix().get('/toto');
 
     // Assert
     request.subscribe(() => {
@@ -156,9 +146,7 @@ describe('HttpService', () => {
     });
 
     // Act
-    const request = http
-      .skipHeaders()
-      .get('/toto');
+    const request = http.skipHeaders().get('/toto');
 
     // Assert
     request.subscribe(() => {
@@ -169,5 +157,4 @@ describe('HttpService', () => {
     });
     httpMock.expectOne({}).flush({});
   });
-
 });

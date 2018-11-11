@@ -12,8 +12,5 @@ export const environment = {
   serverUrl: 'http://localhost:1337/',
   // serverUrl: 'http://172.31.10.76:1337/',
   defaultLanguage: 'en-US',
-  supportedLanguages: [
-    'en-US',
-    'fr-FR'
-  ]
+  supportedLanguages: ['en-US', 'fr-FR']
 };

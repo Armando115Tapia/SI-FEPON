@@ -11,7 +11,6 @@ import {
   NgbDateParserFormatter,
   NgbDateAdapter
 } from '@ng-bootstrap/ng-bootstrap';
-import { NgbDatepickerService } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-service';
 import { TagInputModule } from 'ngx-chips';
 import { FacturaService, EtiquetaService } from './servicios/crud-factura.service';
 import { HttpClient } from '@angular/common/http';
@@ -36,7 +35,6 @@ describe('CrudFacturaComponent', () => {
       providers: [
         NgbCalendar,
         NgbInputDatepicker,
-        NgbDatepickerService,
         NgbDatepickerI18n,
         NgbDateParserFormatter,
         NgbDateAdapter,

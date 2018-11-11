@@ -25,7 +25,7 @@ export class BaseRest {
    *
    * @template T Modelos
    * @param {T} model modelo a crear ejemplo Factura
-   * @returns {Observable<Object>} retorna lo que la api retorne
+   * @returns {Observable<Object>} retorna lo que la api de crear
    * @memberof BaseRest
    */
   create<T>(model: T): Observable<Object> {
@@ -36,8 +36,8 @@ export class BaseRest {
    * https://sailsjs.com/documentation/reference/blueprint-api/destroy
    *
    * @template T
-   * @param {T} model
-   * @returns {Observable<Object>}
+   * @param {T} model modelo a ser eliminado
+   * @returns {Observable<Object>} retorna la api de elemento eliminado
    * @memberof BaseRest
    */
   destroy<T>(model: T): Observable<Object> {
@@ -47,8 +47,8 @@ export class BaseRest {
   /**
    * https://sailsjs.com/documentation/reference/blueprint-api/find-one
    *
-   * @param {string} id
-   * @returns {Observable<Object>}
+   * @param {string} id identificador de objeto
+   * @returns {Observable<Object>} retorna la api de busqueda de un unico elemento
    * @memberof BaseRest
    */
   findOne(id: string): Observable<Object> {
@@ -56,13 +56,13 @@ export class BaseRest {
   }
 
   /**
-   * https://sailsjs.com/documentation/reference/blueprint-api/find-where
+   * * https://sailsjs.com/documentation/reference/blueprint-api/find-where
    *
-   * @returns {Observable<Object>}
+   * @param [opciones] modificadores de busqueda waterline query language
+   * @returns {Observable<Object>} api de busqueda
    * @memberof BaseRest
    */
-  findWhere(opciones?: {'limit'?: number, 'where'?: string, 'sort'?: string}): Observable<Object> {
-
+  findWhere(opciones?: { limit?: number; where?: string; sort?: string }): Observable<Object> {
     let queryParams = '?';
 
     for (const key in opciones) {
@@ -82,13 +82,11 @@ export class BaseRest {
   /**
    * https://sailsjs.com/documentation/reference/blueprint-api/update
    *
-   * @template T
    * @param {T} model debe contener el id a actualizar
-   * @returns {Observable<Object>}
+   * @returns {Observable<Object>} api para actualizacion
    * @memberof BaseRest
    */
   update<T>(model: T): Observable<Object> {
     return this.http.patch(this.endPoint + '/' + model['id'], model);
   }
-
 }

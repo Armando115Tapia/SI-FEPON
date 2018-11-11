@@ -8,9 +8,8 @@ describe('CrudEtiquetaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CrudEtiquetaComponent ]
-    })
-    .compileComponents();
+      declarations: [CrudEtiquetaComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

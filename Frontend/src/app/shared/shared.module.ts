@@ -6,17 +6,8 @@ import { LoaderComponent } from './loader/loader.component';
 import { CargarArchivosComponent } from './cargar-archivos/cargar-archivos.component';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [
-    LoaderComponent,
-    CargarArchivosComponent
-  ],
-  exports: [
-    LoaderComponent,
-    CargarArchivosComponent,
-    FormsModule
-  ]
+  imports: [CommonModule],
+  declarations: [LoaderComponent, CargarArchivosComponent],
+  exports: [LoaderComponent, CargarArchivosComponent, FormsModule]
 })
-export class SharedModule { }
+export class SharedModule {}

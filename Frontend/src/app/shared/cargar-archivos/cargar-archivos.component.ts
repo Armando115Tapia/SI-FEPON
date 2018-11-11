@@ -14,14 +14,14 @@ import { environment } from '@env/environment';
 export class CargarArchivosComponent implements OnInit {
   @ViewChild('file')
   file: ElementRef;
+  @Output()
+  emitArchivosAlmacenados: EventEmitter<IModeloArchivoCompleto[]>;
+
   private _archivosAlmacenados: IModeloArchivoCompleto[] = [];
   private _archivosPorSubir: File[] = [];
   private _isCargando: boolean;
   private _isCargandoServidor: boolean;
   private _isCargandoImagen: boolean[] = [];
-
-  @Output()
-  emitArchivosAlmacenados: EventEmitter<IModeloArchivoCompleto[]>;
 
   constructor(private cargarArchivosService: CargarArchivosService) {
     this.emitArchivosAlmacenados = new EventEmitter<IModeloArchivoCompleto[]>();
@@ -34,7 +34,6 @@ export class CargarArchivosComponent implements OnInit {
   /**
    * Agregar las imagenes seleccionadas a la lista archivos por subir
    *
-   * @memberof CargarArchivosComponent
    */
   agregarImagenesSeleccionadasToArchivosPorSubir() {
     const archivosPorSubir = this.file.nativeElement.files;
@@ -50,7 +49,6 @@ export class CargarArchivosComponent implements OnInit {
    * Carga todas las imagenes que se encuentran en las lista de
    * archivos por subir al servidor
    *
-   * @memberof CargarArchivosComponent
    */
   cargarTodasLasImagenes() {
     this.isCargando = true;
@@ -94,14 +92,13 @@ export class CargarArchivosComponent implements OnInit {
   /**
    * Cancela todas las imagenes en estado subiendo
    *
-   * @memberof CargarArchivosComponent
    */
   cancelarTodasLasImagenes() {
     this.cargarArchivosService.cancelarPeticiones();
     this.isCargando = false;
   }
 
-    cancelarSubidaImagen(indiceArchivo: number) {
+  cancelarSubidaImagen(indiceArchivo: number) {
     this.cargarArchivosService.cancelaPeticion(this.archivosPorSubir[indiceArchivo].name);
     this.isCargandoImagen[indiceArchivo] = false;
   }
@@ -110,7 +107,6 @@ export class CargarArchivosComponent implements OnInit {
    * Vacía todos los archivos incluidos en la lista de
    * archivos y isCargandoImagen
    *
-   * @memberof CargarArchivosComponent
    */
   vaciarTodosLosArchivosPorSubir() {
     this.archivosPorSubir = [];
@@ -163,7 +159,7 @@ export class CargarArchivosComponent implements OnInit {
 
   /**
    * Getter archivosAlmacenados
-   * @return {IModeloArchivoCompleto[] }
+   * @return {IModeloArchivoCompleto[] } archivos almacenados
    */
   public get archivosAlmacenados(): IModeloArchivoCompleto[] {
     return this._archivosAlmacenados;
@@ -172,7 +168,7 @@ export class CargarArchivosComponent implements OnInit {
   /**
    * Getter archivosPorSubir
    * Lista de archivos por subir
-   * @return {File[] }
+   * @return {File[] } archivo por subir
    */
   public get archivosPorSubir(): File[] {
     return this._archivosPorSubir;
@@ -181,7 +177,7 @@ export class CargarArchivosComponent implements OnInit {
   /**
    * Getter isCargando
    * Muestra si se encuentra cargado incluyendo carga de imagen y del servidor
-   * @return {boolean}
+   * @return {boolean} verdadero si esta cargando sino falso
    */
   public get isCargando(): boolean {
     return this._isCargando;
@@ -190,7 +186,7 @@ export class CargarArchivosComponent implements OnInit {
   /**
    * Getter isCargandoServidor
    * Muestra si esta cargando en el servidor
-   * @return {boolean}
+   * @return {boolean} verdadero si esta cargando en el servidor sino falso
    */
   public get isCargandoServidor(): boolean {
     return this._isCargandoServidor;
@@ -198,7 +194,7 @@ export class CargarArchivosComponent implements OnInit {
 
   /**
    * Getter isCargandoImagen
-   * @return {boolean[] }
+   * @return {boolean[] } verdadero si esta cargando la imagen sino falso
    */
   public get isCargandoImagen(): boolean[] {
     return this._isCargandoImagen;
@@ -206,7 +202,7 @@ export class CargarArchivosComponent implements OnInit {
 
   /**
    * Setter archivosPorSubir
-   * @param {File[] } value
+   * @param {File[] } value arreglo de archivos por subir
    */
   public set archivosPorSubir(value: File[]) {
     this._archivosPorSubir = value;
@@ -214,7 +210,7 @@ export class CargarArchivosComponent implements OnInit {
 
   /**
    * Setter isCargando
-   * @param {boolean} value
+   * @param {boolean} value si esta cargando
    */
   public set isCargando(value: boolean) {
     this._isCargando = value;
@@ -222,7 +218,7 @@ export class CargarArchivosComponent implements OnInit {
 
   /**
    * Setter isCargandoServidor
-   * @param {boolean} value
+   * @param {boolean} value si es cargando en el servidor
    */
   public set isCargandoServidor(value: boolean) {
     this._isCargandoServidor = value;
@@ -230,7 +226,7 @@ export class CargarArchivosComponent implements OnInit {
 
   /**
    * Setter isCargandoImagen
-   * @param {boolean[] } value
+   * @param {boolean[] } value arreglo de archivos cargando
    */
   public set isCargandoImagen(value: boolean[]) {
     this._isCargandoImagen = value;
@@ -238,7 +234,7 @@ export class CargarArchivosComponent implements OnInit {
 
   /**
    * Setter archivosAlmacenados
-   * @param {IModeloArchivoCompleto[] } value
+   * @param {IModeloArchivoCompleto[] } value lista de archivos almacenados
    */
   public set archivosAlmacenados(value: IModeloArchivoCompleto[]) {
     this._archivosAlmacenados = value;

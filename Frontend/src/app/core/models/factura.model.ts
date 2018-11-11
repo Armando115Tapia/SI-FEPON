@@ -9,7 +9,7 @@ export class Factura implements IFactura {
   private _nombreEmisor: string;
   private _rucEmisor: string;
   private _numeroFactura: string;
-  private _fecha: {'year': number, 'month': number, 'day': number};
+  private _fecha: { year: number; month: number; day: number };
   private _nombreReceptor: string;
   private _rucReceptor: string;
   private _detalle: IDetalleFactura[];
@@ -180,7 +180,7 @@ export class Factura implements IFactura {
    * Getter fecha
    * @return {'year': number, 'month': number, 'day': number}
    */
-  public get fecha(): {'year': number, 'month': number, 'day': number} {
+  public get fecha(): { year: number; month: number; day: number } {
     return this._fecha;
   }
 
@@ -308,7 +308,7 @@ export class Factura implements IFactura {
    * Setter fecha
    * @param {'year': number, 'month': number, 'day': number} value
    */
-  public set fecha(value: {'year': number, 'month': number, 'day': number}) {
+  public set fecha(value: { year: number; month: number; day: number }) {
     this._fecha = value;
   }
 

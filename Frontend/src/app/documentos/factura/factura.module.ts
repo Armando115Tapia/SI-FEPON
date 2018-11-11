@@ -8,13 +8,7 @@ import { SharedModule } from '@app/shared';
 import { TagInputModule } from 'ngx-chips';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NgbModule,
-    SharedModule,
-    TagInputModule,
-    FacturaRoutingModule
-  ],
+  imports: [CommonModule, NgbModule, SharedModule, TagInputModule, FacturaRoutingModule],
   declarations: [FacturaComponent, CrudFacturaComponent]
 })
-export class FacturaModule { }
+export class FacturaModule {}

@@ -7,18 +7,15 @@ import { BaseRest } from '@app/shared/servicios/base-rest';
   providedIn: 'root'
 })
 export class FacturaService extends BaseRest {
-
   constructor(http: HttpClient) {
     super(http, 'factura');
   }
-
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class EtiquetaService extends BaseRest {
-
   constructor(http: HttpClient) {
     super(http, 'etiqueta');
   }

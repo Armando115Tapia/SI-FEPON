@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { Route } from '@app/core';
+import { Shell } from '@app/shell/shell.service';
 
 const routes: Routes = [
-  Route.withShell([
+  Shell.childRoutes([
     { path: 'factura', loadChildren: 'app/documentos/factura/factura.module#FacturaModule' },
     { path: 'etiqueta', loadChildren: 'app/administracion/etiqueta/etiqueta.module#EtiquetaModule' },
     { path: 'about', loadChildren: 'app/about/about.module#AboutModule' }
@@ -13,11 +13,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  // Error
-  // https://github.com/angular/angular/issues/24539
-  // imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule],
   providers: []
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

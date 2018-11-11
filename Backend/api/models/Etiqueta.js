@@ -18,7 +18,7 @@ module.exports = {
     // Gastos limpieza
     // Gastos de oficina
 
-    // Gimnacio
+    // Gimnasio
     // Cursos   // senescyt
     // Aportes  //
     // Rifas
@@ -27,11 +27,13 @@ module.exports = {
 
     nombre: {
       type: 'string',
-      required: true
+      required: true,
+      unique: true
     },
     categoria: {
       type: 'string',
-      required: true
+      required: true,
+      unique: true
     }
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
